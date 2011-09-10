@@ -1,0 +1,14 @@
+language-test program
+
+To build, the boost random library is required.  See 
+http://www.boost.org/doc/libs/1_47_0/more/getting_started/index.html 
+for more information.
+
+Build:
+From the commandline, type
+	g++ LanguageTest.cpp -o LanguageTest
+
+Usage:
+Type
+	./LanguageTest -h
+for usage information.
