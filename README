@@ -5,8 +5,11 @@ http://www.boost.org/doc/libs/1_47_0/more/getting_started/index.html
 for more information.
 
 Build:
-From the commandline, type
-	g++ LanguageTest.cpp -o LanguageTest
+Open 'makefile' and change the argument of CXX to your default C++ compiler.  After CXXFLAGS, 
+add
+-L/path/to/boost/lib -I/path/to/boost/include
+Save makefile, and from the commandline, type
+	make
 
 Usage:
 Type
