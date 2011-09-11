@@ -30,7 +30,7 @@
  *        -- Make everything more organized
  *        -- Better commenting to explain confusing features
  *        -- More-descriptive variable names
- *        -- Think about the complex data structures (worddata and wordset) and
+ *        -- Think about the complex data structures (worddata and wordSet) and
  *            see if there's one that is smarter, more convenient, or less complex
  *
  *  Created by Otto Hasselblad on 4/29/11.
@@ -40,30 +40,16 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
-//#include <algorithm>
-//#include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
 #include <iomanip>
 #include <iostream>
-//#include <fstream>
-//#include <numeric>
 #include <vector>
 
-#include "worddata.h"
+#include "wordData.h"
 #include "functions.h"
-#include "wordset.h"
-
-//#ifndef _WORDDATA_H_
-//# include "worddata.h"
-//#endif  // _WORDDATA_H_
-//#ifndef _FUNCTIONS_H_
-//# include "functions.h"
-//#endif  // _FUNCTIONS_H_
-//#ifndef _WORDSET_H_
-//# include "wordset.h"
-//#endif  // _WORDSET_H_
+#include "wordSet.h"
 
 using std::cout;
 using std::cin;
@@ -83,18 +69,18 @@ int main(int argc, char **argv)
     time_t timeStart, timeEnd;
     string temp;
     char inFile[] = "verbs.txt";
-    vector<wordset> spen;
+    vector<wordSet> spen;
     int numEntries = 0, lengthLongestWord = 0, c, hintNum;
     bool controlling, verbose = true, isWrong = true;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 
 //  Below: Rough idea on how to implement choosing whether to be quizzed on one
 //  language or the other, but the data structure prevents easy access since
-//  spen's type is vector<wordset>, where wordset is composed of two vectors of
+//  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
 //  strings.  This would be a lot easier to implement if the synonyms weren't
 //  a part of the design.
-//  vector<wordset> * answer = &spen;
-//  vector<wordset> * question = &spen;
+//  vector<wordSet> * answer = &spen;
+//  vector<wordSet> * question = &spen;
 
     /*****     Take optional input from command line     *****/
     while ( (c = getopt(argc, argv, ":i:vhd")) != -1 )
@@ -122,7 +108,8 @@ int main(int argc, char **argv)
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     input(spen,&inFile[0]);
     numEntries = spen.size();
-    worddata * wordy = new worddata[numEntries];
+    wordData * wordy = new wordData[numEntries];
+    // Populate wordData arrays
     for (int i = 0; i < numEntries; i++)
     {
         wordy[i].numAsked = 0;
@@ -175,7 +162,7 @@ int main(int argc, char **argv)
             {
                 if ( verbose ) cout << " --- You are " << \
                 ((isWrong)?("wrong, try again!"):("right!")) << endl;
-                wordy[i].worddata::updateScore(i, isWrong, \
+                wordy[i].wordData::updateScore(i, isWrong, \
                                                reaction(difftime(timeEnd,timeStart), \
                                                         spen[i].verbos[j].size()), \
                                                numEntries, wordy);

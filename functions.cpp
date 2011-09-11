@@ -16,7 +16,7 @@ extern bool debug;
 bool compareAll(vector<string> & ws, string test)
 {
     bool isWrong = true;
-    
+
     for (int i = 0; i < ws.size(); i++)
         if ( !test.compare(ws[i]) )
             isWrong = false;
@@ -24,14 +24,14 @@ bool compareAll(vector<string> & ws, string test)
     return isWrong;
 }
 
-void input(vector<wordset> & ws, char * inFilename)
+void input(vector<wordSet> & ws, char * inFilename)
 {
         // Do some error-checking to make sure there are the proper number of
         //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     int pos, posWidth = 1;
     ifstream infile(inFilename,ifstream::in);
-    struct wordset tempset;
+    struct wordSet tempset;
     long unsigned int j;        // Stores index for repeat entry, given by isnew()
 
     if (!infile.is_open())
@@ -81,7 +81,7 @@ void input(vector<wordset> & ws, char * inFilename)
     infile.close();
 }
 
-bool isnew(vector<wordset> & ws, string test, long unsigned int & index)
+bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
     bool isNew = true;
 
@@ -138,7 +138,7 @@ void num2ordinal(int num)
         cout << num << "th";
 }
 
-void populate(worddata * prob, const int size)
+void populate(wordData * prob, const int size)
 {
     double invSize = 1.0 / static_cast<double> (size);
     for (int i = 0; i < size; i++)
@@ -159,7 +159,7 @@ void printHelp(char * prog)
     cout << "    -h             print out this help menu" << endl;
     cout << "    -d             print debugging information to troubleshoot" << endl;
     cout << endl;
-    
+
 }
 
 int randIndex(int num)
@@ -174,11 +174,11 @@ double reaction(double time, int wrdsz)
     if (reactionTime < 0.0)
         reactionTime = 0.0;
     if (debug) cout << "reactionTime = " << reactionTime << endl;
-    
+
     return reactionTime;
 }
 
-int weightedIndex(worddata * data, int numEntries)
+int weightedIndex(wordData * data, int numEntries)
 {
     extern boost::mt19937 gen;
     double prob[numEntries];
@@ -188,7 +188,7 @@ int weightedIndex(worddata * data, int numEntries)
         // structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
-    
+
     vector<double> cumulative;
     std::partial_sum(&prob[0], &prob[0] + numEntries, \
                      std::back_inserter(cumulative));

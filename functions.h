@@ -7,6 +7,7 @@
  *  Created by Peter Eschbacher on 9/11/11.
  *
  */
+
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
@@ -20,8 +21,8 @@
 
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
-#include "wordset.h"
-#include "worddata.h"
+#include "wordSet.h"
+#include "wordData.h"
 
 using std::cin;
 using std::cout;
@@ -31,13 +32,13 @@ using std::string;
 using std::vector;
 
 bool compareAll(vector<string> &, string);
-void input(vector<wordset> &, char *);
-bool isnew(vector<wordset> &, string, long unsigned int &);
+void input(vector<wordSet> &, char *);
+bool isnew(vector<wordSet> &, string, long unsigned int &);
 void num2ordinal(int num);
-void populate(worddata *, const int);
+void populate(wordData *, const int);
 void printHelp(char *);
 int randIndex(int);
 double reaction(double, int);
-int weightedIndex(worddata *, int);
+int weightedIndex(wordData *, int);
 void wordSpaces(int wordLength);
 #endif
