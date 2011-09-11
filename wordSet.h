@@ -1,5 +1,5 @@
 /*
- *  wordset.h
+ *  wordSet.h
  *  
  *  Description:
  *
@@ -13,7 +13,7 @@
 #ifndef WORDSET_H
 #define WORDSET_H
 
-class wordset {
+class wordSet {
 public:
     std::vector<std::string> verbos;
     std::vector<std::string> verbs;
