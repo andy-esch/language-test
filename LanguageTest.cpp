@@ -20,21 +20,6 @@
  *              the program to load previous performance so you don't always
  *              have to start anew.
  *
- *  Rough idea on the smart picker:
- *        find a set of perhaps 10% of the set...
- *        that are
- *            i) among the longest avgTimes
- *            ii) have poor percentRight scores
- *            iii) recently missed AND/OR took a long time to answer (the worse
- *                the missing, the higher the probability)
- *            iv) Perhaps even look at the first few letters or overall and
- *                compare the similarity of the words (equate b and v?)
- *            v) Perhaps initially weight entries with higher i values with a
- *                higher probability?  (since they are newer)
- *
- *        set the probability higher for picking one of these -- and take away
- *        the probability from the 10% highest performing set
- *
  *  Make it so that while it is waiting for input or something like that
  *    an OpenMP section or something like that does the 'smart picker'
  *    algorithm in the background to reweight the probability of being
@@ -55,58 +40,40 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+//#include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
 #include <iomanip>
 #include <iostream>
-#include <fstream>
-#include <numeric>
+//#include <fstream>
+//#include <numeric>
 #include <vector>
+
+#include "worddata.h"
+#include "functions.h"
+#include "wordset.h"
+
+//#ifndef _WORDDATA_H_
+//# include "worddata.h"
+//#endif  // _WORDDATA_H_
+//#ifndef _FUNCTIONS_H_
+//# include "functions.h"
+//#endif  // _FUNCTIONS_H_
+//#ifndef _WORDSET_H_
+//# include "wordset.h"
+//#endif  // _WORDSET_H_
 
 using std::cout;
 using std::cin;
 using std::endl;
-using std::ifstream;
 using std::ios;
 using std::setw;
 using std::string;
 using std::vector;
 
 boost::mt19937 gen;
-
-class wordset {
-public:
-    vector<string> verbos;
-    vector<string> verbs;
-};
-
-class worddata {
-public:
-    unsigned int numAsked;
-    float percentRight;
-    float avgTime;
-    double probability;
-    unsigned int rank;
-    void updateScore(int, bool, double, int, worddata *);
-private:
-    double reweight(int, double, double);
-};
-
-int randIndex(int);
-void input(vector<wordset> &, char *);
-bool compareAll(vector<string> & ws, string test);
-bool isnew(vector<wordset> &, string, long unsigned int &);
-double reaction(double, int);
-void printHelp(char * progName);
-void wordSpaces(int wordLength);
-double strength(bool ans, double diff);
-void populate(worddata *, const int);
-int weightedIndex(worddata *, int);
-void num2ordinal(int num);
-
 bool debug = false;
 
 int main(int argc, char **argv)
@@ -160,7 +127,9 @@ int main(int argc, char **argv)
     {
         wordy[i].numAsked = 0;
         wordy[i].percentRight = 0.0;
-        if (spen[i].verbos[0].size() > lengthLongestWord)    // Find longest Spanish word for column spacing
+        
+        // Find longest Spanish word for column spacing
+        if (spen[i].verbos[0].size() > lengthLongestWord)
             lengthLongestWord = spen[i].verbos[0].size();
     }
     /*****     Initialize other things     *****/
@@ -183,7 +152,7 @@ int main(int argc, char **argv)
             getline(cin, temp);
             timeEnd = time(NULL);
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
-            if ( temp[0] == '-' )
+            if ( temp[0] == '-' )   // This structure feels a bit weak
             {
                 if ( temp[1] == 'h' && hintNum != spen[i].verbos[j].size() )
                 {
@@ -268,276 +237,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-}
-
-int randIndex(int num)
-{
-    return (rand() % num);
-}
-
-void worddata::updateScore(int pos, bool wrong, double timeDiff, int numOfEntries, worddata * wordSet)
-{
-    double weight = ( wrong ? 1.0 : -1.0 ) * strength(wrong,timeDiff);
-    if (debug) cout << "weight = " << weight << endl;
-    double beta = 1.0 - weight * wordSet[pos].probability;
-    double alpha = beta + weight;
-    if (debug)
-    {
-        cout << "Since the word is " << (wrong?"wrong":"right") << " its probability ";
-        cout << (wordSet[pos].probability > (alpha*wordSet[pos].probability)?"decreases":"increases") << endl;
-        cout << "beta = " << beta << ", alpha = " << alpha << endl;
-    }
-
-    // Update probability of this word coming up again
-    for (int ii = 0; ii < numOfEntries; ii++)
-    {
-        if ( ii != pos )
-            wordSet[ii].probability *= beta;
-        else
-            wordSet[ii].probability *= alpha;
-    }
-
-    // Update number of individual queries of word
-    numAsked++;
-
-    // Update scoring percentage
-    if (numAsked == 1)
-        (wrong)?(percentRight = 0.0):(percentRight = 1.0);
-    else if (!wrong && numAsked > 1)
-        percentRight = reweight(numAsked,percentRight,1.0);
-    else if (wrong && numAsked > 1)
-        percentRight = reweight(numAsked,percentRight,0.0);
-
-    // Update timing information
-    avgTime = reweight(numAsked,avgTime,timeDiff);
-}
-
-double worddata::reweight(int num, double old, double newish)
-{
-    double nd = static_cast<double> (num);
-    return ((nd - 1.0) * old + newish)/nd;
-}
-
-// Copies text file inFilename into memory for use in this program
-void input(vector<wordset> & ws, char * inFilename)
-{
-    // Do some error-checking to make sure there are the proper number of
-    //   columns, proper encoding(? not binary), etc.
-    string temp1, temp2;
-    int pos, posWidth = 1;
-    ifstream infile(inFilename,ifstream::in);
-    struct wordset tempset;
-    long unsigned int j;        // Stores index for repeat entry, given by isnew()
-
-    if (!infile.is_open())
-    {
-        cout << "File '" << inFilename << "' does not exist as specified." << endl;
-        cout << "Enter another filename (enter 0 to exit): ";
-        cin >> inFilename;
-        if (inFilename[0] == '0')
-            exit(0);
-        else
-            infile.open(inFilename,ifstream::in);
-    }
-
-    while ( !infile.eof() )
-    {
-        getline(infile, temp1);
-        posWidth = 1;
-        pos = temp1.find("\t");                // Default delimiter
-        if (pos == -1 || temp1 == "")        // Skip empty lines
-            continue;
-        else if (temp1.find(",") != -1)        // Is the delimiter ","?
-            pos = temp1.find(",");
-        else if (temp1.find("  ") != -1)    // Is the delimiter "  "?
-        {
-            pos = temp1.find("  ");
-            posWidth = 2;
-        }
-        temp2 = temp1;
-        temp1.erase(pos,temp1.size());
-        temp2.erase(0,pos+posWidth);
-
-        if ( isnew(ws,temp1,j) )
-        {
-            tempset.verbos.push_back(temp1);
-            tempset.verbs.push_back(temp2);
-            ws.push_back(tempset);
-            tempset.verbos.erase(tempset.verbos.begin());
-            tempset.verbs.erase(tempset.verbs.begin());
-        }
-        else // is not new
-        {
-            ws[j].verbos.push_back(temp1);
-            ws[j].verbs.push_back(temp2);
-        }
-    }
-
-    infile.close();
-}
-// Returns true if 'test' is not already in the vector ws
-bool isnew(vector<wordset> & ws, string test, long unsigned int & index)
-{
-    bool isNew = true;
-
-    if (ws.size() == 0)
-        isNew = true;
-    else
-    {
-        for (int i = 0; i < ws.size(); i++)
-        {
-            if ( !test.compare(ws[i].verbos[0]) )
-            {
-                isNew = false;
-                index = i;
-                break;
-            }
-        }
-    }
-    return isNew;
-}
-// Mimics string compare -- returns 1 if there is no match
-bool compareAll(vector<string> & ws, string test)
-{
-    bool isWrong = true;
-
-    for (int i = 0; i < ws.size(); i++)
-        if ( !test.compare(ws[i]) )
-            isWrong = false;
-
-    return isWrong;
-}
-
-double reaction(double time, int wrdsz)
-{
-    // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
-    double reactionTime = time - 0.28 * wrdsz;
-    if (reactionTime < 0.0)
-        reactionTime = 0.0;
-    if (debug) cout << "reactionTime = " << reactionTime << endl;
-
-    return reactionTime;
-}
-
-void wordSpaces(int wordLength)
-{
-    for (int k = 0; k < wordLength + 2; k++)
-        cout << " ";
-}
-
-double strength(bool wrong, double diff)
-{
-    double score;
-    // Replace inner if-structures with an exponential function?
-    if (wrong)
-    {    // Probability increase with response time for wrong answers
-        // Quick responses are proportional to smaller probability differentials
-        if (diff < 2.0)
-            score = 0.03;
-        else if (diff < 4.0)
-            score = 0.06;
-        else if (diff < 8.0)
-            score = 0.12;
-        else if (diff < 16.0)
-            score = 0.18;
-        else
-            score = 0.24;
-    }
-    else
-    {    // Probability decreases with response times for correct answers
-        // Quick responses are proportional to larger probabilty differentials
-        if (diff < 1.0)
-            score = 0.24;
-        else if (diff < 2.0)
-            score = 0.18;
-        else if (diff < 4.0)
-            score = 0.12;
-        else if (diff < 8.0)
-            score = 0.06;
-        else if (diff < 16.0)
-            score = 0.03;
-        else
-            score = 0.015;
-    }
-
-    return score;
-}
-
-void populate(worddata * prob, const int size)
-{
-    double invSize = 1.0 / static_cast<double> (size);
-    for (int i = 0; i < size; i++)
-        prob[i].probability = invSize;
-}
-
-int weightedIndex(worddata * data, int numEntries)
-{
-    double prob[numEntries];
-    // Copy probabilities to simple array so partial_sum() can use it.
-    // It's possible that this step isn't necessary but I cannot figure out a
-    // way to use consecutive pointers in the partial_sum() function for the
-    // structure data[ii].probability
-    for (int ii = 0; ii < numEntries; ii++)
-        prob[ii] = data[ii].probability;
-
-    vector<double> cumulative;
-    std::partial_sum(&prob[0], &prob[0] + numEntries, \
-                     std::back_inserter(cumulative));
-    if (debug) cout << "partial sum calculated" << endl;
-    boost::uniform_real<> dist(0.0, cumulative.back());
-    boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
-    return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
-}
-
-void num2ordinal(int num)
-{   // Takes an integer, prints its ordinal
-    if (num == 1)
-        cout << "first";
-    else if (num == 2)
-        cout << "second";
-    else if (num == 3)
-        cout << "third";
-    else if (num == 4)
-        cout << "fourth";
-    else if (num == 5)
-        cout << "fifth";
-    else if (num == 6)
-        cout << "sixth";
-    else if (num == 7)
-        cout << "seventh";
-    else if (num == 8)
-        cout << "eigth";
-    else if (num == 9)
-        cout << "ninth";
-    else if (num == 10)
-        cout << "tenth";
-    else if (num == 11)
-        cout << "eleventh";
-    else if (num == 12)
-        cout << "twelfth";
-    else if ( (num % 10) == 1)
-        cout << num << "st";
-    else if ( (num % 10) == 2)
-        cout << num << "nd";
-    else if ( (num % 10) == 3)
-        cout << num << "rd";
-    else
-        cout << num << "th";
-}
-
-void printHelp(char * prog)
-{
-    cout << "Commandline language learner. Version something." << endl;
-    cout << "Kandy Software. Always wary." << endl;
-    cout << endl;
-    cout << "usage:" << endl;
-    cout << "  " << prog << " [options]" << endl;
-    cout << endl;
-    cout << "options:" << endl;
-    cout << "    -i <string>    input file name" << endl;
-    cout << "    -v             turn off verbose output" << endl;
-    cout << "    -h             print out this help menu" << endl;
-    cout << "    -d             print debugging information to troubleshoot" << endl;
-    cout << endl;
-
 }
