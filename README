@@ -13,5 +13,5 @@ Save makefile, and from the commandline, type
 
 Usage:
 Type
-	./LanguageTest -h
+	./ltest -h
 for usage information.
