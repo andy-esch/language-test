@@ -472,7 +472,7 @@ int weightedIndex(worddata * data, int numEntries)
     return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
 }
 
-char * num2ordinal(int num)
+void num2ordinal(int num)
 {
     if (num == 1)
         cout << "first";
