@@ -20,21 +20,6 @@
  *              the program to load previous performance so you don't always 
  *              have to start anew.
  *
- *  Rough idea on the smart picker:
- *		find a set of perhaps 10% of the set...
- *		that are 
- *			i) among the longest avgTimes
- *			ii) have poor percentRight scores
- *			iii) recently missed AND/OR took a long time to answer (the worse 
- *				the missing, the higher the probability)
- *			iv) Perhaps even look at the first few letters or overall and 
- *				compare the similarity of the words (equate b and v?)
- *			v) Perhaps initially weight entries with higher i values with a 
- *				higher probability?  (since they are newer)
- * 
- *		set the probability higher for picking one of these -- and take away
- *		the probability from the 10% highest performing set
- *
  *  Make it so that while it is waiting for input or something like that
  *    an OpenMP section or something like that does the 'smart picker' 
  *    algorithm in the background to reweight the probability of being
