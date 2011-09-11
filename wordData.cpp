@@ -1,18 +1,21 @@
 /*
- *  worddata.cpp
+ *  wordData.cpp
  *  
- *  Description: functions for the class worddata
+ *  Description: functions for the class wordData
  *
  *
  *  Created by Peter Eschbacher on 9/11/11.
  *
  */
 
-#include "worddata.h"
+#include "wordData.h"
+#include <iostream>
+using std::cout;
+using std::endl;
 
 extern bool debug;
 
-double worddata::strength(bool wrong, double diff)
+double wordData::strength(bool wrong, double diff)
 {
     double score;
         // Replace inner if-structures with an exponential function?
@@ -46,14 +49,14 @@ double worddata::strength(bool wrong, double diff)
         else
             score = 0.015;
     }
-    
+
     return score;
 }
 
-void worddata::updateScore(int pos, bool wrong, double timeDiff, \
-                           int numOfEntries, worddata * wordSet)
+void wordData::updateScore(int pos, bool wrong, double timeDiff, \
+                           int numOfEntries, wordData * wordSet)
 {
-    double weight = ( wrong ? 1.0 : -1.0 ) * worddata::strength(wrong,timeDiff);
+    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::strength(wrong,timeDiff);
     if (debug) cout << "weight = " << weight << endl;
     double beta = 1.0 - weight * wordSet[pos].probability;
     double alpha = beta + weight;
@@ -63,7 +66,7 @@ void worddata::updateScore(int pos, bool wrong, double timeDiff, \
         cout << (wordSet[pos].probability > (alpha*wordSet[pos].probability)?"decreases":"increases") << endl;
         cout << "beta = " << beta << ", alpha = " << alpha << endl;
     }
-    
+
         // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
@@ -72,10 +75,10 @@ void worddata::updateScore(int pos, bool wrong, double timeDiff, \
         else
             wordSet[ii].probability *= alpha;
     }
-    
+
         // Update number of individual queries of word
     numAsked++;
-    
+
         // Update scoring percentage
     if (numAsked == 1)
         (wrong)?(percentRight = 0.0):(percentRight = 1.0);
@@ -83,12 +86,12 @@ void worddata::updateScore(int pos, bool wrong, double timeDiff, \
         percentRight = reweight(numAsked,percentRight,1.0);
     else if (wrong && numAsked > 1)
         percentRight = reweight(numAsked,percentRight,0.0);
-    
+
         // Update timing information
     avgTime = reweight(numAsked,avgTime,timeDiff);
 }
 
-double worddata::reweight(int num, double old, double newish)
+double wordData::reweight(int num, double old, double newish)
 {
     double nd = static_cast<double> (num);
     return ((nd - 1.0) * old + newish)/nd;

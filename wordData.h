@@ -7,13 +7,10 @@
  *  Created by Peter Eschbacher on 9/11/11.
  *
  */
-#include <iostream>
-#ifndef WORDDATA_H
-#define WORDDATA_H
-using std::cout;
-using std::endl;
+#ifndef _WORDDATA_H_
+#define _WORDDATA_H_
 
-class worddata {
+class wordData {
 public:
     unsigned int numAsked;
     float percentRight;
@@ -21,8 +18,8 @@ public:
     double probability;
     unsigned int rank;
     double strength(bool, double);
-    void updateScore(int, bool, double, int, worddata *);
+    void updateScore(int, bool, double, int, wordData *);
 private:
     double reweight(int, double, double);
 };
-#endif
+#endif // _WORDDATA_H_
