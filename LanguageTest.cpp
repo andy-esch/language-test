@@ -1,27 +1,42 @@
 /*
  *  Language quiz program.
- *      Takes in a two-column file, stores it, and then quizzes and then quizzes
- *      the user on the translations.
+ *        Takes in a two-column file, stores it, and then quizzes and then quizzes
+ *         the user on the translations.
  *
- *  Future improvements: 
- *      * requiz badly scored words more frequently -- Implemented!
- *      * lets the user choose to be quizzed in english (answer in spanish), 
- *        in spanish (answer in english), or randomly (answering in the 
- *        opposite language to which the question was asked)
- *      * What is a way to choose what to be quizzed over? Such as just 
- *        switching all verbs instances with verbos?
- *      * Support for regular expressions?
- *      * International characters (accents, ñ, oumlaut, etc.)
- *      * More even timing mechanism that takes word length into account
- *      * Punctuation for certain options (. for pause time, : for clue, 
- *        $ for skip, etc.) or just the words (hint, pause, etc.) with a 
- *        dash in front?
- *      * Name memory!  Something like having an 'account'.  It allows the
- *        the program to load previous performance so you don't always have to
- *        start anew.
+ *        Future improvements:
+ *            *x requiz badly scored words more frequently -- Implemented!
+ *            * lets the user choose to be quizzed in english (answer in spanish),
+ *                in spanish (answer in english), or randomly (answering in the
+ *                opposite language to which the question was asked)
+ *                * What is a way to choose what to be quizzed over? Such as just
+ *              switching all verbs instances with verbos?
+ *            * Support for regular expressions?
+ *            * International characters (accents, ñ, oumlaut, etc.)
+ *            * More even timing mechanism that takes word length into account
+ *            * Punctuation for certain options (. for pause time, : for clue,
+ *                $ for skip, etc.) or just the words (hint, pause, etc.) with a
+ *                dash in front?
+ *          * Name memory!  Something like having an 'account'.  It allows the
+ *              the program to load previous performance so you don't always
+ *              have to start anew.
+ *
+ *  Rough idea on the smart picker:
+ *        find a set of perhaps 10% of the set...
+ *        that are
+ *            i) among the longest avgTimes
+ *            ii) have poor percentRight scores
+ *            iii) recently missed AND/OR took a long time to answer (the worse
+ *                the missing, the higher the probability)
+ *            iv) Perhaps even look at the first few letters or overall and
+ *                compare the similarity of the words (equate b and v?)
+ *            v) Perhaps initially weight entries with higher i values with a
+ *                higher probability?  (since they are newer)
+ *
+ *        set the probability higher for picking one of these -- and take away
+ *        the probability from the 10% highest performing set
  *
  *  Make it so that while it is waiting for input or something like that
- *    an OpenMP section or something like that does the 'smart picker' 
+ *    an OpenMP section or something like that does the 'smart picker'
  *    algorithm in the background to reweight the probability of being
  *    picked as the next quiz item.
  *
@@ -30,11 +45,10 @@
  *        -- Make everything more organized
  *        -- Better commenting to explain confusing features
  *        -- More-descriptive variable names
- *        -- Think about the complex data structures (worddata and wordset) and 
+ *        -- Think about the complex data structures (worddata and wordset) and
  *            see if there's one that is smarter, more convenient, or less complex
  *
  *  Created by Otto Hasselblad on 4/29/11.
- *  Edited by Otto Sep. 9.  Added weightedIndex function
  *
  */
 
@@ -103,12 +117,17 @@ int main(int argc, char **argv)
     string temp;
     char inFile[] = "verbs.txt";
     vector<wordset> spen;
-    int numEntries = 0, longestWord = 0, c, hintNum;
+    int numEntries = 0, lengthLongestWord = 0, c, hintNum;
     bool controlling, verbose = true, isWrong = true;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 
-//    vector<wordset> * answer = &spen;
-//    vector<wordset> * question = &spen;
+//  Below: Rough idea on how to implement choosing whether to be quizzed on one
+//  language or the other, but the data structure prevents easy access since
+//  spen's type is vector<wordset>, where wordset is composed of two vectors of
+//  strings.  This would be a lot easier to implement if the synonyms weren't
+//  a part of the design.
+//  vector<wordset> * answer = &spen;
+//  vector<wordset> * question = &spen;
 
     /*****     Take optional input from command line     *****/
     while ( (c = getopt(argc, argv, ":i:vhd")) != -1 )
@@ -134,22 +153,21 @@ int main(int argc, char **argv)
 
     /*****      Input Dictionary     *****/
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
-    input(spen,&inFile[0]);        // Take entries from the file inFile, put into spen
+    input(spen,&inFile[0]);
     numEntries = spen.size();
     worddata * wordy = new worddata[numEntries];
     for (int i = 0; i < numEntries; i++)
     {
         wordy[i].numAsked = 0;
         wordy[i].percentRight = 0.0;
-        if (spen[i].verbos[0].size() > longestWord)    // Find longest Spanish word for column spacing
-            longestWord = spen[i].verbos[0].size();    // Store it's size (used to set column widths)
+        if (spen[i].verbos[0].size() > lengthLongestWord)    // Find longest Spanish word for column spacing
+            lengthLongestWord = spen[i].verbos[0].size();
     }
     /*****     Initialize other things     *****/
     populate(wordy,numEntries);
 
     cout << "Okay, it's all read in." << endl;
     if (debug) cout << "Number of entries = " << numEntries << endl;
-    if (debug) cout << "spen[" << numEntries << "].verbs.size() = " << spen[numEntries-1].verbs.size() << endl;
     cout << "Beginning Quiz." << endl;
 
     /*****      Language Quiz      *****/
@@ -164,11 +182,12 @@ int main(int argc, char **argv)
             timeStart = time(NULL);
             getline(cin, temp);
             timeEnd = time(NULL);
-            if (cin.eof()) break;        // Break loop if CTRL-D (EOF) is entered
+            if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
             if ( temp[0] == '-' )
             {
                 if ( temp[1] == 'h' && hintNum != spen[i].verbos[j].size() )
                 {
+                    cout << "The ";
                     num2ordinal(hintNum+1);
                     cout << " letter is '" << spen[i].verbos[j][hintNum] << "'" << endl;
                     hintNum++;
@@ -216,18 +235,18 @@ int main(int argc, char **argv)
     /******      Summary of Results      ******/
     cout << endl;
     cout << endl;
-    cout << setw(longestWord+11) << "Summary" << endl;
+    cout << setw(lengthLongestWord+11) << "Summary" << endl;
     for (int i = 0; i < 16; i++)
         cout << "=-";
     cout << endl;
-    cout << setw(longestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
-    cout << setw(longestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
+    cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
+    cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
     cout.setf(ios::fixed);
     cout.precision(2);
 
     for (int i = 0; i < numEntries; i++)
     {
-        cout << setw(longestWord) << spen[i].verbos[0];
+        cout << setw(lengthLongestWord) << spen[i].verbos[0];
         if ( wordy[i].numAsked > 0 )
         {
             cout << setw(6) << static_cast<int> (100*wordy[i].percentRight) \
@@ -302,7 +321,7 @@ double worddata::reweight(int num, double old, double newish)
 // Copies text file inFilename into memory for use in this program
 void input(vector<wordset> & ws, char * inFilename)
 {
-    // Do some error-checking to make sure there are the proper number of 
+    // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     int pos, posWidth = 1;
@@ -398,8 +417,6 @@ double reaction(double time, int wrdsz)
     if (debug) cout << "reactionTime = " << reactionTime << endl;
 
     return reactionTime;
-//    return time;
-//    return ( ( time - 0.3 ) / ( (double) wrdsz ) );
 }
 
 void wordSpaces(int wordLength)
@@ -413,7 +430,7 @@ double strength(bool wrong, double diff)
     double score;
     // Replace inner if-structures with an exponential function?
     if (wrong)
-    {    // Probability increase with response time for wrong answers 
+    {    // Probability increase with response time for wrong answers
         // Quick responses are proportional to smaller probability differentials
         if (diff < 2.0)
             score = 0.03;
@@ -459,7 +476,7 @@ int weightedIndex(worddata * data, int numEntries)
     // Copy probabilities to simple array so partial_sum() can use it.
     // It's possible that this step isn't necessary but I cannot figure out a
     // way to use consecutive pointers in the partial_sum() function for the
-    // structure data[ii].probability...
+    // structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
 
@@ -473,27 +490,39 @@ int weightedIndex(worddata * data, int numEntries)
 }
 
 void num2ordinal(int num)
-{
+{   // Takes an integer, prints its ordinal
     if (num == 1)
         cout << "first";
-    if (num == 2)
+    else if (num == 2)
         cout << "second";
-    if (num == 3)
+    else if (num == 3)
         cout << "third";
-    if (num == 4)
+    else if (num == 4)
         cout << "fourth";
-    if (num == 5)
+    else if (num == 5)
         cout << "fifth";
-    if (num == 6)
+    else if (num == 6)
         cout << "sixth";
-    if (num == 7)
+    else if (num == 7)
         cout << "seventh";
-    if (num == 8)
+    else if (num == 8)
         cout << "eigth";
-    if (num == 9)
+    else if (num == 9)
         cout << "ninth";
-    if (num == 10)
+    else if (num == 10)
         cout << "tenth";
+    else if (num == 11)
+        cout << "eleventh";
+    else if (num == 12)
+        cout << "twelfth";
+    else if ( (num % 10) == 1)
+        cout << num << "st";
+    else if ( (num % 10) == 2)
+        cout << num << "nd";
+    else if ( (num % 10) == 3)
+        cout << num << "rd";
+    else
+        cout << num << "th";
 }
 
 void printHelp(char * prog)
