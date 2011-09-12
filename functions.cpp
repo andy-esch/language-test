@@ -26,15 +26,21 @@ bool compareAll(vector<string> & ws, string test)
 
 void hintOptions(int length = 4)
 {
-    cout << '\a';
+    cout << '\a' << endl;
     wordSpaces(length);
     cout << "Want a letter?  Type '-l'." << endl;
+    wordSpaces(length);
+    cout << "Want more than one letter?  Type '-l#', where # = a number 1 - 9." << endl;
     wordSpaces(length);
     cout << "Want the answer?  Type '-a'." << endl;
     wordSpaces(length);
     cout << "Want the number of letters?  Type '-n'." << endl;
     wordSpaces(length);
     cout << "Want to skip this word?  Type '-s'." << endl;
+    wordSpaces(length);
+    cout << "Want help?  Type '-h'." << endl;
+    wordSpaces(length);
+    cout << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
     wordSpaces(length);
     cout << "Want to turn these messages off?  Type '-d' to disable." << endl;
 }
