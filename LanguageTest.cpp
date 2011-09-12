@@ -27,11 +27,13 @@
  *
  *
  *  To do:
- *        -- Make everything more organized
- *        -- Better commenting to explain confusing features
- *        -- More-descriptive variable names
- *        -- Think about the complex data structures (worddata and wordSet) and
- *            see if there's one that is smarter, more convenient, or less complex
+ *      -- Make everything more organized
+ *      -- Better commenting to explain confusing features
+ *      -- More-descriptive variable names
+ *      -- Think about the complex data structures (worddata and wordSet) and
+ *          see if there's one that is smarter, more convenient, or less complex
+ *      -- Sort summary differently by user request (ws by spanish word, we by
+ *          english word, sc by score, re by reaction, pr by probability, etc.)
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -70,7 +72,7 @@ int main(int argc, char **argv)
     string temp;
     char inFile[] = "verbs.txt";
     vector<wordSet> spen;
-    int numEntries = 0, lengthLongestWord = 0, c, hintNum = 0;
+    int numEntries = 0, lengthLongestWord = 0, c, lHintNum = 0;
     bool controlling, verbose = true, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
@@ -133,7 +135,7 @@ int main(int argc, char **argv)
     while ( !cin.eof() )
     {
         int numOfTries = 1;
-        int wordSize = spen[i].verbos[j].size();
+        int verboSize = spen[i].verbos[j].size();
         bool knowWordSize = false;
         if (debug) cout << "New word: " << endl;
         cout << spen[i].verbs[j] << ": ";
@@ -145,58 +147,55 @@ int main(int argc, char **argv)
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
             if ( temp[0] == '-' )   // This structure feels a bit kludgey
             {
-                if ( temp[1] == 'l' )
+                switch (temp[1])
                 {
-                    if ( hintNum < wordSize )
-                    {
-                        cout << "The ";
-                        num2ordinal(hintNum+1);
-                        cout << " letter is '" << spen[i].verbos[j][hintNum] << "'" << endl;
-                        for (int jj = 0; jj < wordSize; jj++)
+                    case 'l':
+                        if ( lHintNum < verboSize )
                         {
-                            if (jj < hintNum+1)
-                                cout << spen[i].verbos[j][jj];
-                            else if (knowWordSize)
-                                cout << '-';
+                            lHintNum++;
+                            if (verbose)
+                            {
+                                cout << "The ";
+                                num2ordinal(lHintNum);
+                                cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
+                            }
+                            hintPrint(spen[i].verbs[j].size(), knowWordSize, verboSize, \
+                                      spen[i].verbos[j], lHintNum);
                         }
-                        cout << endl;
-                        hintNum++;
-                    }
-                    if ( (hintNum == wordSize) || (knowWordSize && (hintNum -1 == wordSize)) )
-                        cout << "You have the full word via hints!" << endl;
-                }
-                else if ( temp[1] == 'a' )
-                {
-                    cout << "Answer: " << spen[i].verbos[j] << endl;
-                    timeEnd = timeStart + 100;
-                }
-                else if ( temp[1] == 'n' )
-                {
-                    cout << "Number of letters: " << wordSize << endl;
-                    knowWordSize = true;
-                }
-                else if ( temp[1] == 'd' )
-                {
-                    disableHintMsg = !disableHintMsg;
-                    cout << (disableHintMsg?"Disabled":"Enabled");
-                    cout << " hint messages. Pass '-d' again to ";
-                    cout << (!disableHintMsg?"enable.":"disable.") << endl;
-                }
-                else {
-                    cout << "'" << temp << "' is not a hint option." << endl;
-                    hintOptions();
+                        else if ( (lHintNum == verboSize) || (knowWordSize && (lHintNum -1 == verboSize)) )
+                            cout << "You have the full word via hints!" << endl;
+                        break;
+                    case 'a':
+                        cout << "Answer: " << spen[i].verbos[j] << endl;
+                        timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
+                        lHintNum = verboSize;
+                        break;
+                    case 'n':
+                        if (knowWordSize) // Hmm, is this necessary?
+                            cout << "You already got this answer." << endl;
+                        else
+                        {
+                            knowWordSize = true;
+                            hintPrint(spen[i].verbs[j].size(), knowWordSize, verboSize, \
+                                      spen[i].verbos[j], lHintNum);                            
+                        }
+                        if (verbose) cout << "Number of letters: " << verboSize << endl;
+                        break;
+                    case 'd':
+                        disableHintMsg = !disableHintMsg;
+                        cout << (disableHintMsg?"Disabled":"Enabled");
+                        cout << " hint messages. Pass '-d' again to ";
+                        cout << (!disableHintMsg?"enable.":"disable.") << endl;
+                        break;
+                    default:
+                        cout << "'" << temp << "' is not a hint option." << endl;
+                        hintOptions(4);
+                        break;
                 }
             }
-            else if ( (numOfTries % 5) == 0 && !disableHintMsg )
-            {
-                hintOptions();
-                cout << endl;
-                cout << spen[i].verbs[j] << ": ";
-            }
-
             isWrong = compareAll(spen[i].verbos, temp);
 
-            if ( !cin.eof() && (temp[0] != '-') )
+            if ( !cin.eof() )
             {
                 if ( verbose ) cout << " --- You are " << \
                 ((isWrong)?("wrong, try again!"):("right!")) << endl;
@@ -207,8 +206,19 @@ int main(int argc, char **argv)
                                                         spen[i].verbos[j].size()), \
                                                numEntries, wordy);
             }
-            if (isWrong && (temp[0] != '-')) wordSpaces(spen[i].verbs[j].size());
-            else if (isWrong && (temp[1] == 'a')) wordSpaces(6);
+            
+            if (isWrong)
+            {
+                if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
+                {
+                    hintOptions(spen[i].verbs[j].size());
+                    cout << endl;
+                    cout << spen[i].verbs[j] << ": ";
+                }
+                else
+                    wordSpaces(spen[i].verbs[j].size());
+            }
+            else if (temp[1] == 'a') wordSpaces(6);
             numOfTries++;
         }
 
@@ -225,8 +235,8 @@ int main(int argc, char **argv)
             if (debug) cout << "first index = " << i << endl;
             j = randIndex(spen[i].verbs.size()); // This can continue to rely on the randIndex() function?
             if (debug) cout << "second index = " << j << endl;
-            isWrong = 1;
-            hintNum = 0;
+            isWrong = true;
+            lHintNum = 0;
         }
     }
 
