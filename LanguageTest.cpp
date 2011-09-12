@@ -1,4 +1,6 @@
 /*
+ *  LanguageTest.cpp
+ *
  *  Language quiz program.
  *        Takes in a two-column file, stores it, and then quizzes and then quizzes
  *         the user on the translations.
@@ -27,6 +29,11 @@
  *
  *
  *  To do:
+ *      -- Penalize for taking hints -- perhaps more sever as more letters are
+ *          gotten.  A big whack if a whole word is revealed.  Minimal for
+ *          numbers.
+ *      -- Hints that are synonyms but in the language you are less familiar
+ *          with -- in this case, only give spanish synonyms
  *      -- Make everything more organized
  *      -- Better commenting to explain confusing features
  *      -- More-descriptive variable names
@@ -34,6 +41,9 @@
  *          see if there's one that is smarter, more convenient, or less complex
  *      -- Sort summary differently by user request (ws by spanish word, we by
  *          english word, sc by score, re by reaction, pr by probability, etc.)
+ *      -- Ask what the user wants to do at the beginning of the program (once
+ *          new features are added other than the flash card one currently)
+ *      -- Verb conjugations!
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -152,17 +162,23 @@ int main(int argc, char **argv)
                     case 'l':
                         if ( lHintNum < verboSize )
                         {
-                            lHintNum++;
+                            int incr = 1; // Should be moved elsewhere?
+                            if (temp[2] == '\0')
+                                incr = 1;
+                            else
+                                incr = atoi(&temp[2]) % 10;
+
+                            lHintNum+=incr;
                             if (verbose)
                             {
                                 cout << "The ";
                                 num2ordinal(lHintNum);
                                 cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
-                            hintPrint(spen[i].verbs[j].size(), knowWordSize, verboSize, \
-                                      spen[i].verbos[j], lHintNum);
+                            hintPrint(spen[i].verbs[j].size(), knowWordSize, \
+                                      verboSize, spen[i].verbos[j], lHintNum);
                         }
-                        else if ( (lHintNum == verboSize) || (knowWordSize && (lHintNum -1 == verboSize)) )
+                        else if ( (lHintNum >= verboSize) || (knowWordSize && (lHintNum - 1 == verboSize)) )
                             cout << "You have the full word via hints!" << endl;
                         break;
                     case 'a':
@@ -187,6 +203,9 @@ int main(int argc, char **argv)
                         cout << " hint messages. Pass '-d' again to ";
                         cout << (!disableHintMsg?"enable.":"disable.") << endl;
                         break;
+                    case 's':
+                        cout << "This will allow you to skip a word eventually." << endl;
+                        break;
                     default:
                         cout << "'" << temp << "' is not a hint option." << endl;
                         hintOptions(4);
@@ -197,14 +216,14 @@ int main(int argc, char **argv)
 
             if ( !cin.eof() )
             {
-                if ( verbose ) cout << " --- You are " << \
+                if ( verbose ) cout << "You are " << \
                 ((isWrong)?("wrong, try again!"):("right!")) << endl;
 
                 // Update score
-                wordy[i].wordData::updateScore(i, isWrong, \
-                                               reaction(difftime(timeEnd,timeStart), \
-                                                        spen[i].verbos[j].size()), \
-                                               numEntries, wordy);
+                wordy[i].updateScore(i, isWrong, \
+                                     reaction(difftime(timeEnd,timeStart), \
+                                              spen[i].verbos[j].size()), \
+                                     numEntries, wordy);
             }
             
             if (isWrong)
@@ -218,7 +237,7 @@ int main(int argc, char **argv)
                 else
                     wordSpaces(spen[i].verbs[j].size());
             }
-            else if (temp[1] == 'a') wordSpaces(6);
+            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems oddly out of place
             numOfTries++;
         }
 
@@ -239,7 +258,7 @@ int main(int argc, char **argv)
             lHintNum = 0;
         }
     }
-
+    
     /******      Summary of Results      ******/
     cout << endl;
     cout << endl;
