@@ -1,7 +1,7 @@
 /*
  *  functions.cpp
  *  
- *  Description:
+ *  Description: Various non-class functions for LanguageTest.cpp
  *
  *
  *  Created by Peter Eschbacher on 9/11/11.
@@ -28,13 +28,15 @@ void hintOptions(int length = 4)
 {
     cout << '\a';
     wordSpaces(length);
-    cout << "Want a letter?  Type '-letter' or '-l'." << endl;
+    cout << "Want a letter?  Type '-l'." << endl;
     wordSpaces(length);
-    cout << "Want the answer?  Type '-answer' or '-a'." << endl;
+    cout << "Want the answer?  Type '-a'." << endl;
     wordSpaces(length);
-    cout << "Want the number of letters?  Type '-number' or '-n'" << endl;
+    cout << "Want the number of letters?  Type '-n'." << endl;
     wordSpaces(length);
-    cout << "Want to turn these messages off?  Type '-disable' or '-d'" << endl;
+    cout << "Want to skip this word?  Type '-s'." << endl;
+    wordSpaces(length);
+    cout << "Want to turn these messages off?  Type '-d' to disable." << endl;
 }
 
 void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
