@@ -70,8 +70,9 @@ int main(int argc, char **argv)
     string temp;
     char inFile[] = "verbs.txt";
     vector<wordSet> spen;
-    int numEntries = 0, lengthLongestWord = 0, c, hintNum;
+    int numEntries = 0, lengthLongestWord = 0, c, hintNum = 0;
     bool controlling, verbose = true, isWrong = true;
+    bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 
 //  Below: Rough idea on how to implement choosing whether to be quizzed on one
@@ -131,6 +132,9 @@ int main(int argc, char **argv)
     int j = randIndex(spen[i].verbs.size());
     while ( !cin.eof() )
     {
+        int numOfTries = 1;
+        int wordSize = spen[i].verbos[j].size();
+        bool knowWordSize = false;
         if (debug) cout << "New word: " << endl;
         cout << spen[i].verbs[j] << ": ";
         while (!cin.eof() && isWrong)
@@ -139,35 +143,73 @@ int main(int argc, char **argv)
             getline(cin, temp);
             timeEnd = time(NULL);
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
-            if ( temp[0] == '-' )   // This structure feels a bit weak
+            if ( temp[0] == '-' )   // This structure feels a bit kludgey
             {
-                if ( temp[1] == 'h' && hintNum != spen[i].verbos[j].size() )
+                if ( temp[1] == 'l' )
                 {
-                    cout << "The ";
-                    num2ordinal(hintNum+1);
-                    cout << " letter is '" << spen[i].verbos[j][hintNum] << "'" << endl;
-                    hintNum++;
+                    if ( hintNum < wordSize )
+                    {
+                        cout << "The ";
+                        num2ordinal(hintNum+1);
+                        cout << " letter is '" << spen[i].verbos[j][hintNum] << "'" << endl;
+                        for (int jj = 0; jj < wordSize; jj++)
+                        {
+                            if (jj < hintNum+1)
+                                cout << spen[i].verbos[j][jj];
+                            else if (knowWordSize)
+                                cout << '-';
+                        }
+                        cout << endl;
+                        hintNum++;
+                    }
+                    if ( (hintNum == wordSize) || (knowWordSize && (hintNum -1 == wordSize)) )
+                        cout << "You have the full word via hints!" << endl;
                 }
-                else if ( temp[1] == 'h' && (hintNum == spen[i].verbos[j].size()) )
-                    cout << "You have the full word via hints!" << endl;
                 else if ( temp[1] == 'a' )
                 {
                     cout << "Answer: " << spen[i].verbos[j] << endl;
                     timeEnd = timeStart + 100;
                 }
+                else if ( temp[1] == 'n' )
+                {
+                    cout << "Number of letters: " << wordSize << endl;
+                    knowWordSize = true;
+                }
+                else if ( temp[1] == 'd' )
+                {
+                    disableHintMsg = !disableHintMsg;
+                    cout << (disableHintMsg?"Disabled":"Enabled");
+                    cout << " hint messages. Pass '-d' again to ";
+                    cout << (!disableHintMsg?"enable.":"disable.") << endl;
+                }
+                else {
+                    cout << "'" << temp << "' is not a hint option." << endl;
+                    hintOptions();
+                }
             }
+            else if ( (numOfTries % 5) == 0 && !disableHintMsg )
+            {
+                hintOptions();
+                cout << endl;
+                cout << spen[i].verbs[j] << ": ";
+            }
+
             isWrong = compareAll(spen[i].verbos, temp);
 
             if ( !cin.eof() && (temp[0] != '-') )
             {
                 if ( verbose ) cout << " --- You are " << \
                 ((isWrong)?("wrong, try again!"):("right!")) << endl;
+
+                // Update score
                 wordy[i].wordData::updateScore(i, isWrong, \
                                                reaction(difftime(timeEnd,timeStart), \
                                                         spen[i].verbos[j].size()), \
                                                numEntries, wordy);
             }
-            if (isWrong) wordSpaces(spen[i].verbs[j].size());
+            if (isWrong && (temp[0] != '-')) wordSpaces(spen[i].verbs[j].size());
+            else if (isWrong && (temp[1] == 'a')) wordSpaces(6);
+            numOfTries++;
         }
 
         if ( !cin.eof() )
