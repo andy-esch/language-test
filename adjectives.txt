@@ -18,3 +18,17 @@ moreno	dark
 delgado	thin
 borracho	drunk
 genial	great
+abierto	open
+alegre	happy
+bajo	short
+barato	cheap
+bonito	pretty
+cerrado	closed
+claro	clear
+gordo	fat
+nuevo	new
+muerto	dead
+malo	bad
+maduro	ripe
+vivo	alive
+sabroso	tasty
