@@ -32,6 +32,7 @@ using std::string;
 using std::vector;
 
 bool compareAll(vector<string> &, string);
+void hintOptions(void);
 void input(vector<wordSet> &, char *);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
 void num2ordinal(int num);

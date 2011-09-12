@@ -24,10 +24,18 @@ bool compareAll(vector<string> & ws, string test)
     return isWrong;
 }
 
+void hintOptions(void)
+{
+    cout << '\a';
+    cout << "\tWant a letter?  Type '-letter' or '-l'." << endl;
+    cout << "\tWant the answer?  Type '-answer' or '-a'." << endl;
+    cout << "\tWant the number of letters?  Type '-number' or '-n'" << endl;
+}    
+
 void input(vector<wordSet> & ws, char * inFilename)
 {
-        // Do some error-checking to make sure there are the proper number of
-        //   columns, proper encoding(? not binary), etc.
+    // Do some error-checking to make sure there are the proper number of
+    //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     int pos, posWidth = 1;
     ifstream infile(inFilename,ifstream::in);
