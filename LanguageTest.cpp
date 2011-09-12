@@ -29,9 +29,10 @@
  *
  *
  *  To do:
- *      -- Penalize for taking hints -- perhaps more sever as more letters are
+ *      -- Penalize for taking hints -- perhaps more severe as more letters are
  *          gotten.  A big whack if a whole word is revealed.  Minimal for
- *          numbers.
+ *          numbers.  One way to easily implement this could be overloading
+ *          the updateScores function
  *      -- Hints that are synonyms but in the language you are less familiar
  *          with -- in this case, only give spanish synonyms
  *      -- Make everything more organized
@@ -44,6 +45,7 @@
  *      -- Ask what the user wants to do at the beginning of the program (once
  *          new features are added other than the flash card one currently)
  *      -- Verb conjugations!
+ *      -- Add multiple lists as a combined vocab
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -86,14 +88,14 @@ int main(int argc, char **argv)
     bool controlling, verbose = true, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
-
-//  Below: Rough idea on how to implement choosing whether to be quizzed on one
-//  language or the other, but the data structure prevents easy access since
-//  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
-//  strings.  This would be a lot easier to implement if the synonyms weren't
-//  a part of the design.
-//  vector<wordSet> * answer = &spen;
-//  vector<wordSet> * question = &spen;
+    
+        //  Below: Rough idea on how to implement choosing whether to be quizzed on one
+        //  language or the other, but the data structure prevents easy access since
+        //  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
+        //  strings.  This would be a lot easier to implement if the synonyms weren't
+        //  a part of the design.
+        //  vector<wordSet> * answer = &spen;
+        //  vector<wordSet> * question = &spen;
 
     /*****     Take optional input from command line     *****/
     while ( (c = getopt(argc, argv, ":i:vhd")) != -1 )
@@ -113,6 +115,7 @@ int main(int argc, char **argv)
                 debug = true;
                 break;
             default:
+                cout << "Option '-" << static_cast<char> (c) << "' is not valid." << endl;
                 break;
         }
     }
@@ -146,6 +149,7 @@ int main(int argc, char **argv)
     {
         int numOfTries = 1;
         int verboSize = spen[i].verbos[j].size();
+        int verbSize = spen[i].verbs[j].size();
         bool knowWordSize = false;
         if (debug) cout << "New word: " << endl;
         cout << spen[i].verbs[j] << ": ";
@@ -175,16 +179,19 @@ int main(int argc, char **argv)
                                 num2ordinal(lHintNum);
                                 cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
-                            hintPrint(spen[i].verbs[j].size(), knowWordSize, \
+                            hintPrint(verbSize, knowWordSize, \
                                       verboSize, spen[i].verbos[j], lHintNum);
+                            wordy[i].updateScore(i, numEntries, wordy, \
+                                                 'l', verbSize);
                         }
-                        else if ( (lHintNum >= verboSize) || (knowWordSize && (lHintNum - 1 == verboSize)) )
+                        else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;
                         break;
                     case 'a':
                         cout << "Answer: " << spen[i].verbos[j] << endl;
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = verboSize;
+                        wordy[i].updateScore(i, numEntries, wordy, 'a');
                         break;
                     case 'n':
                         if (knowWordSize) // Hmm, is this necessary?
@@ -192,10 +199,11 @@ int main(int argc, char **argv)
                         else
                         {
                             knowWordSize = true;
-                            hintPrint(spen[i].verbs[j].size(), knowWordSize, verboSize, \
+                            hintPrint(verbSize, knowWordSize, verboSize, \
                                       spen[i].verbos[j], lHintNum);                            
                         }
                         if (verbose) cout << "Number of letters: " << verboSize << endl;
+                        wordy[i].updateScore(i, numEntries, wordy, 'n');
                         break;
                     case 'd':
                         disableHintMsg = !disableHintMsg;
@@ -206,6 +214,9 @@ int main(int argc, char **argv)
                     case 's':
                         cout << "This will allow you to skip a word eventually." << endl;
                         break;
+                    case 'h':
+                        hintOptions(verbSize);
+                        break;
                     default:
                         cout << "'" << temp << "' is not a hint option." << endl;
                         hintOptions(4);
@@ -213,13 +224,13 @@ int main(int argc, char **argv)
                 }
             }
             isWrong = compareAll(spen[i].verbos, temp);
-
-            if ( !cin.eof() )
+            
+            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here if hint is given
             {
                 if ( verbose ) cout << "You are " << \
-                ((isWrong)?("wrong, try again!"):("right!")) << endl;
-
-                // Update score
+                    ((isWrong)?("wrong, try again!"):("right!")) << endl;
+                
+                    // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
                                               spen[i].verbos[j].size()), \
@@ -230,17 +241,17 @@ int main(int argc, char **argv)
             {
                 if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
                 {
-                    hintOptions(spen[i].verbs[j].size());
+                    hintOptions(verbSize);
                     cout << endl;
                     cout << spen[i].verbs[j] << ": ";
                 }
                 else
-                    wordSpaces(spen[i].verbs[j].size());
+                    wordSpaces(verbSize);
             }
             else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems oddly out of place
             numOfTries++;
         }
-
+        
         if ( !cin.eof() )
         {
             if ( verbose )
@@ -249,7 +260,7 @@ int main(int argc, char **argv)
                 cout << "You have " << 100.0 * wordy[i].percentRight << "% on \"" << spen[i].verbos[0] << "\"." << endl;
                 cout << "With an average time of " << wordy[i].avgTime << "." << endl;
             }
-
+            
             i = weightedIndex(wordy,numEntries);
             if (debug) cout << "first index = " << i << endl;
             j = randIndex(spen[i].verbs.size()); // This can continue to rely on the randIndex() function?
@@ -263,14 +274,14 @@ int main(int argc, char **argv)
     cout << endl;
     cout << endl;
     cout << setw(lengthLongestWord+11) << "Summary" << endl;
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < lengthLongestWord + 16; i++)
         cout << "=-";
     cout << endl;
     cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
     cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
     cout.setf(ios::fixed);
     cout.precision(2);
-
+    
     for (int i = 0; i < numEntries; i++)
     {
         cout << setw(lengthLongestWord) << spen[i].verbos[0];
@@ -282,9 +293,9 @@ int main(int argc, char **argv)
         }
         else
             cout << setw(6) << "   -" << setw(12) << "   -";
-
+        
         cout << setw(15) << wordy[i].probability*100 << "%";
-
+        
         if ( verbose )
         {
             cout << setw(15) << spen[i].verbs.size() << " word" << ((spen[i].verbs.size()>1)?"s:":":");
@@ -293,6 +304,6 @@ int main(int argc, char **argv)
         }
         cout << endl;
     }
-
+    
     return 0;
 }
