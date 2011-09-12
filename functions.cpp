@@ -24,14 +24,36 @@ bool compareAll(vector<string> & ws, string test)
     return isWrong;
 }
 
-void hintOptions(void)
+void hintOptions(int length = 4)
 {
     cout << '\a';
-    cout << "\tWant a letter?  Type '-letter' or '-l'." << endl;
-    cout << "\tWant the answer?  Type '-answer' or '-a'." << endl;
-    cout << "\tWant the number of letters?  Type '-number' or '-n'" << endl;
-}    
+    wordSpaces(length);
+    cout << "Want a letter?  Type '-letter' or '-l'." << endl;
+    wordSpaces(length);
+    cout << "Want the answer?  Type '-answer' or '-a'." << endl;
+    wordSpaces(length);
+    cout << "Want the number of letters?  Type '-number' or '-n'" << endl;
+    wordSpaces(length);
+    cout << "Want to turn these messages off?  Type '-disable' or '-d'" << endl;
+}
 
+void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
+               string hintWord, int lHintNum)
+{
+    wordSpaces(numSpaces);
+    for (int jj = 0; jj < verboSize; jj++)
+    {
+        if (jj < lHintNum && lHintNum > 0)
+            cout << hintWord[jj];
+        else if (knowWordSize)
+            cout << '-';
+        else
+            cout << ' ';
+    }
+    cout << endl;
+}
+               
+               
 void input(vector<wordSet> & ws, char * inFilename)
 {
     // Do some error-checking to make sure there are the proper number of
@@ -40,7 +62,7 @@ void input(vector<wordSet> & ws, char * inFilename)
     int pos, posWidth = 1;
     ifstream infile(inFilename,ifstream::in);
     struct wordSet tempset;
-    long unsigned int j;        // Stores index for repeat entry, given by isnew()
+    long unsigned int j;    // Stores index for repeat entry, given by isnew()
 
     if (!infile.is_open())
     {
