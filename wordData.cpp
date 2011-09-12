@@ -67,7 +67,7 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
         cout << "beta = " << beta << ", alpha = " << alpha << endl;
     }
 
-        // Update probability of this word coming up again
+    // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if ( ii != pos )
@@ -76,10 +76,10 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
             wordSet[ii].probability *= alpha;
     }
 
-        // Update number of individual queries of word
+    // Update number of individual queries of word
     numAsked++;
 
-        // Update scoring percentage
+    // Update scoring percentage
     if (numAsked == 1)
         (wrong)?(percentRight = 0.0):(percentRight = 1.0);
     else if (!wrong && numAsked > 1)
@@ -87,8 +87,51 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
     else if (wrong && numAsked > 1)
         percentRight = reweight(numAsked,percentRight,0.0);
 
-        // Update timing information
+    // Update timing information
     avgTime = reweight(numAsked,avgTime,timeDiff);
+}
+
+void wordData::updateScore(int pos, int numOfEntries, wordData * wordSet, \
+                           char typeOfHint, int sizeOfWord)
+{
+    double weight = 0.0;
+    cout << "typeOfHint = " << typeOfHint << "." << endl;
+    cout << "wordData::updateScore not yet effected." << endl;
+    cout << "Overloaded function to use different method of updateScore if a hint is given" << endl;
+    switch (typeOfHint)
+    {
+        case 'l':
+            weight = 0.2;
+            break;
+        case 'a':
+            weight = 0.5;
+            break;
+        case 'n':
+            weight = 0.1;
+            break;
+        case 's':
+            weight = 0.3;
+            break;
+        default:
+            weight = 0.0; // no effect
+            break;
+    }
+
+    double beta = 1.0 - weight * wordSet[pos].probability;
+    double alpha = beta + weight;
+
+    // Update probability of this word coming up again
+    for (int ii = 0; ii < numOfEntries; ii++)
+    {
+        if ( ii != pos )
+            wordSet[ii].probability *= beta;
+        else
+            wordSet[ii].probability *= alpha;
+    }
+
+    // Update number of individual queries of word
+    numAsked++;
+
 }
 
 double wordData::reweight(int num, double old, double newish)

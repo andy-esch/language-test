@@ -19,6 +19,7 @@ public:
     unsigned int rank;
     double strength(bool, double);
     void updateScore(int, bool, double, int, wordData *);
+    void updateScore(int, int, wordData *, char, int=0);
 private:
     double reweight(int, double, double);
 };
