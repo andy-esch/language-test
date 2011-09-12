@@ -23,31 +23,31 @@ double wordData::strength(bool wrong, double diff)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
         if (diff < 2.0)
-            score = 0.03;
+            score = 0.09;
         else if (diff < 4.0)
-            score = 0.06;
-        else if (diff < 8.0)
             score = 0.12;
+        else if (diff < 8.0)
+            score = 0.15;
         else if (diff < 16.0)
-            score = 0.18;
+            score = 0.21;
         else
             score = 0.24;
     }
-    else
+    else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
         if (diff < 1.0)
             score = 0.24;
         else if (diff < 2.0)
-            score = 0.18;
-        else if (diff < 4.0)
             score = 0.12;
-        else if (diff < 8.0)
+        else if (diff < 4.0)
             score = 0.06;
-        else if (diff < 16.0)
-            score = 0.03;
-        else
+        else if (diff < 8.0)
             score = 0.015;
+        else if (diff < 16.0)
+            score = 0.001;
+        else
+            score = 0.0;
     }
 
     return score;
@@ -91,13 +91,11 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
     avgTime = reweight(numAsked,avgTime,timeDiff);
 }
 
-void wordData::updateScore(int pos, int numOfEntries, wordData * wordSet, \
+void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, int sizeOfWord)
 {
     double weight = 0.0;
-    cout << "typeOfHint = " << typeOfHint << "." << endl;
-    cout << "wordData::updateScore not yet effected." << endl;
-    cout << "Overloaded function to use different method of updateScore if a hint is given" << endl;
+    if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
     switch (typeOfHint)
     {
         case 'l':
@@ -117,20 +115,20 @@ void wordData::updateScore(int pos, int numOfEntries, wordData * wordSet, \
             break;
     }
 
-    double beta = 1.0 - weight * wordSet[pos].probability;
+    double beta = 1.0 - weight * wordStats[pos].probability;
     double alpha = beta + weight;
 
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if ( ii != pos )
-            wordSet[ii].probability *= beta;
+            wordStats[ii].probability *= beta;
         else
-            wordSet[ii].probability *= alpha;
+            wordStats[ii].probability *= alpha;
     }
 
     // Update number of individual queries of word
-    numAsked++;
+//    numAsked++;
 
 }
 
