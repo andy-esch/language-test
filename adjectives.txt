@@ -8,7 +8,7 @@ pronto	quick
 tarde	late
 politico	political
 logico	logical
-necesario	nessary
+necesario	necessary
 infirmo	sick
 bien	good
 vestido	dressed
