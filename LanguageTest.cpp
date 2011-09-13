@@ -5,27 +5,24 @@
  *        Takes in a two-column file, stores it, and then quizzes and then quizzes
  *         the user on the translations.
  *
- *        Future improvements:
- *            *x requiz badly scored words more frequently -- Implemented!
- *            * lets the user choose to be quizzed in english (answer in spanish),
- *                in spanish (answer in english), or randomly (answering in the
- *                opposite language to which the question was asked)
- *                * What is a way to choose what to be quizzed over? Such as just
- *              switching all verbs instances with verbos?
- *            * Support for regular expressions?
- *            * International characters (accents, ñ, oumlaut, etc.)
- *            * More even timing mechanism that takes word length into account
- *            * Punctuation for certain options (. for pause time, : for clue,
- *                $ for skip, etc.) or just the words (hint, pause, etc.) with a
- *                dash in front?
- *          * Name memory!  Something like having an 'account'.  It allows the
- *              the program to load previous performance so you don't always
- *              have to start anew.
+ *  Future improvements:
+ *      * requiz badly scored words more frequently -- Implemented!
+ *      * lets the user choose to be quizzed in english (answer in spanish), in
+ *        spanish (answer in english), or randomly (answering in the opposite
+ *        language to which the question was asked)
+ *      * What is a way to choose what to be quizzed over? Such as just
+ *        switching all verbs instances with verbos?
+ *      * Support for regular expressions?
+ *      * International characters (accents, ñ, oumlaut, etc.)
+ *      * More even timing mechanism that takes word length into account
+ *      * Name memory!  Something like having an 'account'.  It allows the
+ *        the program to load previous performance so you don't always
+ *        have to start anew.
  *
- *  Make it so that while it is waiting for input or something like that
- *    an OpenMP section or something like that does the 'smart picker'
- *    algorithm in the background to reweight the probability of being
- *    picked as the next quiz item.
+ *  Make it so that while it is waiting for input or something like that an 
+ *  OpenMP section or something like that does the 'smart picker' algorithm in
+ *  the background to reweight the probability of being picked as the next quiz
+ *  item.
  *
  *
  *  To do:
@@ -46,6 +43,11 @@
  *          new features are added other than the flash card one currently)
  *      -- Verb conjugations!
  *      -- Add multiple lists as a combined vocab
+ *      -- Keep adding words as time goes by if test-taker is doing well enough
+ *          I.e., start with as smaller set, keep increasing it's size.  Perhaps
+ *          there could be an '-s' option to say initial and final test size
+ *      -- Command line option to find available dictionaries... Something
+ *          like 'ls *.txt'
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -65,8 +67,9 @@
 #include "functions.h"
 #include "wordSet.h"
 
-using std::cout;
+using std::cerr;
 using std::cin;
+using std::cout;
 using std::endl;
 using std::ios;
 using std::setw;
@@ -88,14 +91,16 @@ int main(int argc, char **argv)
     bool controlling, verbose = true, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
-    
-        //  Below: Rough idea on how to implement choosing whether to be quizzed on one
-        //  language or the other, but the data structure prevents easy access since
-        //  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
-        //  strings.  This would be a lot easier to implement if the synonyms weren't
-        //  a part of the design.
-        //  vector<wordSet> * answer = &spen;
-        //  vector<wordSet> * question = &spen;
+    extern int optopt; // Command line processing variable
+
+    //  Below: Rough idea on how to implement choosing whether to be quizzed on one
+    //  language or the other, but the data structure prevents easy access since
+    //  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
+    //  strings.  This would be a lot easier to implement if the synonyms weren't
+    //  a part of the design.
+
+//    vector< vector<string> > * answer = &(spen.verbs);
+//    vector< vector<string> > * question = &spen.verbos;
 
     /*****     Take optional input from command line     *****/
     while ( (c = getopt(argc, argv, ":i:vhd")) != -1 )
@@ -104,7 +109,17 @@ int main(int argc, char **argv)
         {
             case 'i': // Input non-default dictionary
                 strcpy(inFile,argv[optind-1]);
+                cout << inFile << endl;
                 break;
+            case ':':
+                if (optopt == 'i')
+                {
+                    cerr << "Error: Option '-i' must have more than one argument." << endl;
+                    cout << "Type a new file name to continue or 'exit' to exit program." << endl;
+                    cin >> inFile;
+                    if ( !strcmp(inFile,"exit") ) // if are equal, exit program
+                        exit(0);
+                }
             case 'v': // Verbose output
                 verbose = false;
                 break;
@@ -114,8 +129,13 @@ int main(int argc, char **argv)
             case 'd': // Show debug output info
                 debug = true;
                 break;
+            case '?':
+                std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
+                break;
             default:
-                cout << "Option '-" << static_cast<char> (c) << "' is not valid." << endl;
+                std::cerr << "Invalid commandline options." << endl;
+                printHelp(argv[0]);
+                exit(0);
                 break;
         }
     }
@@ -130,7 +150,7 @@ int main(int argc, char **argv)
     {
         wordy[i].numAsked = 0;
         wordy[i].percentRight = 0.0;
-        
+
         // Find longest Spanish word for column spacing
         if (spen[i].verbos[0].size() > lengthLongestWord)
             lengthLongestWord = spen[i].verbos[0].size();
@@ -200,7 +220,7 @@ int main(int argc, char **argv)
                         {
                             knowWordSize = true;
                             hintPrint(verbSize, knowWordSize, verboSize, \
-                                      spen[i].verbos[j], lHintNum);                            
+                                      spen[i].verbos[j], lHintNum);
                         }
                         if (verbose) cout << "Number of letters: " << verboSize << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
@@ -224,19 +244,19 @@ int main(int argc, char **argv)
                 }
             }
             isWrong = compareAll(spen[i].verbos, temp);
-            
+
             if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here if hint is given
             {
                 if ( verbose ) cout << "You are " << \
                     ((isWrong)?("wrong, try again!"):("right!")) << endl;
-                
+
                     // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
                                               spen[i].verbos[j].size()), \
                                      numEntries, wordy);
             }
-            
+
             if (isWrong)
             {
                 if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
@@ -251,7 +271,7 @@ int main(int argc, char **argv)
             else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems oddly out of place
             numOfTries++;
         }
-        
+
         if ( !cin.eof() )
         {
             if ( verbose )
@@ -260,7 +280,7 @@ int main(int argc, char **argv)
                 cout << "You have " << 100.0 * wordy[i].percentRight << "% on \"" << spen[i].verbos[0] << "\"." << endl;
                 cout << "With an average time of " << wordy[i].avgTime << "." << endl;
             }
-            
+
             i = weightedIndex(wordy,numEntries);
             if (debug) cout << "first index = " << i << endl;
             j = randIndex(spen[i].verbs.size()); // This can continue to rely on the randIndex() function?
@@ -269,7 +289,7 @@ int main(int argc, char **argv)
             lHintNum = 0;
         }
     }
-    
+
     /******      Summary of Results      ******/
     cout << endl;
     cout << endl;
@@ -281,7 +301,7 @@ int main(int argc, char **argv)
     cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
     cout.setf(ios::fixed);
     cout.precision(2);
-    
+
     for (int i = 0; i < numEntries; i++)
     {
         cout << setw(lengthLongestWord) << spen[i].verbos[0];
@@ -293,9 +313,9 @@ int main(int argc, char **argv)
         }
         else
             cout << setw(6) << "   -" << setw(12) << "   -";
-        
+
         cout << setw(15) << wordy[i].probability*100 << "%";
-        
+
         if ( verbose )
         {
             cout << setw(15) << spen[i].verbs.size() << " word" << ((spen[i].verbs.size()>1)?"s:":":");
@@ -304,6 +324,6 @@ int main(int argc, char **argv)
         }
         cout << endl;
     }
-    
+
     return 0;
 }
