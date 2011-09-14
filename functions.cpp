@@ -92,15 +92,15 @@ void input(vector<wordSet> & ws, char * inFilename)
             continue;
         else if (temp1.find(",") != -1)        // Is the delimiter ","?
             pos = temp1.find(",");
-        else if (temp1.find("  ") != -1)    // Is the delimiter "  "?
-        {
-            pos = temp1.find("  ");
-            posWidth = 2;
-        }
+//        else if (temp1.find("  ") != -1)    // Is the delimiter "  "?
+//        {
+//            pos = temp1.find("  ");
+//            posWidth = 2;
+//        }
         temp2 = temp1;
         temp1.erase(pos,temp1.size());
         temp2.erase(0,pos+posWidth);
-        
+
         if ( isnew(ws,temp1,j) )
         {
             tempset.verbos.push_back(temp1);
