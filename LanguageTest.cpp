@@ -216,7 +216,7 @@ int main(int argc, char **argv)
                                 cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numEntries, wordy, \
-                                                 'l', verbSize);
+                                                 'l', incr);
                         }
                         else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;

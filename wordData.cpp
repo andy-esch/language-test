@@ -92,14 +92,14 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
 }
 
 void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
-                           char typeOfHint, int sizeOfWord)
+                           char typeOfHint, unsigned int numLetReq)
 {
     double weight = 0.0;
     if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
     switch (typeOfHint)
     {
         case 'l':   // get a letter
-            weight = 0.2;
+            weight = 0.2 * static_cast<double> (numLetReq);
             break;
         case 'a':   // get answer
             weight = 0.5;
