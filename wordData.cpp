@@ -98,17 +98,17 @@ void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
     if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
     switch (typeOfHint)
     {
-        case 'l':
+        case 'l':   // get a letter
             weight = 0.2;
             break;
-        case 'a':
+        case 'a':   // get answer
             weight = 0.5;
             break;
-        case 'n':
+        case 'n':   // get number of letters
             weight = 0.1;
             break;
-        case 's':
-            weight = 0.3;
+        case 's':   // skip a word
+            weight = - 1.0 / (1 - wordStats[pos].probability);
             break;
         default:
             weight = 0.0; // no effect

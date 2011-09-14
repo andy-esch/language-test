@@ -249,7 +249,8 @@ int main(int argc, char **argv)
                         cout << (!disableHintMsg?"enable.":"disable.") << endl;
                         break;
                     case 's':
-                        cout << "This will allow you to skip a word eventually." << endl;
+                        if (verbose) cout << "You skipped a word." << endl;
+                        wordy[i].updateScore(i, numEntries, wordy, 's');
                         break;
                     case 'h':
                         hintOptions(verbSize);
@@ -260,7 +261,10 @@ int main(int argc, char **argv)
                         break;
                 }
             }
-            isWrong = compareAll(spen[i].verbos, temp);
+            if (temp[1] == 's')
+                isWrong = 0;
+            else
+                isWrong = compareAll(spen[i].verbos, temp);
 
             if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here if hint is given
             {
