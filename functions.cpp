@@ -48,16 +48,21 @@ void hintOptions(int length = 4)
 void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
-    wordSpaces(numSpaces);
+    wordSpaces(numSpaces-3);
+    cout << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
-        if (jj < lHintNum && lHintNum > 0)
+        if (hintWord[jj] == ' ')
+            cout << ' ';
+        else if (jj < lHintNum)
             cout << hintWord[jj];
         else if (knowWordSize)
             cout << '-';
         else
             cout << ' ';
     }
+    if (lHintNum >= verboSize)
+        cout << " <-";
     cout << endl;
 }
                

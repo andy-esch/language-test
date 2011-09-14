@@ -89,7 +89,8 @@ int main(int argc, char **argv)
     string temp;
     char inFile[] = "verbs.txt";
     vector<wordSet> spen;
-    int numEntries = 0, lengthLongestWord = 0, c, lHintNum = 0;
+    unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
+    int c;
     bool controlling, verbose = false, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
@@ -193,26 +194,35 @@ int main(int argc, char **argv)
                     case 'l':
                         if ( lHintNum < verboSize )
                         {
-                            int incr = 1; // Should be moved elsewhere?
+                            unsigned int incr = 1; // Should be moved elsewhere?
                             if (temp[2] == '\0')
                                 incr = 1;
+                            else if (atoi(&temp[2]) < 10 && atoi(&temp[2]) > 0)
+                                incr = atoi(&temp[2]);
                             else
-                                incr = atoi(&temp[2]) % 10;
+                                incr = 1;
 
                             lHintNum+=incr;
+                            for (int ii = lHintNum-incr; ii < lHintNum; ii++)
+                            { // If white space between current position and incremented position, increment hint
+                                if (spen[i].verbos[j][ii] == ' ')
+                                    lHintNum++;
+                            }
+                            
                             if (verbose)
                             {
                                 cout << "The ";
                                 num2ordinal(lHintNum);
                                 cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
-                            hintPrint(verbSize, knowWordSize, \
-                                      verboSize, spen[i].verbos[j], lHintNum);
                             wordy[i].updateScore(i, numEntries, wordy, \
                                                  'l', verbSize);
                         }
                         else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;
+
+                        hintPrint(verbSize, knowWordSize, \
+                                  verboSize, spen[i].verbos[j], lHintNum);
                         break;
                     case 'a':
                         cout << "Answer: " << spen[i].verbos[j] << endl;
