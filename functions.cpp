@@ -199,6 +199,7 @@ void printHelp(char * prog)
     cout << "options:" << endl;
     cout << "    -i <string>    input file name" << endl;
     cout << "    -v             turn off verbose output" << endl;
+    cout << "    -l             list available dictionaries" << endl;
     cout << "    -h             print out this help menu" << endl;
     cout << "    -d             print debugging information to troubleshoot" << endl;
     cout << endl;
