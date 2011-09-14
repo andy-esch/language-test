@@ -3,8 +3,8 @@
 # Configured for my computer -- we should learn a more general way to make makefiles
 CXX = g++-mp-4.4
 
-OBJECTS = functions.o wordData.o
-HEADERS = functions.h wordData.h wordSet.h
+OBJECTS = functions.o wordData.o listDicts.o
+HEADERS = functions.h wordData.h wordSet.h listDicts.h
 # ****************************************************
 
 ltest: LanguageTest.o $(OBJECTS)
