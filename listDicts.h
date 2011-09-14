@@ -7,6 +7,6 @@
  *
  */
 
-int getdir (string, vector<string> &);
+int getTxtFiles(string, vector<string> &);
 //void listDicts(char[]);
-void listDicts(void);
+string listDicts(void);

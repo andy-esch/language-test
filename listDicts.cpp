@@ -1,9 +1,17 @@
 /*
  *  readfiles.cpp
  *  
- *  Description:
+ *  Description: A function that prints out the available dictionaries.  It is
+ *               similar to the ls function in *nix operating systems.
  *
- *
+ *  Extension:
+ *      -- By pressing the dictionary number, the user can get a description of
+ *          the dictionary or preview some of the words.
+ *      -- by passing an optional argument to the command line (e.g., -l nouns),
+ *          the user can specify the type of dictionary he/she is looking for.
+ *      -- By pressing the dictionary number, the user can pick that dictionary
+ *          and use it in the program -- easily achieved by using a return type
+ *          that is just a string or char *.
  *  Created by Peter Eschbacher on 9/13/11.
  *
  */
@@ -18,13 +26,15 @@
 
 using std::string;
 using std::vector;
+using std::cin;
 using std::cout;
 using std::endl;
 
-int getdir (string dir, vector<string> &files)
+int getTxtFiles(string dir, vector<string> &files)
 {
     DIR *dp;
     struct dirent *dirp;
+    string temp;
     if ( (dp  = opendir(dir.c_str())) == NULL )
     {
         cout << "Error(" << errno << ") opening " << dir << endl;
@@ -33,7 +43,12 @@ int getdir (string dir, vector<string> &files)
 
     while ((dirp = readdir(dp)) != NULL)
     {
-        files.push_back(string(dirp->d_name));
+        temp = string(dirp->d_name);
+        if ( temp.size() > 4 )
+        {
+            if ( !temp.compare(temp.size() - 3, 3, "txt") )
+                files.push_back(temp);
+        }
     }
 
     closedir(dp);
@@ -42,25 +57,27 @@ int getdir (string dir, vector<string> &files)
 }
 
 //void listDicts(char dictType[])
-void listDicts(void)
-{
+string listDicts(void)
+{ 
     string dir = string("."); // choose current directory
     vector<string> files = vector<string>();
-    int numOfDicts = 1;
-    getdir(dir,files);
-    
+    int numOfDicts = 1, dictPick;
+    getTxtFiles(dir,files);
+
     cout << endl;
     cout << "The following dictionaries are available: " << endl;
     cout << endl;
     for (unsigned int i = 0; i < files.size(); i++)
     {
         int strSize = files[i].size();
-        if (strSize > 4)
-            if ( !files[i].compare(strSize-3,3,"txt") )
-            {
-                cout << '\t' << numOfDicts << ": " << files[i] << endl;
-                numOfDicts++;
-            }
+        cout << '\t' << numOfDicts << ": " << files[i] << endl;
+        numOfDicts++;
     }
     cout << endl;
+    cout << "Select a dictionary for more information." << endl;
+    cin >> dictPick;
+    cin.ignore(2,'\n');
+    cout << "You picked '" << files[dictPick - 1] << "'." << endl;
+    
+    return files[dictPick - 1];
 }
