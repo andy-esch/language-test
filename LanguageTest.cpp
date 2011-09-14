@@ -48,6 +48,7 @@
  *          there could be an '-s' option to say initial and final test size
  *      -- Command line option to find available dictionaries... Something
  *          like 'ls *.txt'
+ *      -- An antonym quiz
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -66,6 +67,7 @@
 #include "wordData.h"
 #include "functions.h"
 #include "wordSet.h"
+#include "listDicts.h"
 
 using std::cerr;
 using std::cin;
@@ -88,7 +90,7 @@ int main(int argc, char **argv)
     char inFile[] = "verbs.txt";
     vector<wordSet> spen;
     int numEntries = 0, lengthLongestWord = 0, c, lHintNum = 0;
-    bool controlling, verbose = true, isWrong = true;
+    bool controlling, verbose = false, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
     extern int optopt; // Command line processing variable
@@ -103,13 +105,12 @@ int main(int argc, char **argv)
 //    vector< vector<string> > * question = &spen.verbos;
 
     /*****     Take optional input from command line     *****/
-    while ( (c = getopt(argc, argv, ":i:vhd")) != -1 )
+    while ( (c = getopt(argc, argv, ":i:vhdl")) != -1 )
     {
         switch (c)
         {
             case 'i': // Input non-default dictionary
                 strcpy(inFile,argv[optind-1]);
-                cout << inFile << endl;
                 break;
             case ':':
                 if (optopt == 'i')
@@ -121,13 +122,17 @@ int main(int argc, char **argv)
                         exit(0);
                 }
             case 'v': // Verbose output
-                verbose = false;
+                verbose = true;
                 break;
             case 'h': // Print usage info then exit
                 printHelp(argv[0]);
                 exit(0);
             case 'd': // Show debug output info
                 debug = true;
+                break;
+            case 'l': // List available dictionaries and exit
+                strcpy(inFile,listDicts().c_str()); // Eventually add it so it'll show a specific type of dictionary
+                cout << "inFile = '" << inFile << "'" << endl;
                 break;
             case '?':
                 std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
@@ -140,6 +145,8 @@ int main(int argc, char **argv)
         }
     }
 
+    if ( cin.fail() )
+        cout << "cin failed in LanguageTest.cpp" << endl;
     /*****      Input Dictionary     *****/
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     input(spen,&inFile[0]);
