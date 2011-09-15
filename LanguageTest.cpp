@@ -60,7 +60,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -68,13 +67,12 @@
 #include "functions.h"
 #include "wordSet.h"
 #include "listDicts.h"
+#include "testResults.h"
 
 using std::cerr;
 using std::cin;
 using std::cout;
 using std::endl;
-using std::ios;
-using std::setw;
 using std::string;
 using std::vector;
 
@@ -239,7 +237,8 @@ int main(int argc, char **argv)
                             hintPrint(verbSize, knowWordSize, verboSize, \
                                       spen[i].verbos[j], lHintNum);
                         }
-                        if (verbose) cout << "Number of letters: " << verboSize << endl;
+                        if (verbose)
+                            cout << "Number of letters: " << verboSize << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
                         break;
                     case 'd':
@@ -251,6 +250,7 @@ int main(int argc, char **argv)
                     case 's':
                         if (verbose) cout << "You skipped a word." << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 's');
+                        isWrong = false;
                         break;
                     case 'h':
                         hintOptions(verbSize);
@@ -261,17 +261,14 @@ int main(int argc, char **argv)
                         break;
                 }
             }
-            if (temp[1] == 's')
-                isWrong = 0;
-            else
+
+            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here
+            {                                       // if EOF or hint is given
                 isWrong = compareAll(spen[i].verbos, temp);
-
-            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here if hint is given
-            {
                 if ( verbose ) cout << "You are " << \
-                    ((isWrong)?("wrong, try again!"):("right!")) << endl;
+                    (isWrong?"wrong, try again!":"right!") << endl;
 
-                    // Update score
+                // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
                                               spen[i].verbos[j].size()), \
@@ -289,7 +286,7 @@ int main(int argc, char **argv)
                 else
                     wordSpaces(verbSize);
             }
-            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems oddly out of place
+            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems out of place
             numOfTries++;
         }
 
@@ -311,40 +308,11 @@ int main(int argc, char **argv)
         }
     }
 
-    /******      Summary of Results      ******/
-    cout << endl;
-    cout << endl;
-    cout << setw(lengthLongestWord+11) << "Summary" << endl;
-    for (int i = 0; i < lengthLongestWord + 16; i++)
-        cout << "=-";
-    cout << endl;
-    cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
-    cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
-    cout.setf(ios::fixed);
-    cout.precision(2);
+    /*****      Summary of Results      ******/
+    testResults(spen,wordy,numEntries,lengthLongestWord,verbose);
 
-    for (int i = 0; i < numEntries; i++)
-    {
-        cout << setw(lengthLongestWord) << spen[i].verbos[0];
-        if ( wordy[i].numAsked > 0 )
-        {
-            cout << setw(6) << static_cast<int> (100*wordy[i].percentRight) \
-            << "% (" << wordy[i].numAsked << ")";
-            cout << setw(9) << wordy[i].avgTime;
-        }
-        else
-            cout << setw(6) << "   -" << setw(12) << "   -";
-
-        cout << setw(15) << wordy[i].probability*100 << "%";
-
-        if ( verbose )
-        {
-            cout << setw(15) << spen[i].verbs.size() << " word" << ((spen[i].verbs.size()>1)?"s:":":");
-            for (int k = 0; k < spen[i].verbs.size(); k++)
-                cout << setw(15) << spen[i].verbs[k];
-        }
-        cout << endl;
-    }
-
+    /*****      Close program      *****/
+    delete[] wordy;
+    
     return 0;
 }
