@@ -28,6 +28,7 @@ double wordData::weight(bool wrong, double diff)
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
+         // Note: I negated this value here, instead of processing it again below.
       weight=-0.24*exp(-0.2*diff);  
     }
     return weight;
@@ -37,7 +38,7 @@ void wordData::updateScore(int position, bool wrong, double timeDiff, \
                            int numOfEntries, wordData * wordSet)
 {
     double weight = wordData::weight(wrong,timeDiff);
-    //    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::weight(wrong,timeDiff);
+
     if (debug) cout << "weight = " << weight << endl;
     double beta = 1.0 - weight * wordSet[position].probability;
     double alpha = beta + weight;
@@ -54,7 +55,7 @@ void wordData::updateScore(int position, bool wrong, double timeDiff, \
         if ( ii != position )
             wordSet[ii].probability *= beta;
         else
-            wordSet[ii].probability *= alpha;
+	  wordSet[ii].probability *= alpha;
     }
 
     // Update number of individual queries of word
