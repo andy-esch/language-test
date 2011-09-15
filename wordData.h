@@ -17,7 +17,7 @@ public:
     float avgTime;
     double probability;
     unsigned int rank;
-    double strength(bool, double);
+    double weight(bool, double);
     void updateScore(int, bool, double, int, wordData *);
     void updateScore(int, int, wordData *, char, unsigned int=0);
 private:

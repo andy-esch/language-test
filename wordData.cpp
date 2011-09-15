@@ -16,64 +16,42 @@ using std::endl;
 
 extern bool debug;
 
-double wordData::strength(bool wrong, double diff)
+double wordData::weight(bool wrong, double diff)
 {
-    double strength;
-        // Replace inner if-structures with an exponential function?
+    double weight;
+
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
-      strength=0.24*(1-exp(-0.2*diff));
-        // if (diff < 2.0)
-        //     score = 0.09;
-        // else if (diff < 4.0)
-        //     score = 0.12;
-        // else if (diff < 8.0)
-        //     score = 0.15;
-        // else if (diff < 16.0)
-        //     score = 0.21;
-        // else
-        //     score = 0.24;
+      weight=0.24*(1-exp(-0.2*diff));
     }
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
-      strength=0.24*exp(-0.2*diff));  
-
-      // if (diff < 1.0)
-        //     score = 0.24;
-        // else if (diff < 2.0)
-        //     score = 0.12;
-        // else if (diff < 4.0)
-        //     score = 0.06;
-        // else if (diff < 8.0)
-        //     score = 0.015;
-        // else if (diff < 16.0)
-        //     score = 0.001;
-        // else
-        //     score = 0.0;
+      weight=-0.24*exp(-0.2*diff);  
     }
-    return strength;
+    return weight;
 }
 
-void wordData::updateScore(int pos, bool wrong, double timeDiff, \
+void wordData::updateScore(int position, bool wrong, double timeDiff, \
                            int numOfEntries, wordData * wordSet)
 {
-    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::strength(wrong,timeDiff);
+    double weight = wordData::weight(wrong,timeDiff);
+    //    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::weight(wrong,timeDiff);
     if (debug) cout << "weight = " << weight << endl;
-    double beta = 1.0 - weight * wordSet[pos].probability;
+    double beta = 1.0 - weight * wordSet[position].probability;
     double alpha = beta + weight;
     if (debug)
     {
         cout << "Since the word is " << (wrong?"wrong":"right") << " its probability ";
-        cout << (wordSet[pos].probability > (alpha*wordSet[pos].probability)?"decreases":"increases") << endl;
+        cout << (wordSet[position].probability > (alpha*wordSet[position].probability)?"decreases":"increases") << endl;
         cout << "beta = " << beta << ", alpha = " << alpha << endl;
     }
 
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != pos )
+        if ( ii != position )
             wordSet[ii].probability *= beta;
         else
             wordSet[ii].probability *= alpha;
@@ -94,7 +72,7 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
     avgTime = reweight(numAsked,avgTime,timeDiff);
 }
 
-void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
+void wordData::updateScore(int position, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, unsigned int numLetReq)
 {
     double weight = 0.0;
@@ -111,20 +89,20 @@ void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
             weight = 0.1;
             break;
         case 's':   // skip a word
-            weight = - 1.0 / (1 - wordStats[pos].probability);
+            weight = - 1.0 / (1 - wordStats[position].probability);
             break;
         default:
             weight = 0.0; // no effect
             break;
     }
 
-    double beta = 1.0 - weight * wordStats[pos].probability;
+    double beta = 1.0 - weight * wordStats[position].probability;
     double alpha = beta + weight;
 
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != pos )
+        if ( ii != position )
             wordStats[ii].probability *= beta;
         else
             wordStats[ii].probability *= alpha;
