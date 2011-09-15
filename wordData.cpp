@@ -9,6 +9,7 @@
  */
 
 #include "wordData.h"
+#include <math.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -22,34 +23,36 @@ double wordData::strength(bool wrong, double diff)
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
-        if (diff < 2.0)
-            score = 0.09;
-        else if (diff < 4.0)
-            score = 0.12;
-        else if (diff < 8.0)
-            score = 0.15;
-        else if (diff < 16.0)
-            score = 0.21;
-        else
-            score = 0.24;
+      score=0.24*(1-exp(-0.2*diff));
+        // if (diff < 2.0)
+        //     score = 0.09;
+        // else if (diff < 4.0)
+        //     score = 0.12;
+        // else if (diff < 8.0)
+        //     score = 0.15;
+        // else if (diff < 16.0)
+        //     score = 0.21;
+        // else
+        //     score = 0.24;
     }
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
-        if (diff < 1.0)
-            score = 0.24;
-        else if (diff < 2.0)
-            score = 0.12;
-        else if (diff < 4.0)
-            score = 0.06;
-        else if (diff < 8.0)
-            score = 0.015;
-        else if (diff < 16.0)
-            score = 0.001;
-        else
-            score = 0.0;
-    }
+      score=0.24*exp(-0.2*diff));  
 
+      // if (diff < 1.0)
+        //     score = 0.24;
+        // else if (diff < 2.0)
+        //     score = 0.12;
+        // else if (diff < 4.0)
+        //     score = 0.06;
+        // else if (diff < 8.0)
+        //     score = 0.015;
+        // else if (diff < 16.0)
+        //     score = 0.001;
+        // else
+        //     score = 0.0;
+    }
     return score;
 }
 
