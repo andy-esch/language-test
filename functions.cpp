@@ -92,7 +92,7 @@ void input(vector<wordSet> & ws, char * inFilename)
     {
         getline(infile, temp1);
         posWidth = 1;
-        pos = temp1.find("\t");                // Default delimiter
+        pos = temp1.find("\t");         // Find delimiter (default is tab)
         if (pos == -1 || temp1 == "")        // Skip empty lines
             continue;
         else if (temp1.find(",") != -1)        // Is the delimiter ","?
@@ -102,11 +102,11 @@ void input(vector<wordSet> & ws, char * inFilename)
 //            pos = temp1.find("  ");
 //            posWidth = 2;
 //        }
-        temp2 = temp1;
-        temp1.erase(pos,temp1.size());
+        temp2 = temp1;                  // Make a copy of the line read in
+        temp1.erase(pos,temp1.size());  // 
         temp2.erase(0,pos+posWidth);
 
-        if ( isnew(ws,temp1,j) )
+        if ( isnew(ws,temp1,j) )    // Only finds synonyms in one language
         {
             tempset.verbos.push_back(temp1);
             tempset.verbs.push_back(temp2);
