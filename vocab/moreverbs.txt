@@ -1,0 +1,113 @@
+abrir	to open
+aceptar	to accept
+apagar	to turn off
+aprender	to learn
+bailar	to dance
+beber	to drink
+caber	to fit
+caerse	to fall
+cambiar	to change
+cancelar	to cancel
+cantar	to sing
+cerrar	to close, to shut
+comenzar	to start, to begin
+comer	to eat
+comprar	to buy
+comprender	to understand
+conducir	to drive
+conducir	to lead
+confirmar	to confirm
+contar	to count
+correr	to run
+cortar	to cut
+creer	to believe
+dañar, herir	to hurt
+dar	to donate
+dar	to give
+decir	to say
+decir	to tell
+decir	to tell
+deletrear	to spell
+despertar	to wake up
+dibujar	to draw
+dormir	to sleep
+encantar	to enchant
+encender	to turn on
+encontrar	to find
+enseñar	to teach
+entender	to understand
+enviar	to send
+escribir a máquina	to type
+escribir	to write
+escuchar	to listen
+esperar	to wait
+estar	to be
+estudiar	to study
+explicar	to explain
+firmar	to sign
+formar	to form
+fumar	to smoke
+gastar	to spend
+gustar	to please
+hablar	to speak
+hablar	to talk
+hacer	to do
+hacer	to make
+intentar	to try
+ir	to go
+jugar	to play
+leer	to read
+limpiar	to clean
+llegar	to arrive
+llenar	to fill
+llover	to rain
+mirar	to look
+mirar	to look at
+mirar	to watch
+nadar	to swim
+necesitar	to need
+oir	to hear
+olvidar	to forget
+organizar	to organize
+pagar	to pay
+peinar	to comb
+pensar	to think
+perder	to lose
+permitir, dejar	to allow
+pintar	to paint
+poder	to can, to be able
+ponerse de pie	to stand
+poner	to put
+preguntar	to ask
+preocuparse	to worry
+preparar	to prepare
+prestar	to borrow
+quejarse	to complain
+querer, desear	to want
+reparar	to fix
+responder	to reply
+romper	to break
+saber, conocer	to know
+saber	to know
+salir, marcharse	to leave
+salir	to exit
+salir	to leave
+saltar	to jump
+sentarse	to sit
+tener exito	to succeed
+tener	to have
+terminar	to finish
+tomar	to take
+toser	to cough
+trabajar	to work
+traducir	to translate
+traer	to bring
+usar	to wear
+utilizar, usar	to use
+vender to sell
+vender	to sell
+venir	to come
+ver	to see
+viajar	to travel
+vivir	to live
+volar	to fly
