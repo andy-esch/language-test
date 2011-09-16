@@ -3,4 +3,4 @@ lib/*
 #*#
 *.o
 ltest
-.DS_STORE
+.DS_S*
