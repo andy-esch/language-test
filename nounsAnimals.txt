@@ -1,0 +1,9 @@
+la abeja	bee
+burro	donkey
+caballo	horse
+cabra	goat
+la mosca	fly
+la vaca	cow
+la culebra	snake
+el pez	fish
+la ballena	whale

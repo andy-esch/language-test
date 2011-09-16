@@ -1,0 +1,3 @@
+el arbol	tree
+la hierba	grass
+el helecho	fern
