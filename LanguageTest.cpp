@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     vector<wordSet> spen;
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
-    bool controlling, verbose = false, isWrong = true;
+    bool verbose = false, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
     extern int optopt; // Command line processing variable
@@ -113,11 +113,11 @@ int main(int argc, char **argv)
                 break;
             case ':':
                 if (optopt == 'i')
-                {
-                    cerr << "Error: Option '-i' must have more than one argument." << endl;
+                {   // Hmm, this is slightly redundant with what input() does
+                    cerr << "Warning: Option '-i' must have more than one argument." << endl;
                     cout << "Type a new file name to continue or 'exit' to exit program." << endl;
                     cin >> inFile;
-                    if ( !strcmp(inFile,"exit") ) // if are equal, exit program
+                    if ( !strcmp(inFile,"exit") || !strcmp(inFile,"quit") || cin.eof()) // if 'exit', exit program
                         exit(0);
                 }
             case 'v': // Verbose output
@@ -129,9 +129,8 @@ int main(int argc, char **argv)
             case 'd': // Show debug output info
                 debug = true;
                 break;
-            case 'l': // List available dictionaries and exit
-                strcpy(inFile,listDicts().c_str()); // Eventually add it so it'll show a specific type of dictionary
-                cout << "inFile = '" << inFile << "'" << endl;
+            case 'l': // List available dictionaries
+                strcpy(inFile,listDicts().c_str());
                 break;
             case '?':
                 std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
@@ -144,14 +143,11 @@ int main(int argc, char **argv)
         }
     }
 
-    if ( cin.fail() )
-        cout << "cin failed in LanguageTest.cpp" << endl;
     /*****      Input Dictionary     *****/
-    cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     input(spen,&inFile[0]);
     numEntries = spen.size();
     wordData * wordy = new wordData[numEntries];
-    // Populate wordData arrays
+    // Populate wordData arrays -- turn this into a class function somehow?
     for (int i = 0; i < numEntries; i++)
     {
         wordy[i].numAsked = 0;
@@ -245,7 +241,7 @@ int main(int argc, char **argv)
                         disableHintMsg = !disableHintMsg;
                         cout << (disableHintMsg?"Disabled":"Enabled");
                         cout << " hint messages. Pass '-d' again to ";
-                        cout << (!disableHintMsg?"enable.":"disable.") << endl;
+                        cout << (disableHintMsg?"enable.":"disable.") << endl;
                         break;
                     case 's':
                         if (verbose) cout << "You skipped a word." << endl;
