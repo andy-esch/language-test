@@ -60,7 +60,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
-#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -68,13 +67,12 @@
 #include "functions.h"
 #include "wordSet.h"
 #include "listDicts.h"
+#include "testResults.h"
 
 using std::cerr;
 using std::cin;
 using std::cout;
 using std::endl;
-using std::ios;
-using std::setw;
 using std::string;
 using std::vector;
 
@@ -87,11 +85,11 @@ int main(int argc, char **argv)
     srand(time(NULL));
     time_t timeStart, timeEnd;
     string temp;
-    char inFile[] = "verbs.txt";
+    char inFile[30];
     vector<wordSet> spen;
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
-    bool controlling, verbose = false, isWrong = true;
+    bool verbose = false, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
     extern int optopt; // Command line processing variable
@@ -115,11 +113,11 @@ int main(int argc, char **argv)
                 break;
             case ':':
                 if (optopt == 'i')
-                {
-                    cerr << "Error: Option '-i' must have more than one argument." << endl;
+                {   // Hmm, this is slightly redundant with what input() does
+                    cerr << "Warning: Option '-i' must have more than one argument." << endl;
                     cout << "Type a new file name to continue or 'exit' to exit program." << endl;
                     cin >> inFile;
-                    if ( !strcmp(inFile,"exit") ) // if are equal, exit program
+                    if ( !strcmp(inFile,"exit") || !strcmp(inFile,"quit") || cin.eof()) // if 'exit', exit program
                         exit(0);
                 }
             case 'v': // Verbose output
@@ -131,9 +129,8 @@ int main(int argc, char **argv)
             case 'd': // Show debug output info
                 debug = true;
                 break;
-            case 'l': // List available dictionaries and exit
-                strcpy(inFile,listDicts().c_str()); // Eventually add it so it'll show a specific type of dictionary
-                cout << "inFile = '" << inFile << "'" << endl;
+            case 'l': // List available dictionaries
+                strcpy(inFile,listDicts().c_str());
                 break;
             case '?':
                 std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
@@ -146,14 +143,11 @@ int main(int argc, char **argv)
         }
     }
 
-    if ( cin.fail() )
-        cout << "cin failed in LanguageTest.cpp" << endl;
     /*****      Input Dictionary     *****/
-    cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     input(spen,&inFile[0]);
     numEntries = spen.size();
     wordData * wordy = new wordData[numEntries];
-    // Populate wordData arrays
+    // Populate wordData arrays -- turn this into a class function somehow?
     for (int i = 0; i < numEntries; i++)
     {
         wordy[i].numAsked = 0;
@@ -239,18 +233,20 @@ int main(int argc, char **argv)
                             hintPrint(verbSize, knowWordSize, verboSize, \
                                       spen[i].verbos[j], lHintNum);
                         }
-                        if (verbose) cout << "Number of letters: " << verboSize << endl;
+                        if (verbose)
+                            cout << "Number of letters: " << verboSize << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
                         break;
                     case 'd':
                         disableHintMsg = !disableHintMsg;
                         cout << (disableHintMsg?"Disabled":"Enabled");
                         cout << " hint messages. Pass '-d' again to ";
-                        cout << (!disableHintMsg?"enable.":"disable.") << endl;
+                        cout << (disableHintMsg?"enable.":"disable.") << endl;
                         break;
                     case 's':
                         if (verbose) cout << "You skipped a word." << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 's');
+                        isWrong = false;
                         break;
                     case 'h':
                         hintOptions(verbSize);
@@ -261,17 +257,14 @@ int main(int argc, char **argv)
                         break;
                 }
             }
-            if (temp[1] == 's')
-                isWrong = 0;
-            else
+
+            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here
+            {                                       // if EOF or hint is given
                 isWrong = compareAll(spen[i].verbos, temp);
-
-            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here if hint is given
-            {
                 if ( verbose ) cout << "You are " << \
-                    ((isWrong)?("wrong, try again!"):("right!")) << endl;
+                    (isWrong?"wrong, try again!":"right!") << endl;
 
-                    // Update score
+                // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
                                               spen[i].verbos[j].size()), \
@@ -289,7 +282,7 @@ int main(int argc, char **argv)
                 else
                     wordSpaces(verbSize);
             }
-            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems oddly out of place
+            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems out of place
             numOfTries++;
         }
 
@@ -311,40 +304,11 @@ int main(int argc, char **argv)
         }
     }
 
-    /******      Summary of Results      ******/
-    cout << endl;
-    cout << endl;
-    cout << setw(lengthLongestWord+11) << "Summary" << endl;
-    for (int i = 0; i < lengthLongestWord + 16; i++)
-        cout << "=-";
-    cout << endl;
-    cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
-    cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
-    cout.setf(ios::fixed);
-    cout.precision(2);
+    /*****      Summary of Results      ******/
+    testResults(spen,wordy,numEntries,lengthLongestWord,verbose);
 
-    for (int i = 0; i < numEntries; i++)
-    {
-        cout << setw(lengthLongestWord) << spen[i].verbos[0];
-        if ( wordy[i].numAsked > 0 )
-        {
-            cout << setw(6) << static_cast<int> (100*wordy[i].percentRight) \
-            << "% (" << wordy[i].numAsked << ")";
-            cout << setw(9) << wordy[i].avgTime;
-        }
-        else
-            cout << setw(6) << "   -" << setw(12) << "   -";
-
-        cout << setw(15) << wordy[i].probability*100 << "%";
-
-        if ( verbose )
-        {
-            cout << setw(15) << spen[i].verbs.size() << " word" << ((spen[i].verbs.size()>1)?"s:":":");
-            for (int k = 0; k < spen[i].verbs.size(); k++)
-                cout << setw(15) << spen[i].verbs[k];
-        }
-        cout << endl;
-    }
-
+    /*****      Close program      *****/
+    delete[] wordy;
+    
     return 0;
 }
