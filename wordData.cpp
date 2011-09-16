@@ -19,39 +19,16 @@ extern bool debug;
 double wordData::weight(bool wrong, double diff)
 {
     double weight;
-        // Replace inner if-structures with an exponential function?
+
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
       weight = 0.24 * (1 - exp(-0.2 * diff));
-        // if (diff < 2.0)
-        //     score = 0.09;
-        // else if (diff < 4.0)
-        //     score = 0.12;
-        // else if (diff < 8.0)
-        //     score = 0.15;
-        // else if (diff < 16.0)
-        //     score = 0.21;
-        // else
-        //     score = 0.24;
     }
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
-
       weight = -0.24 * exp(-0.2 * diff);
-      // if (diff < 1.0)
-        //     score = 0.24;
-        // else if (diff < 2.0)
-        //     score = 0.12;
-        // else if (diff < 4.0)
-        //     score = 0.06;
-        // else if (diff < 8.0)
-        //     score = 0.015;
-        // else if (diff < 16.0)
-        //     score = 0.001;
-        // else
-        //     score = 0.0;
     }
     return weight;
 }
@@ -97,30 +74,36 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
 }
 
 void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
-                           char typeOfHint, unsigned int numLetReq)
+                           char typeOfHint, unsigned int numLetReqstd)
 { // This is the hints variant of this function
     double weight = 0.0;
     if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
+    double currProb = wordStats[index].probability;
     switch (typeOfHint)
-    {
+    {   // Need to find upper bound on weight...  I think it's:
+        //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
+        //  and we have a lot more freedom on the upper bound, even up to 1.0
+        //  safely since p <= 1.0 by definition
         case 'l':   // get a letter
-            weight = 0.2 * static_cast<double> (numLetReq);
+            weight = 0.3 * static_cast<double> (numLetReqstd);
+            if (weight > 1.0 / currProb)  // to ensure that probability constraints aren't broken
+                weight = 1.0 / currProb - 0.1;
             break;
         case 'a':   // get answer
             weight = 0.5;
             break;
         case 'n':   // get number of letters
-            weight = 0.1;
+            weight = 0.05;
             break;
-        case 's':   // skip a word
-            weight = - 1.0 / (1 - wordStats[index].probability);
+        case 's':   // skip a word (this weight sets probability to 0.0 and raises others)
+            weight = - 1.0 / (1 - currProb);
             break;
         default:
             weight = 0.0; // no effect
             break;
     }
 
-    double beta = 1.0 - weight * wordStats[index].probability;
+    double beta = 1.0 - weight * currProb;
     double alpha = beta + weight;
 
     // Update probability of this word coming up again
