@@ -1,7 +1,7 @@
 # *****************************************************
 # Parameters to control Makefile operation
 # Configured for my computer -- we should learn a more general way to make makefiles
-CXX = g++-mp-4.4
+CXX = g++ #-mp-4.4
 
 OBJECTS = functions.o wordData.o listDicts.o
 HEADERS = functions.h wordData.h wordSet.h listDicts.h
