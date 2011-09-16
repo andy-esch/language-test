@@ -67,27 +67,32 @@ void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
 }
                
                
-void input(vector<wordSet> & ws, char * inFilename)
+void input(vector<wordSet> & ws, char * inFile)
 {
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     int pos, posWidth = 1;
-    ifstream infile(inFilename,ifstream::in);
+    ifstream infile(inFile,ifstream::in);
     struct wordSet tempset;
     long unsigned int j;    // Stores index for repeat entry, given by isnew()
 
-    if (!infile.is_open())
+    while (!infile.is_open())
     {
-        cout << "File '" << inFilename << "' does not exist as specified." << endl;
-        cout << "Enter another filename (enter 0 to exit): ";
-        cin >> inFilename;
-        if (inFilename[0] == '0')
+        if (debug) cout << "in input()" << endl;
+        cout << "File '" << inFile << "' does not exist as specified." << endl;
+        cout << "Enter another filename (or 'exit' to exit): ";
+        cin >> inFile;
+        if (cin.eof() || !strcmp(inFile,"exit") || !strcmp(inFile,"'exit'"))
+        {
+            cout << endl;
             exit(0);
+        }
         else
-            infile.open(inFilename,ifstream::in);
+            infile.open(inFile,ifstream::in);
     }
 
+    cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     while ( !infile.eof() )
     {
         getline(infile, temp1);
@@ -145,7 +150,7 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
     return isNew;
 }
 
-void num2ordinal(int num)
+void num2ordinal(int num) // I want to get rid of this
 {   // Takes an integer, prints its ordinal
     if (num == 1)
         cout << "first";
