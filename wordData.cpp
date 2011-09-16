@@ -56,17 +56,17 @@ double wordData::weight(bool wrong, double diff)
     return weight;
 }
 
-void wordData::updateScore(int pos, bool wrong, double timeDiff, \
+void wordData::updateScore(int index, bool wrong, double timeDiff, \
                            int numOfEntries, wordData * wordSet)
 {
     double weight = ( wrong ? 1.0 : -1.0 ) * wordData::weight(wrong,timeDiff);
     if (debug) cout << "weight = " << weight << endl;
-    double beta = 1.0 - weight * wordSet[pos].probability;
+    double beta = 1.0 - weight * wordSet[index].probability;
     double alpha = beta + weight;
     if (debug)
     {
         cout << "Since the word is " << (wrong?"wrong":"right") << " its probability ";
-        cout << (wordSet[pos].probability > (alpha*wordSet[pos].probability)?"decreases":"increases") << endl;
+        cout << (wordSet[index].probability > (alpha*wordSet[index].probability)?"decreases":"increases") << endl;
         cout << "beta = " << beta << ", alpha = " << alpha << endl;
     }
 
@@ -75,7 +75,7 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != pos )
+        if ( ii != index )
             wordSet[ii].probability *= beta;
         else
             wordSet[ii].probability *= alpha;
@@ -96,7 +96,7 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
     avgTime = reweight(numAsked,avgTime,timeDiff);
 }
 
-void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
+void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, unsigned int numLetReq)
 { // This is the hints variant of this function
     double weight = 0.0;
@@ -113,20 +113,20 @@ void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
             weight = 0.1;
             break;
         case 's':   // skip a word
-            weight = - 1.0 / (1 - wordStats[pos].probability);
+            weight = - 1.0 / (1 - wordStats[index].probability);
             break;
         default:
             weight = 0.0; // no effect
             break;
     }
 
-    double beta = 1.0 - weight * wordStats[pos].probability;
+    double beta = 1.0 - weight * wordStats[index].probability;
     double alpha = beta + weight;
 
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != pos )
+        if ( ii != index )
             wordStats[ii].probability *= beta;
         else
             wordStats[ii].probability *= alpha;
