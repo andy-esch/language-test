@@ -18,6 +18,7 @@
 
 
 #include <sys/types.h>
+#include <cstdlib>
 #include <dirent.h>
 #include <errno.h>
 #include <vector>
@@ -59,7 +60,7 @@ int getTxtFiles(string dir, vector<string> &files)
 //void listDicts(char dictType[])
 string listDicts(void)
 { 
-    string dir = string("."); // choose current directory
+    string dir = string("./dictionary/"); // choose current directory
     vector<string> files = vector<string>();
     int numOfDicts = 1, dictPick;
     getTxtFiles(dir,files);
@@ -74,10 +75,12 @@ string listDicts(void)
         numOfDicts++;
     }
     cout << endl;
-    cout << "Select a dictionary for more information." << endl;
+    cout << "Select a dictionary for more information.  Type 0 to exit." << endl;
     cin >> dictPick;
-    cin.ignore(2,'\n');
-    cout << "You picked '" << files[dictPick - 1] << "'." << endl;
+    if ( cin.eof() || dictPick == 0 )
+        exit(0);
+    cin.clear();
+    cin.ignore(10,'\n');
     
     return files[dictPick - 1];
 }
