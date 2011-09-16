@@ -59,7 +59,7 @@ int getTxtFiles(string dir, vector<string> &files)
 //void listDicts(char dictType[])
 string listDicts(void)
 { 
-    string dir = string("."); // choose current directory
+    string dir = string("./vocab"); // choose current directory
     vector<string> files = vector<string>();
     int numOfDicts = 1, dictPick;
     getTxtFiles(dir,files);
