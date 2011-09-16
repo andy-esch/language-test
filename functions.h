@@ -8,19 +8,20 @@
  *
  */
 
+#ifndef _FUNCTIONS_H_
+#define _FUNCTIONS_H_
+
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <algorithm>
-#include <cmath>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <numeric>
 #include <string>
 #include <vector>
 
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
 #include "wordSet.h"
 #include "wordData.h"
 
