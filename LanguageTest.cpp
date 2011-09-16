@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     srand(time(NULL));
     time_t timeStart, timeEnd;
     string temp;
-    char inFile[] = "verbs.txt";
+    char inFile[30];
     vector<wordSet> spen;
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
