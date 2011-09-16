@@ -82,5 +82,5 @@ string listDicts(void)
     cin.clear();
     cin.ignore(10,'\n');
     
-    return files[dictPick - 1];
+    return dir + files[dictPick - 1];
 }
