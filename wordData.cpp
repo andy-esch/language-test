@@ -19,7 +19,7 @@ extern bool debug;
 double wordData::strength(bool wrong, double diff)
 {
     double score;
-        // Replace inner if-structures with an exponential function?
+
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
@@ -38,7 +38,7 @@ double wordData::strength(bool wrong, double diff)
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
-      score=0.24*exp(-0.2*diff));  
+      score=0.24*exp(-0.2*diff);  
 
       // if (diff < 1.0)
         //     score = 0.24;
