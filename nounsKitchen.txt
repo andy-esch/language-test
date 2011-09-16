@@ -1,23 +1,21 @@
-abeja	bee
 el aguacate	avocado
-burro	donkey
-arroz	rice
+el arroz	rice
 el tomate	tomato
 la pimienta	pepper
 el huevo	egg
 la fruta	fruit
 la manzana	apple
 la naranja	orange
-la platano	banana
+el platano	banana
 la zanahoria	carrot
 la patata	potato
-frijol	bean
+la alubia	bean
 la carne	beef
 el chorizo	salami
 el cangrejo	crab
 el maiz	corn
 el pepino	cucumber
-el galleta	cookie
+lata galleta	cookie
 el queso	cheese
 la cereza	cherry
 la coliflor	cauliflower
@@ -34,10 +32,10 @@ el pastel	pie
 el horno	oven
 la sopa	soup
 la esponja	sponge
-el agua	water
+la agua	water
 la cantimplora	water bottle
 la fresa	strawberry
-la cucharita	spoon
+la cuchara	spoon
 la sal	salt
 la olla	pot
 la nuez	nut
