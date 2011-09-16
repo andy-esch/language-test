@@ -67,6 +67,8 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
         cout << "beta = " << beta << ", alpha = " << alpha << endl;
     }
 
+        // Should probably turn below into a function to ensure that both 
+        // updateScore functions are using the same code
     // Update probability of this word coming up again
     for (int ii = 0; ii < numOfEntries; ii++)
     {
@@ -93,7 +95,7 @@ void wordData::updateScore(int pos, bool wrong, double timeDiff, \
 
 void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, unsigned int numLetReq)
-{
+{ // This is the hints variant of this function
     double weight = 0.0;
     if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
     switch (typeOfHint)
@@ -128,7 +130,7 @@ void wordData::updateScore(int pos, int numOfEntries, wordData * wordStats, \
     }
 
     // Update number of individual queries of word
-//    numAsked++;
+    //    numAsked++; // turned off for hints...
 
 }
 

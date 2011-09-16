@@ -17,10 +17,11 @@ public:
     float avgTime;
     double probability;
     unsigned int rank;
-    double strength(bool, double);
     void updateScore(int, bool, double, int, wordData *);
     void updateScore(int, int, wordData *, char, unsigned int=0);
 private:
     double reweight(int, double, double);
+    double strength(bool, double);
+        //    void updateProbs();  // Will update probabilities in both updateScore functions
 };
 #endif // _WORDDATA_H_
