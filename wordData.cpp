@@ -9,21 +9,21 @@
  */
 
 #include "wordData.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 using std::cout;
 using std::endl;
 
 extern bool debug;
 
-double wordData::strength(bool wrong, double diff)
+double wordData::weight(bool wrong, double diff)
 {
-    double score;
-
+    double weight;
+        // Replace inner if-structures with an exponential function?
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
-      score=0.24*(1-exp(-0.2*diff));
+      weight = 0.24 * (1 - exp(-0.2 * diff));
         // if (diff < 2.0)
         //     score = 0.09;
         // else if (diff < 4.0)
@@ -38,8 +38,8 @@ double wordData::strength(bool wrong, double diff)
     else // if correct
     {    // Probability decreases with response times for correct answers
          // Quick responses are proportional to larger probabilty differentials
-      score=0.24*exp(-0.2*diff);  
 
+      weight = -0.24 * exp(-0.2 * diff);
       // if (diff < 1.0)
         //     score = 0.24;
         // else if (diff < 2.0)
@@ -53,13 +53,13 @@ double wordData::strength(bool wrong, double diff)
         // else
         //     score = 0.0;
     }
-    return score;
+    return weight;
 }
 
 void wordData::updateScore(int pos, bool wrong, double timeDiff, \
                            int numOfEntries, wordData * wordSet)
 {
-    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::strength(wrong,timeDiff);
+    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::weight(wrong,timeDiff);
     if (debug) cout << "weight = " << weight << endl;
     double beta = 1.0 - weight * wordSet[pos].probability;
     double alpha = beta + weight;
