@@ -9,8 +9,8 @@ caerse	to fall
 cambiar	to change
 cancelar	to cancel
 cantar	to sing
-cerrar	to close, to shut
-comenzar	to start, to begin
+cerrar	to close
+comenzar	to begin
 comer	to eat
 comprar	to buy
 comprender	to understand
@@ -21,7 +21,7 @@ contar	to count
 correr	to run
 cortar	to cut
 creer	to believe
-dañar, herir	to hurt
+dañar	to hurt
 dar	to donate
 dar	to give
 decir	to say
@@ -73,9 +73,9 @@ pagar	to pay
 peinar	to comb
 pensar	to think
 perder	to lose
-permitir, dejar	to allow
+permitir	to allow
 pintar	to paint
-poder	to can, to be able
+poder	to be able
 ponerse de pie	to stand
 poner	to put
 preguntar	to ask
@@ -83,13 +83,13 @@ preocuparse	to worry
 preparar	to prepare
 prestar	to borrow
 quejarse	to complain
-querer, desear	to want
+querer	to want
 reparar	to fix
 responder	to reply
 romper	to break
-saber, conocer	to know
 saber	to know
-salir, marcharse	to leave
+saber	to know
+marcharse	to leave
 salir	to exit
 salir	to leave
 saltar	to jump
@@ -103,7 +103,7 @@ trabajar	to work
 traducir	to translate
 traer	to bring
 usar	to wear
-utilizar, usar	to use
+utilizar	to use
 vender to sell
 vender	to sell
 venir	to come
