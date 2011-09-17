@@ -1,55 +1,55 @@
-ambitious	ambicioso
-annoying	pesado
-argumentative	discutidor
-bad-tempered	malhumorado
-big-headed	creído, engreído
-bitchy	de mala leche, venenoso;
-brave	valiente
-cantankerous	 cascarrabias
-carefree	 despreocupado
-careless	descuidado, poco cuidadoso
-cautious	 prudente, cauteloso, cauto;
-charming	 encantador
-cheerful	 alegre, jovial;
-conceited	 presumido
-conservative	 conservador
-conventional	convencional
-cowardly	 cobarde
-crazy		 loco
-nuts		 chiflado
-cruel		 cruel
-dull		 soso
-boring		 aburrido
-flirtatious	coqueta
-friendly	amigable, simpático, agradable
-generous	 generoso
-hard-working	trabajador
-honest	honesto
-kind	amable
-laid-back	 tranquilo, relajado
-lazy	perezoso, vago
-loyal	 fiel
-mean	tacaño
-modest	modesto
-moody	de humor cambiante
-naive	 ingenuo, inocentón
-naughty (children)	 malo, travieso (niños)
-open-minded		 de actitud abierta, sin prejuicios
-narrow-minded		 de mentalidad cerrada, intolerante;
-pious	piadoso
-polite	cortés, educado
-proud	orgulloso
-reliable	fiable, confiable
-self-confident	seguro de sí mismo
-selfish	egoísta
-sensible	sensato, prudente
-sensitive	 sensible
-shy		 tímido, vergonzoso
-introverted	 introvertido
-strict	 estricto, severo, riguroso
-stubborn	terco, testarudo, tozudo
-sympathetic	comprensivo
-talkative   conversador, hablador
-trustworthy	 digno de confianza
-two-faced	 falso
-weird	raro, extraño
+ambicioso	ambitious
+pesado	annoying
+discutidor	argumentative
+malhumorado	bad-tempered
+creído, engreído	big-headed
+de mala leche, venenoso	bitchy
+valiente	brave
+cascarrabias	cantankerous
+despreocupado	carefree
+descuidado, poco cuidadoso	careless
+prudente, cauteloso, cauto	cautious
+encantador	charming
+alegre, jovial	cheerful
+presumido	conceited
+conservador	conservative
+convencional	conventional
+cobarde	cowardly
+loco	crazy
+chiflado	nuts
+cruel	cruel
+soso	dull
+aburrido	boring
+coqueta	flirtatious
+amigable, simpático, agradable	friendly
+generoso	generous
+trabajador	hard-working
+honesto	honest
+amable	kind
+tranquilo, relajado	laid-back
+perezoso, vago	lazy
+fiel	loyal
+tacaño	mean
+modesto	modest
+de humor cambiante	moody
+ingenuo, inocentón	naive
+malo, travieso	naughty
+de actitud abierta, sin prejuicios	open-minded
+de mentalidad cerrada, intolerante	narrow-minded
+piadoso	pious
+cortés, educado	polite
+orgulloso	proud
+fiable, confiable	reliable
+seguro de sí mismo	self-confident
+egoísta	selfish
+sensato, prudente	sensible
+sensible	sensitive
+tímido, vergonzoso	shy
+introvertido	introverted
+estricto, severo, riguroso	strict
+terco, testarudo, tozudo	stubborn
+comprensivo	sympathetic
+conversador, hablador	talkative
+digno de confianza	trustworthy
+falso	two-faced
+raro, extraño	weird
