@@ -279,9 +279,9 @@ int main(int argc, char **argv)
                     cout << spen[i].verbs[j] << ": ";
                 }
                 else
-		  cout << wordSpaces(verbSize);
+		  cout << whitespace(verbSize);
             }
-            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems out of place
+            else if (temp[1] == 'a' && temp[0] == '-') whitespace(6); // This seems out of place
             numOfTries++;
         }
 

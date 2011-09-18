@@ -29,20 +29,20 @@ bool compareAll(vector<string> & ws, string test)
 void hintOptions(int length = 4)
 {
   cout << '\a' << endl;
-  cout << wordSpaces(length) << "Want a letter?  Type '-l'." << endl;
-  cout << wordSpaces(length) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-  cout << wordSpaces(length) << "Want the answer?  Type '-a'." << endl;
-  cout << wordSpaces(length) << "Want the number of letters?  Type '-n'." << endl;
-  cout << wordSpaces(length) << "Want to skip this word?  Type '-s'." << endl;
-  cout << wordSpaces(length) << "Want help?  Type '-h'." << endl;
-  cout << wordSpaces(length) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-  cout << wordSpaces(length) << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  cout << whitespace(length) << "Want a letter?  Type '-l'." << endl;
+  cout << whitespace(length) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  cout << whitespace(length) << "Want the answer?  Type '-a'." << endl;
+  cout << whitespace(length) << "Want the number of letters?  Type '-n'." << endl;
+  cout << whitespace(length) << "Want to skip this word?  Type '-s'." << endl;
+  cout << whitespace(length) << "Want help?  Type '-h'." << endl;
+  cout << whitespace(length) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  cout << whitespace(length) << "Want to turn these messages off?  Type '-d' to disable." << endl;
 }
 
 void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
-  cout << wordSpaces(numSpaces-3) << "-> ";
+  cout << whitespace(numSpaces-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
@@ -215,10 +215,10 @@ int weightedIndex(wordData * data, int numEntries)
     return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
 }
 
-string wordSpaces(int wordLength)
+string whitespace(int length)
 {
-  string wordspaces;
-  for (int k = 0; k < wordLength + 2; k++)
-    wordspaces += " ";
-  return wordspaces;
+  string whitespace;
+  for (int k = 0; k < length + 2; k++)
+    whitespace += " ";
+  return whitespace;
 }
