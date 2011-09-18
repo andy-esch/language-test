@@ -161,9 +161,8 @@ int main(int argc, char **argv)
                             
                             if (verbose)
                             {
-                                cout << "The ";
-                                num2ordinal(lHintNum);
-                                cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
+			      cout << "The " << ordinal(lHintNum);
+			      cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numEntries, wordy, \
                                                  'l', incr);
@@ -240,9 +239,9 @@ int main(int argc, char **argv)
                     cout << spen[i].verbs[j] << ": ";
                 }
                 else
-                    wordSpaces(verbSize);
+		  cout << whitespace(verbSize);
             }
-            else if (temp[1] == 'a' && temp[0] == '-') wordSpaces(6); // This seems out of place
+            else if (temp[1] == 'a' && temp[0] == '-') whitespace(6); // This seems out of place
             numOfTries++;
         }
 

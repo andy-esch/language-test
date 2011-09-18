@@ -37,11 +37,11 @@ void hintOptions(int);
 void hintPrint(int, bool, int, string, int);
 void input(vector<wordSet> &, char *);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
-void num2ordinal(int num);
+string ordinal(int num);
 void populate(wordData *, const int);
 void printHelp(char *);
 int randIndex(int);
 double reaction(double, int);
 int weightedIndex(wordData *, int);
-void wordSpaces(int wordLength);
+string whitespace(int length);
 #endif

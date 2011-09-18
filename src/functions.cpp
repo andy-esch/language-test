@@ -8,6 +8,8 @@
  *
  */
 
+#include <sstream>
+#include <string>
 #include "functions.h"
 
 extern bool debug;
@@ -26,30 +28,21 @@ bool compareAll(vector<string> & ws, string test)
 
 void hintOptions(int length = 4)
 {
-    cout << '\a' << endl;
-    wordSpaces(length);
-    cout << "Want a letter?  Type '-l'." << endl;
-    wordSpaces(length);
-    cout << "Want more than one letter?  Type '-l#', where # = a number 1 - 9." << endl;
-    wordSpaces(length);
-    cout << "Want the answer?  Type '-a'." << endl;
-    wordSpaces(length);
-    cout << "Want the number of letters?  Type '-n'." << endl;
-    wordSpaces(length);
-    cout << "Want to skip this word?  Type '-s'." << endl;
-    wordSpaces(length);
-    cout << "Want help?  Type '-h'." << endl;
-    wordSpaces(length);
-    cout << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-    wordSpaces(length);
-    cout << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  cout << '\a' << endl;
+  cout << whitespace(length) << "Want a letter?  Type '-l'." << endl;
+  cout << whitespace(length) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  cout << whitespace(length) << "Want the answer?  Type '-a'." << endl;
+  cout << whitespace(length) << "Want the number of letters?  Type '-n'." << endl;
+  cout << whitespace(length) << "Want to skip this word?  Type '-s'." << endl;
+  cout << whitespace(length) << "Want help?  Type '-h'." << endl;
+  cout << whitespace(length) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  cout << whitespace(length) << "Want to turn these messages off?  Type '-d' to disable." << endl;
 }
 
 void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
-    wordSpaces(numSpaces-3);
-    cout << "-> ";
+  cout << whitespace(numSpaces-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
@@ -150,41 +143,16 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
     return isNew;
 }
 
-void num2ordinal(int num) // I want to get rid of this
-{   // Takes an integer, prints its ordinal
-    if (num == 1)
-        cout << "first";
-    else if (num == 2)
-        cout << "second";
-    else if (num == 3)
-        cout << "third";
-    else if (num == 4)
-        cout << "fourth";
-    else if (num == 5)
-        cout << "fifth";
-    else if (num == 6)
-        cout << "sixth";
-    else if (num == 7)
-        cout << "seventh";
-    else if (num == 8)
-        cout << "eigth";
-    else if (num == 9)
-        cout << "ninth";
-    else if (num == 10)
-        cout << "tenth";
-    else if (num == 11)
-        cout << "eleventh";
-    else if (num == 12)
-        cout << "twelfth";
-    else if ( (num % 10) == 1)
-        cout << num << "st";
-    else if ( (num % 10) == 2)
-        cout << num << "nd";
-    else if ( (num % 10) == 3)
-        cout << num << "rd";
-    else
-        cout << num << "th";
+
+string ordinal(int num)
+{
+  string ords[10] = { "th", "st", "nd", "rd", "th", "th", "th", "th",	\
+		      "th", "th"};
+  std::stringstream ord;
+  ord << num << ords[num%10];
+  return ord.str();
 }
+
 
 void populate(wordData * prob, const int size)
 {
@@ -247,8 +215,10 @@ int weightedIndex(wordData * data, int numEntries)
     return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
 }
 
-void wordSpaces(int wordLength)
+string whitespace(int length)
 {
-    for (int k = 0; k < wordLength + 2; k++)
-        cout << " ";
+  string whitespace;
+  for (int k = 0; k < length + 2; k++)
+    whitespace += " ";
+  return whitespace;
 }
