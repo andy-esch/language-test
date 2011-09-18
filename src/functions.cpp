@@ -8,6 +8,8 @@
  *
  */
 
+#include <sstream>
+#include <string>
 #include "functions.h"
 
 extern bool debug;
@@ -151,11 +153,13 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 }
 
 
-void num2ordinal(int num)
+string ordinal(int num)
 {
   string ords[10] = { "th", "st", "nd", "rd", "th", "th", "th", "th",	\
 		      "th", "th"};
-  cout << num << ords[ num % 10 ];
+  std::stringstream ord;
+  ord << num << ords[num%10];
+  return ord.str();
 }
 
 
