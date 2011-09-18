@@ -43,5 +43,5 @@ void printHelp(char *);
 int randIndex(int);
 double reaction(double, int);
 int weightedIndex(wordData *, int);
-void wordSpaces(int wordLength);
+string wordSpaces(int wordLength);
 #endif
