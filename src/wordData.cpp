@@ -17,7 +17,7 @@ using std::endl;
 extern bool debug;
 
 double wordData::weight(bool wrong, double diff)
-{
+{   // weight for answering (non-hints)
     double weight;
 
     if (wrong)
@@ -30,33 +30,68 @@ double wordData::weight(bool wrong, double diff)
          // Quick responses are proportional to larger probabilty differentials
       weight = -0.24 * exp(-0.2 * diff);
     }
+    
+    if (debug) cout << "weight = " << weight << endl;
+
     return weight;
 }
 
-void wordData::updateScore(int index, bool wrong, double timeDiff, \
-                           int numOfEntries, wordData * wordSet)
-{
-    double weight = ( wrong ? 1.0 : -1.0 ) * wordData::weight(wrong,timeDiff);
-    if (debug) cout << "weight = " << weight << endl;
-    double beta = 1.0 - weight * wordSet[index].probability;
-    double alpha = beta + weight;
-    if (debug)
-    {
-        cout << "Since the word is " << (wrong?"wrong":"right") << " its probability ";
-        cout << (wordSet[index].probability > (alpha*wordSet[index].probability)?"decreases":"increases") << endl;
-        cout << "beta = " << beta << ", alpha = " << alpha << endl;
+double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
+{   // weight for hints
+    double weight = 0.0;
+
+    switch (typeOfHint)
+    {   // Bounds on weight: I think they're for p = currProb:
+        //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
+        //  and we have a lot more freedom on the upper bound, even up to 1.0
+        //  safely since p <= 1.0 by definition
+        case 'l':   // get a letter
+            weight = 0.3 * static_cast<double> (numLetReqstd);
+            if (weight >= 1.0 / currProb)  // to ensure that probability constraints aren't broken
+                weight = 1.0 / currProb - 0.1;
+            break;
+        case 'a':   // get answer
+            weight = 0.5;
+            break;
+        case 'n':   // get number of letters
+            weight = 0.05;
+            break;
+        case 's':   // skip a word (this weight sets probability to 0.0 and raises others)
+            weight = - 1.0 / (1 - currProb);
+            break;
+        case 'u':
+                // Not yet implemented -- for showing usage of word in question
+            break;
+        default:
+            weight = 0.0; // no effect, shouldn't be triggered
+            break;
     }
 
-        // Should probably turn below into a function to ensure that both 
-        // updateScore functions are using the same code
-    // Update probability of this word coming up again
+    if (debug) cout << "weight = " << weight << endl;
+
+    return weight;
+}
+
+void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
+{   // Updates probabilities
+    double beta = 1.0 - weight * wordInfo[index].probability;
+    double alpha = beta + weight;
+
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if ( ii != index )
-            wordSet[ii].probability *= beta;
+            wordInfo[ii].probability *= beta;
         else
-            wordSet[ii].probability *= alpha;
-    }
+            wordInfo[ii].probability *= alpha;
+    }   
+}
+
+void wordData::updateScore(int index, bool wrong, double timeDiff, \
+                           int numOfEntries, wordData * wordInfo)
+{
+    // Update probabilities
+    updateProbs(index, numOfEntries, \
+                wordData::weight(wrong,timeDiff), wordInfo);
 
     // Update number of individual queries of word
     numAsked++;
@@ -76,48 +111,10 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
 void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, unsigned int numLetReqstd)
 { // This is the hints variant of this function
-    double weight = 0.0;
-    if (debug) cout << "typeOfHint = " << typeOfHint << "." << endl;
-    double currProb = wordStats[index].probability;
-    switch (typeOfHint)
-    {   // Need to find upper bound on weight...  I think it's:
-        //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
-        //  and we have a lot more freedom on the upper bound, even up to 1.0
-        //  safely since p <= 1.0 by definition
-        case 'l':   // get a letter
-            weight = 0.3 * static_cast<double> (numLetReqstd);
-            if (weight > 1.0 / currProb)  // to ensure that probability constraints aren't broken
-                weight = 1.0 / currProb - 0.1;
-            break;
-        case 'a':   // get answer
-            weight = 0.5;
-            break;
-        case 'n':   // get number of letters
-            weight = 0.05;
-            break;
-        case 's':   // skip a word (this weight sets probability to 0.0 and raises others)
-            weight = - 1.0 / (1 - currProb);
-            break;
-        default:
-            weight = 0.0; // no effect
-            break;
-    }
-
-    double beta = 1.0 - weight * currProb;
-    double alpha = beta + weight;
-
-    // Update probability of this word coming up again
-    for (int ii = 0; ii < numOfEntries; ii++)
-    {
-        if ( ii != index )
-            wordStats[ii].probability *= beta;
-        else
-            wordStats[ii].probability *= alpha;
-    }
-
-    // Update number of individual queries of word
-    //    numAsked++; // turned off for hints...
-
+    // Update probabilities
+    updateProbs(index, numOfEntries, \
+                weight(typeOfHint,numLetReqstd,wordStats[index].probability), \
+                wordStats);
 }
 
 double wordData::reweight(int num, double old, double newish)
