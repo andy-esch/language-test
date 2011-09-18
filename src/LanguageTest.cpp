@@ -205,9 +205,8 @@ int main(int argc, char **argv)
                             
                             if (verbose)
                             {
-                                cout << "The ";
-                                num2ordinal(lHintNum);
-                                cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
+			      cout << "The " << ordinal(lHintNum);
+			      cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numEntries, wordy, \
                                                  'l', incr);
