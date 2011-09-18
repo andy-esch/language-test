@@ -33,8 +33,8 @@ using std::string;
 using std::vector;
 
 bool compareAll(vector<string> &, string);
-void hintOptions(int);
-void hintPrint(int, bool, int, string, int);
+string hintOptions(int);
+string hint(int, bool, int, string, int);
 void input(vector<wordSet> &, char *);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
 string ordinal(int num);

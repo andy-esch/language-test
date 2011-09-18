@@ -26,37 +26,41 @@ bool compareAll(vector<string> & ws, string test)
     return isWrong;
 }
 
-void hintOptions(int length = 4)
+string hintOptions(int leftmargin)
 {
-  cout << '\a' << endl;
-  cout << whitespace(length) << "Want a letter?  Type '-l'." << endl;
-  cout << whitespace(length) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-  cout << whitespace(length) << "Want the answer?  Type '-a'." << endl;
-  cout << whitespace(length) << "Want the number of letters?  Type '-n'." << endl;
-  cout << whitespace(length) << "Want to skip this word?  Type '-s'." << endl;
-  cout << whitespace(length) << "Want help?  Type '-h'." << endl;
-  cout << whitespace(length) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-  cout << whitespace(length) << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  std::stringstream hint;
+  hint << '\a' << endl;
+  hint << whitespace(leftmargin) << "Want a letter?  Type '-l'." << endl;
+  hint << whitespace(leftmargin) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  hint << whitespace(leftmargin) << "Want the answer?  Type '-a'." << endl;
+  hint << whitespace(leftmargin) << "Want the number of letters?  Type '-n'." << endl;
+  hint << whitespace(leftmargin) << "Want to skip this word?  Type '-s'." << endl;
+  hint << whitespace(leftmargin) << "Want help?  Type '-h'." << endl;
+  hint << whitespace(leftmargin) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  hint << whitespace(leftmargin) << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  return hint.str();
 }
 
-void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
+string hint(int numSpaces, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
-  cout << whitespace(numSpaces-3) << "-> ";
+  std::stringstream hint;
+  hint << whitespace(numSpaces-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
-            cout << ' ';
+            hint << ' ';
         else if (jj < lHintNum)
-            cout << hintWord[jj];
+            hint << hintWord[jj];
         else if (knowWordSize)
-            cout << '-';
+            hint << '-';
         else
-            cout << ' ';
+            hint << ' ';
     }
     if (lHintNum >= verboSize)
-        cout << " <-";
-    cout << endl;
+        hint << " <-";
+    hint << endl;
+    return hint.str();
 }
                
                
