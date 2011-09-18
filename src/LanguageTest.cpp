@@ -5,50 +5,6 @@
  *        Takes in a two-column file, stores it, and then quizzes and then quizzes
  *         the user on the translations.
  *
- *  Future improvements:
- *      * requiz badly scored words more frequently -- Implemented!
- *      * lets the user choose to be quizzed in english (answer in spanish), in
- *        spanish (answer in english), or randomly (answering in the opposite
- *        language to which the question was asked)
- *      * What is a way to choose what to be quizzed over? Such as just
- *        switching all verbs instances with verbos?
- *      * Support for regular expressions?
- *      * International characters (accents, ñ, oumlaut, etc.)
- *      * More even timing mechanism that takes word length into account
- *      * Name memory!  Something like having an 'account'.  It allows the
- *        the program to load previous performance so you don't always
- *        have to start anew.
- *
- *  Make it so that while it is waiting for input or something like that an 
- *  OpenMP section or something like that does the 'smart picker' algorithm in
- *  the background to reweight the probability of being picked as the next quiz
- *  item.
- *
- *
- *  To do:
- *      -- Penalize for taking hints -- perhaps more severe as more letters are
- *          gotten.  A big whack if a whole word is revealed.  Minimal for
- *          numbers.  One way to easily implement this could be overloading
- *          the updateScores function
- *      -- Hints that are synonyms but in the language you are less familiar
- *          with -- in this case, only give spanish synonyms
- *      -- Make everything more organized
- *      -- Better commenting to explain confusing features
- *      -- More-descriptive variable names
- *      -- Think about the complex data structures (worddata and wordSet) and
- *          see if there's one that is smarter, more convenient, or less complex
- *      -- Sort summary differently by user request (ws by spanish word, we by
- *          english word, sc by score, re by reaction, pr by probability, etc.)
- *      -- Ask what the user wants to do at the beginning of the program (once
- *          new features are added other than the flash card one currently)
- *      -- Verb conjugations!
- *      -- Add multiple lists as a combined vocab
- *      -- Keep adding words as time goes by if test-taker is doing well enough
- *          I.e., start with as smaller set, keep increasing it's size.  Perhaps
- *          there could be an '-s' option to say initial and final test size
- *      -- Command line option to find available dictionaries... Something
- *          like 'ls *.txt'
- *      -- An antonym quiz
  *
  *  Created by Otto Hasselblad on 4/29/11.
  *
@@ -243,6 +199,10 @@ int main(int argc, char **argv)
                         cout << " hint messages. Pass '-d' again to ";
                         cout << (disableHintMsg?"enable.":"disable.") << endl;
                         break;
+                    case 'e':
+                        break;  // This hint will give an example usage?
+                                //  Should it show it used in the language that
+                                //  the answer is expected to be in?
                     case 's':
                         if (verbose) cout << "You skipped a word." << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 's');
