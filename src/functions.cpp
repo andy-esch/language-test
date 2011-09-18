@@ -28,30 +28,21 @@ bool compareAll(vector<string> & ws, string test)
 
 void hintOptions(int length = 4)
 {
-    cout << '\a' << endl;
-    wordSpaces(length);
-    cout << "Want a letter?  Type '-l'." << endl;
-    wordSpaces(length);
-    cout << "Want more than one letter?  Type '-l#', where # = a number 1 - 9." << endl;
-    wordSpaces(length);
-    cout << "Want the answer?  Type '-a'." << endl;
-    wordSpaces(length);
-    cout << "Want the number of letters?  Type '-n'." << endl;
-    wordSpaces(length);
-    cout << "Want to skip this word?  Type '-s'." << endl;
-    wordSpaces(length);
-    cout << "Want help?  Type '-h'." << endl;
-    wordSpaces(length);
-    cout << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-    wordSpaces(length);
-    cout << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  cout << '\a' << endl;
+  cout << wordSpaces(length) << "Want a letter?  Type '-l'." << endl;
+  cout << wordSpaces(length) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  cout << wordSpaces(length) << "Want the answer?  Type '-a'." << endl;
+  cout << wordSpaces(length) << "Want the number of letters?  Type '-n'." << endl;
+  cout << wordSpaces(length) << "Want to skip this word?  Type '-s'." << endl;
+  cout << wordSpaces(length) << "Want help?  Type '-h'." << endl;
+  cout << wordSpaces(length) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  cout << wordSpaces(length) << "Want to turn these messages off?  Type '-d' to disable." << endl;
 }
 
 void hintPrint(int numSpaces, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
-    wordSpaces(numSpaces-3);
-    cout << "-> ";
+  cout << wordSpaces(numSpaces-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
@@ -224,8 +215,10 @@ int weightedIndex(wordData * data, int numEntries)
     return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
 }
 
-void wordSpaces(int wordLength)
+string wordSpaces(int wordLength)
 {
-    for (int k = 0; k < wordLength + 2; k++)
-        cout << " ";
+  string wordspaces;
+  for (int k = 0; k < wordLength + 2; k++)
+    wordspaces += " ";
+  return wordspaces;
 }
