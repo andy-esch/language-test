@@ -41,11 +41,11 @@ string hintOptions(int leftmargin)
   return hint.str();
 }
 
-string hint(int numSpaces, bool knowWordSize, int verboSize, \
+string hint(int verbSize, bool knowWordSize, int verboSize, \
                string hintWord, int lHintNum)
 {
   std::stringstream hint;
-  hint << whitespace(numSpaces-3) << "-> ";
+  hint << whitespace(verbSize-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
