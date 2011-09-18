@@ -22,6 +22,7 @@ public:
 private:
     double reweight(int, double, double);
     double weight(bool, double);
-        //    void updateProbs();  // Will update probabilities in both updateScore functions
+    double weight(char, int, double);
+    void updateProbs(int, int, double, wordData *);
 };
 #endif // _WORDDATA_H_
