@@ -1,7 +1,6 @@
-boost*
+lib/*
 *~
 #*#
-extra*.txt
 *.o
-grace*
 ltest
+.DS_S*
