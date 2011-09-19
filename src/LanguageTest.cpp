@@ -102,6 +102,13 @@ int main(int argc, char **argv)
     /*****      Input Dictionary     *****/
     input(spen,&inFile[0]);
     numEntries = spen.size();
+    if (debug) 
+    {
+        cout << "Summary of inputted contents: " << endl;
+        for (int ii = 0; ii < numEntries; ii++)
+            spen[ii].summarizeContents(ii);
+        cout << endl;
+    }
     wordData * wordy = new wordData[numEntries];
     // Populate wordData arrays -- turn this into a class function somehow?
     for (int i = 0; i < numEntries; i++)
@@ -127,7 +134,9 @@ int main(int argc, char **argv)
     {
         int numOfTries = 1;
         int verboSize = spen[i].verbos[j].size();
+        if (debug) cout << "verboSize = " << verboSize << endl;
         int verbSize = spen[i].verbs[j].size();
+        if (debug) cout << "verboSize = " << verboSize << endl;
         bool showWordSize = false;
         if (debug) cout << "New word: " << endl;
         cout << spen[i].verbs[j] << ": ";
@@ -229,12 +238,12 @@ int main(int argc, char **argv)
             {
                 if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
                 {
-		  cout << hintOptions(verbSize);
+                    cout << hintOptions(verbSize);
                     cout << endl;
                     cout << spen[i].verbs[j] << ": ";
                 }
                 else
-		  cout << whitespace(verbSize);
+                    cout << whitespace(verbSize);
             }
             else if (temp[1] == 'a' && temp[0] == '-') whitespace(6); // This seems out of place
             numOfTries++;
@@ -262,7 +271,7 @@ int main(int argc, char **argv)
     testResults(spen,wordy,numEntries,lengthLongestWord,verbose);
 
     /*****      Close program      *****/
-    delete[] wordy;
+    delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?
     
     return 0;
 }
