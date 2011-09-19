@@ -1,9 +1,11 @@
 /*
  *  listfiles.h
  *  
+ *  Description: Lists txt files in the specified directory.  Similar to the
+ *                  ls function in Linux
+ *  
  *
- *  Created by Peter Eschbacher on 9/13/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
+ *  Created by Añdy Eschbacher on 9/13/11.
  *
  */
 

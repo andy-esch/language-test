@@ -4,7 +4,7 @@
  *  Description: functions for the class wordData
  *
  *
- *  Created by Peter Eschbacher on 9/11/11.
+ *  Created by Añdy Eschbacher on 9/11/11.
  *
  */
 

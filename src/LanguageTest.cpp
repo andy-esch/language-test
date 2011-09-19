@@ -6,7 +6,7 @@
  *         the user on the translations.
  *
  *
- *  Created by Otto Hasselblad on 4/29/11.
+ *  Created by Añdy Eschbacher on 4/29/11.
  *
  */
 
