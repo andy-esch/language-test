@@ -38,7 +38,8 @@ int getTxtFiles(string dir, vector<string> &files)
     string temp;
     if ( (dp  = opendir(dir.c_str())) == NULL )
     {
-        cout << "Error(" << errno << ") opening " << dir << endl;
+        cout << "Error(" << errno << "). Could not open the directory '";
+        cout << dir << "'." << endl;
         return errno;
     }
 
@@ -57,30 +58,60 @@ int getTxtFiles(string dir, vector<string> &files)
     return 0;
 }
 
-//void listDicts(char dictType[])
+//void listDicts(char dictType[])   // Perhaps we could pass a character to denote
+                                    // which type of dictionary we want to choose from
+                                    // such as n = nouns, v = verbs, etc.
+                                    // or something fancier eventually?
+                                    // and perhaps different types of sorting of
+                                    // output, which is fairly easy with strings
 string listDicts(void)
 { 
-    string dir = string("./dictionary/"); // choose current directory
+    string dir = string("./vocab/"); // choose current directory
+    string temp;    // if no files are found
     vector<string> files = vector<string>();
     int numOfDicts = 1, dictPick;
-    getTxtFiles(dir,files);
+    int retValue = getTxtFiles(dir,files);
+
+    // If directory is not found -- do something different instead?
+    if ( retValue > 0 )
+    {
+        cout << "Exiting program" << endl;
+        exit(0);
+    }
 
     cout << endl;
-    cout << "The following dictionaries are available: " << endl;
-    cout << endl;
-    for (unsigned int i = 0; i < files.size(); i++)
+    if ( files.size() > 0 ) // If files are found
     {
-        int strSize = files[i].size();
-        cout << '\t' << numOfDicts << ": " << files[i] << endl;
-        numOfDicts++;
+        cout << "The following dictionaries are available: " << endl;
+        cout << endl;
+        for (unsigned int i = 0; i < files.size(); i++)
+        {
+            int strSize = files[i].size();
+            cout << '\t' << numOfDicts << ": " << files[i] << endl;
+            numOfDicts++;
+        }
+        cout << endl;
+        cout << "Select a dictionary for more information.  Type 0 to exit." << endl;
+        cin >> dictPick;
+        if ( cin.eof() || dictPick == 0 )
+            exit(0);
     }
-    cout << endl;
-    cout << "Select a dictionary for more information.  Type 0 to exit." << endl;
-    cin >> dictPick;
-    if ( cin.eof() || dictPick == 0 )
-        exit(0);
+    else    // If files are not found
+    {   // We could do something where a person specifies a directory
+        //  or specifies a specific file?
+        
+        cout << "No dictionaries found." << endl;
+        cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;        
+        cin >> temp;
+        files.push_back(temp);
+        dictPick = 1;   // ensures return value has correct form
+        if ( cin.eof() || temp == "exit" )
+            exit(0);
+    }
+
     cin.clear();
     cin.ignore(10,'\n');
-    
+
+    // returns full path of file, e.g. "./vocab/verbs.txt"
     return dir + files[dictPick - 1];
 }
