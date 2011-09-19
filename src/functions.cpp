@@ -4,7 +4,7 @@
  *  Description: Various non-class functions for LanguageTest.cpp
  *
  *
- *  Created by Peter Eschbacher on 9/11/11.
+ *  Created by Añdy Eschbacher on 9/11/11.
  *
  */
 
@@ -42,7 +42,7 @@ string hintOptions(int leftmargin)
 }
 
 string hint(int verbSize, bool knowWordSize, int verboSize, \
-               string hintWord, int lHintNum)
+            string hintWord, int lHintNum)
 {
   std::stringstream hint;
   hint << whitespace(verbSize-3) << "-> ";
@@ -99,11 +99,6 @@ void input(vector<wordSet> & ws, char * inFile)
             continue;
         else if (temp1.find(",") != -1)        // Is the delimiter ","?
             pos = temp1.find(",");
-//        else if (temp1.find("  ") != -1)    // Is the delimiter "  "?
-//        {
-//            pos = temp1.find("  ");
-//            posWidth = 2;
-//        }
         temp2 = temp1;                  // Make a copy of the line read in
         temp1.erase(pos,temp1.size());  // 
         temp2.erase(0,pos+posWidth);
