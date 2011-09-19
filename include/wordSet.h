@@ -8,14 +8,22 @@
  *
  */
 
-#include <vector>
-#include <string>
 #ifndef WORDSET_H
 #define WORDSET_H
+#include <vector>
+#include <string>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
 
 class wordSet {
 public:
-    std::vector<std::string> verbos;
-    std::vector<std::string> verbs;
+    vector<string> verbos;
+    vector<string> verbs;
+    void summarizeContents(int);
+    void clearWS();
 };
 #endif
