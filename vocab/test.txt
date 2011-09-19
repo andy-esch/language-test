@@ -1,5 +1,4 @@
-añdy	andy
-piñata	pinata
-señor	mister
-méxico	mexico
+sp11,sp12,sp13	eng11,eng12
+sp21,sp22	eng21
+sp31,sp32,sp33,sp34	eng31,eng32
 
