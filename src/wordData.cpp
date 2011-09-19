@@ -9,10 +9,6 @@
  */
 
 #include "wordData.h"
-#include <cmath>
-#include <iostream>
-using std::cout;
-using std::endl;
 
 extern bool debug;
 

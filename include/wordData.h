@@ -10,6 +10,11 @@
 #ifndef _WORDDATA_H_
 #define _WORDDATA_H_
 
+#include <cmath>
+#include <iostream>
+using std::cout;
+using std::endl;
+
 class wordData {
 public:
     unsigned int numAsked;
