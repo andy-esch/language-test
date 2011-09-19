@@ -7,7 +7,7 @@ vpath %.h include
 CXX = g++-mp-4.4
 CXXFLAGS = -I include
 
-OBJECTS = functions.o wordData.o listDicts.o testResults.o
+OBJECTS = functions.o wordData.o wordSet.o listDicts.o testResults.o
 HEADERS = functions.h wordData.h wordSet.h listDicts.h testResults.h
 # ****************************************************
 
