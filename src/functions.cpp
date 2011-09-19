@@ -71,10 +71,8 @@ void input(vector<wordSet> & ws, char * inFile)
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     size_t found;
-    int posWidth = 1;
     ifstream infile(inFile,ifstream::in);
     wordSet tempset;
-    long unsigned int j;    // Stores index for repeat entry, given by isnew()
 
     while (!infile.is_open())
     {
@@ -95,18 +93,21 @@ void input(vector<wordSet> & ws, char * inFile)
     while ( !infile.eof() )
     {
         getline(infile, temp1);
-        posWidth = 1;
-        found = temp1.find("\t");         // Find delimiter (default is tab)
-        if (found == string::npos || temp1 == "")        // Skip empty lines
+        found = temp1.find("\t");                   // Find delimiter (default is tab)
+        if (found == string::npos || temp1 == "")   // Skip empty lines
             continue;
         temp2 = temp1;                      // Make a copy of the line read in
-        temp1.erase(0,found+1);      // Cut out one language
-        temp2.erase(found,temp1.size()+1);    // Cut out other language
+        temp1.erase(0,found+1);             // Cut out one language
+        temp2.erase(found,temp1.size()+1);  // Cut out other language
 
-        insertWords(temp1, tempset, 1); // Uhm, this doesn't seem so smart somehow
+        // Insert words into tempset
+        insertWords(temp1, tempset, 1);
         insertWords(temp2, tempset, 2);
+        // Put tempset into wordSet vector
         ws.push_back(tempset);
-        tempset.clearWS();  // Clean for next user
+
+        // Clean variables for next time through
+        tempset.clearWS();
         temp1.clear();
         temp2.clear();
     }
@@ -116,40 +117,42 @@ void input(vector<wordSet> & ws, char * inFile)
 
 void insertWords(string words, wordSet & tempset, int step)
 {
+    // debug things are temporary here until we're sure of stability of input()
     size_t found;
-    cout << "words are: '" << words << "'" << endl;
+    if (debug) cout << "words are: '" << words << "'" << endl;
     while ( words.find(",") != string::npos )
     {
         found = words.rfind(",");
         string tempWord = words.substr(found+1);
-        cout << "New word: " << tempWord << endl;
+        if (debug) cout << "New word: " << tempWord << endl;
         switch (step)
         {
             case 1:
-                cout << "case : " << step << endl;
+                if (debug) cout << "case : " << step << endl;
                 tempset.verbs.push_back(tempWord);
                 break;
             case 2:
-                cout << "case : " << step << endl;
+                if (debug) cout << "case : " << step << endl;
                 tempset.verbos.push_back(tempWord);
                 break;
         }
         words.erase(found);
     }
-    cout << "New word: " << words << endl;
+    if (debug) cout << "New word: " << words << endl;
     switch (step)
     {
         case 1:
-            cout << "case : " << step << endl;
+            if (debug) cout << "case : " << step << endl;
             tempset.verbs.push_back(words); // Catch non-comma case
             break;
         case 2:
-            cout << "case : " << step << endl;
+            if (debug) cout << "case : " << step << endl;
             tempset.verbos.push_back(words);
             break;
     }
 }
 
+// Obsolete
 bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
     // Also sets the value where a non-new word occurs
