@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -36,6 +37,7 @@ bool compareAll(vector<string> &, string);
 string hintOptions(int);
 string hint(int, bool, int, string, int);
 void input(vector<wordSet> &, char *);
+void insertWords(string, wordSet &,int);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
 string ordinal(int num);
 void populate(wordData *, const int);

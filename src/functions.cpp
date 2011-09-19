@@ -8,8 +8,9 @@
  *
  */
 
-#include <sstream>
-#include <string>
+
+// Header files are in functions.h -- not sure if this is good practice but it's
+//  how the all the other header files are here.  
 #include "functions.h"
 
 extern bool debug;
@@ -69,9 +70,10 @@ void input(vector<wordSet> & ws, char * inFile)
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
-    int pos, posWidth = 1;
+    size_t found;
+    int posWidth = 1;
     ifstream infile(inFile,ifstream::in);
-    struct wordSet tempset;
+    wordSet tempset;
     long unsigned int j;    // Stores index for repeat entry, given by isnew()
 
     while (!infile.is_open())
@@ -94,35 +96,63 @@ void input(vector<wordSet> & ws, char * inFile)
     {
         getline(infile, temp1);
         posWidth = 1;
-        pos = temp1.find("\t");         // Find delimiter (default is tab)
-        if (pos == -1 || temp1 == "")        // Skip empty lines
+        found = temp1.find("\t");         // Find delimiter (default is tab)
+        if (found == string::npos || temp1 == "")        // Skip empty lines
             continue;
-        else if (temp1.find(",") != -1)        // Is the delimiter ","?
-            pos = temp1.find(",");
-        temp2 = temp1;                  // Make a copy of the line read in
-        temp1.erase(pos,temp1.size());  // 
-        temp2.erase(0,pos+posWidth);
+        temp2 = temp1;                      // Make a copy of the line read in
+        temp1.erase(0,found+1);      // Cut out one language
+        temp2.erase(found,temp1.size()+1);    // Cut out other language
 
-        if ( isnew(ws,temp1,j) )    // Only finds synonyms in one language
-        {
-            tempset.verbos.push_back(temp1);
-            tempset.verbs.push_back(temp2);
-            ws.push_back(tempset);
-            tempset.verbos.erase(tempset.verbos.begin());
-            tempset.verbs.erase(tempset.verbs.begin());
-        }
-        else // is not new
-        {
-            ws[j].verbos.push_back(temp1);
-            ws[j].verbs.push_back(temp2);
-        }
+        insertWords(temp1, tempset, 1); // Uhm, this doesn't seem so smart somehow
+        insertWords(temp2, tempset, 2);
+        ws.push_back(tempset);
+        tempset.clearWS();  // Clean for next user
+        temp1.clear();
+        temp2.clear();
     }
 
     infile.close();
 }
 
+void insertWords(string words, wordSet & tempset, int step)
+{
+    size_t found;
+    cout << "words are: '" << words << "'" << endl;
+    while ( words.find(",") != string::npos )
+    {
+        found = words.rfind(",");
+        string tempWord = words.substr(found+1);
+        cout << "New word: " << tempWord << endl;
+        switch (step)
+        {
+            case 1:
+                cout << "case : " << step << endl;
+                tempset.verbs.push_back(tempWord);
+                break;
+            case 2:
+                cout << "case : " << step << endl;
+                tempset.verbos.push_back(tempWord);
+                break;
+        }
+        words.erase(found);
+    }
+    cout << "New word: " << words << endl;
+    switch (step)
+    {
+        case 1:
+            cout << "case : " << step << endl;
+            tempset.verbs.push_back(words); // Catch non-comma case
+            break;
+        case 2:
+            cout << "case : " << step << endl;
+            tempset.verbos.push_back(words);
+            break;
+    }
+}
+
 bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
+    // Also sets the value where a non-new word occurs
     bool isNew = true;
 
     if (ws.size() == 0)
@@ -160,7 +190,7 @@ void populate(wordData * prob, const int size)
         prob[i].probability = invSize;
 }
 
-void printHelp(char * prog)
+void printHelp(char * prog) // Have a 'help' stream?
 {
     cout << "Commandline language learner. Version something." << endl;
     cout << "Kandy Software. Always wary." << endl;
@@ -175,7 +205,6 @@ void printHelp(char * prog)
     cout << "    -h             print out this help menu" << endl;
     cout << "    -d             print debugging information to troubleshoot" << endl;
     cout << endl;
-
 }
 
 int randIndex(int num)
@@ -185,7 +214,7 @@ int randIndex(int num)
 
 double reaction(double time, int wrdsz)
 {
-        // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
+    // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
     double reactionTime = time - 0.28 * wrdsz;
     if (reactionTime < 0.0)
         reactionTime = 0.0;
@@ -218,6 +247,6 @@ string whitespace(int length)
 {
   string whitespace;
   for (int k = 0; k < length + 2; k++)
-    whitespace += " ";
+      whitespace += " ";
   return whitespace;
 }
