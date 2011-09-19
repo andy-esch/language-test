@@ -12,7 +12,8 @@
  *      -- By pressing the dictionary number, the user can pick that dictionary
  *          and use it in the program -- easily achieved by using a return type
  *          that is just a string or char *.
- *  Created by Peter Eschbacher on 9/13/11.
+ *
+ *  Created by Añdy Eschbacher on 9/13/11.
  *
  */
 

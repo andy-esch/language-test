@@ -128,7 +128,7 @@ int main(int argc, char **argv)
         int numOfTries = 1;
         int verboSize = spen[i].verbos[j].size();
         int verbSize = spen[i].verbs[j].size();
-        bool knowWordSize = false;
+        bool showWordSize = false;
         if (debug) cout << "New word: " << endl;
         cout << spen[i].verbs[j] << ": ";
         while (!cin.eof() && isWrong)
@@ -169,8 +169,8 @@ int main(int argc, char **argv)
                         }
                         else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;
-
-                        hintPrint(verbSize, knowWordSize, \
+			
+                        cout << hint(verbSize, showWordSize,	\
                                   verboSize, spen[i].verbos[j], lHintNum);
                         break;
                     case 'a':
@@ -180,15 +180,10 @@ int main(int argc, char **argv)
                         wordy[i].updateScore(i, numEntries, wordy, 'a');
                         break;
                     case 'n':
-                        if (knowWordSize) // Hmm, is this necessary?
-                            cout << "You already got this answer." << endl;
-                        else
-                        {
-                            knowWordSize = true;
-                            hintPrint(verbSize, knowWordSize, verboSize, \
-                                      spen[i].verbos[j], lHintNum);
-                        }
-                        if (verbose)
+		        showWordSize = true;
+			cout << hint(verbSize, showWordSize, verboSize, \
+				     spen[i].verbos[j], lHintNum);
+			if (verbose)
                             cout << "Number of letters: " << verboSize << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
                         break;
@@ -208,11 +203,11 @@ int main(int argc, char **argv)
                         isWrong = false;
                         break;
                     case 'h':
-                        hintOptions(verbSize);
+		      cout << hintOptions(verbSize);
                         break;
                     default:
                         cout << "'" << temp << "' is not a hint option." << endl;
-                        hintOptions(4);
+                        cout << hintOptions(4);
                         break;
                 }
             }
@@ -234,7 +229,7 @@ int main(int argc, char **argv)
             {
                 if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
                 {
-                    hintOptions(verbSize);
+		  cout << hintOptions(verbSize);
                     cout << endl;
                     cout << spen[i].verbs[j] << ": ";
                 }

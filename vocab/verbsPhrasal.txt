@@ -4,60 +4,59 @@ regresar	be back
 quedarse sin	be out of
 terminarse	be over
 estar levantado	be up
-estallar (una bomba)	blow up
+estallar una bomba	blow up a bomb
 inflar	blow up
 averiarse	break down
 volver a llamar	call back
 seguir. continuar	carry on
-cumplir (una promesa)	carry out
+cumplir una promesa	carry out a promise
 llevar a cabo	carry out
 poner en orden	clear up
-encontrar, dar con	come across
+dar con	come across
 regresar	come back
 entrar	come in
-¡vamos!, ¡date prisa!	come on
+¡vamos!	come on
 consumir menos	cut down on
-cortar, desconnectar	cut off
+desconnectar	cut off
 cortar en pedazos	cut up
-abrochar, atar	do up
-tener algo que ver con, tener relación con	do with
-pasarse sin, prescindir de	do without
+abrochar	do up
+tener algo que ver con	to do with
+pasarse sin	do without
 pararse	draw up
-volver, regresar	get back
-entrar	get in(to)
-bajar (de un autobus, tren)	get off
-subir (a un autobus, tren, moto)	get on
+regresar	get back
+entrar	get into
+bajar	get off
+subir	get on
 levantarse	get up
 devolver	give back
-perder la esperanza, rendirse	give up
-dejar (de fumar, beber)	give up
-¡siga!	go ahead
-irse, marcharse	go away
-volver, regresar	go back
+perder la esperanza	give up
+dejar	give up
+siga	go ahead
+marcharse	go away
 bajar	go down
-salir (por la calle)	go out
+salir	go out
 subir	go up
 esperar	hang on, hold on
-colgar (el teléfono)	hang up
-mantenerse (a la altura de)	keep up with
-derribar, atropear, demoler	knock down
-olvidar, dejar	leave behind
+colgar el teléfono	hang up the phone
+mantenerse	keep up with
+derribar	knock down
+olvidar	leave behind
 dejar entrar	let in
 cuidar	look after
 buscar	look for
 esperar con ilusión	look forward to
-tener cuidado, ¡ojo! look out!	look out
-buscar algo (en un libro, diccionario)	look up
-meter, introducir	put in
+ojo	look out
+buscar algo en un libro	  look up in a book
+meter	put in
 encender	put on
-ponerse (la ropa)	put on
+ponerse la ropa	put on clothes
 quedars sin algo	run out of
 ponerse en camino	set off
 parecerse a	take after
 despegar	take off
 quitarse la ropa	take off
-extraer, sacar	take out
-tirar (en la basura)	throw away
-bajar (el volumen)	turn down
+sacar	take out
+tirar	throw away 
+bajar el volumen	turn down
 poner el volumen más fuerte	turn up
-encender (televisión, luces etc.)	turn on
+encender los luces	turn on the lights
