@@ -80,7 +80,7 @@ int main(int argc, char **argv)
                 verbose = true;
                 break;
             case 'h': // Print usage info then exit
-                printHelp(argv[0]);
+                cout << printHelp(argv[0]);
                 exit(0);
             case 'd': // Show debug output info
                 debug = true;
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
         cout << endl;
     }
     wordData * wordy = new wordData[numEntries];
-
+    // Populate wordData[]
     for (int ii = 0; ii < numEntries; ii++)
     {
         wordy[ii].populate(numEntries);
@@ -127,19 +127,23 @@ int main(int argc, char **argv)
     /*****      Language Quiz      *****/
     int i = weightedIndex(wordy, numEntries);
     int j = randIndex(spen[i].verbs.size());
-    while ( !cin.eof() )
+    while ( !cin.eof() )    // Should there be other conditions?
     {
+        bool showWordSize = false;
         int numOfTries = 1;
         int verboSize = spen[i].verbos[j].size();
-        if (debug) cout << "verboSize = " << verboSize << endl;
-        int verbSize = spen[i].verbs[j].size();
-        if (debug) cout << "verboSize = " << verboSize << endl;
-        bool showWordSize = false;
-        if (debug) cout << "New word: " << endl;
+        int verbSize  = spen[i].verbs[j].size();
+
+        if (debug)
+        {
+            cout << "verboSize = " << verboSize << endl;
+            cout << "verboSize = " << verboSize << endl;
+            cout << "New word: " << endl;
+        }
         cout << spen[i].verbs[j] << ": ";
         while (!cin.eof() && isWrong)
         {
-            timeStart = time(NULL);
+            timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
             getline(cin, temp);
             timeEnd = time(NULL);
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
@@ -159,25 +163,24 @@ int main(int argc, char **argv)
                                 incr = 1;
 
                             lHintNum+=incr;
+                            // If white space between current position and incremented position, increment hint
                             for (int ii = lHintNum-incr; ii < lHintNum; ii++)
-                            { // If white space between current position and incremented position, increment hint
                                 if (spen[i].verbos[j][ii] == ' ')
                                     lHintNum++;
-                            }
                             
                             if (verbose)
                             {
-			      cout << "The " << ordinal(lHintNum);
-			      cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
+                                cout << "The " << ordinal(lHintNum);
+                                cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
                             }
-                            wordy[i].updateScore(i, numEntries, wordy, \
-                                                 'l', incr);
+                            wordy[i].updateScore(i, numEntries, \
+                                                 wordy, 'l', incr);
                         }
                         else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;
-			
-                        cout << hint(verbSize, showWordSize,	\
-                                  verboSize, spen[i].verbos[j], lHintNum);
+
+                        cout << hint(verbSize, showWordSize, \
+                                     verboSize, spen[i].verbos[j], lHintNum);
                         break;
                     case 'a':
                         cout << "Answer: " << spen[i].verbos[j] << endl;
@@ -186,12 +189,12 @@ int main(int argc, char **argv)
                         wordy[i].updateScore(i, numEntries, wordy, 'a');
                         break;
                     case 'n':
-		        showWordSize = true;
-			cout << hint(verbSize, showWordSize, verboSize, \
-				     spen[i].verbos[j], lHintNum);
-			if (verbose)
-                            cout << "Number of letters: " << verboSize << endl;
+                        showWordSize = true;
+                        cout << hint(verbSize, showWordSize, verboSize, \
+                                     spen[i].verbos[j], lHintNum);
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
+                        if (verbose)
+                            cout << "Number of letters: " << verboSize << endl;
                         break;
                     case 'd':
                         disableHintMsg = !disableHintMsg;
@@ -209,7 +212,7 @@ int main(int argc, char **argv)
                         isWrong = false;
                         break;
                     case 'h':
-		      cout << hintOptions(verbSize);
+                        cout << hintOptions(verbSize);
                         break;
                     default:
                         cout << "'" << temp << "' is not a hint option." << endl;

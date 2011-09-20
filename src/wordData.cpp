@@ -61,7 +61,7 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
             weight = 0.05;
             break;
         case 's':   // skip a word (this weight sets probability to 0.0 and raises others)
-            weight = - 1.0 / (1 - currProb);
+            weight = - 1.0 / (1.0 - currProb);
             break;
         case 'u':
                 // Not yet implemented -- for showing usage of word in question
