@@ -1,4 +1,3 @@
-sp11,sp12,sp13	eng11,eng12
-sp21,sp22	eng21
-sp31,sp32,sp33,sp34	eng31,eng32
-
+señor	mister,sir,sire
+México	Mexico
+piñata	pinata,hitty thing
