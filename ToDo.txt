@@ -1,5 +1,10 @@
 Official To Do List
 
+* Is is possible to do something to keep the screen clear -- as in, erase last quiz q&a, and put 
+new one forward?
+* Split functions.cpp into more compartmentalized files?
+
+
 * Add Unicode support! so é, ñ, etc. are supported -- Andy, Sept. 18
 	Using http://www.cl.cam.ac.uk/~mgk25/unicode.html as a source
 
