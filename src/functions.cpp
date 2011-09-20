@@ -29,24 +29,24 @@ bool compareAll(vector<string> & ws, string test)
 
 string hintOptions(int leftmargin)
 {
-  std::stringstream hint;
-  hint << '\a' << endl;
-  hint << whitespace(leftmargin) << "Want a letter?  Type '-l'." << endl;
-  hint << whitespace(leftmargin) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-  hint << whitespace(leftmargin) << "Want the answer?  Type '-a'." << endl;
-  hint << whitespace(leftmargin) << "Want the number of letters?  Type '-n'." << endl;
-  hint << whitespace(leftmargin) << "Want to skip this word?  Type '-s'." << endl;
-  hint << whitespace(leftmargin) << "Want help?  Type '-h'." << endl;
-  hint << whitespace(leftmargin) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-  hint << whitespace(leftmargin) << "Want to turn these messages off?  Type '-d' to disable." << endl;
-  return hint.str();
+    std::stringstream hint;
+    hint << '\a' << endl; // Ring system bell
+    hint << whitespace(leftmargin) << "Want a letter?  Type '-l'." << endl;
+    hint << whitespace(leftmargin) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+    hint << whitespace(leftmargin) << "Want the answer?  Type '-a'." << endl;
+    hint << whitespace(leftmargin) << "Want the number of letters?  Type '-n'." << endl;
+    hint << whitespace(leftmargin) << "Want to skip this word?  Type '-s'." << endl;
+    hint << whitespace(leftmargin) << "Want help?  Type '-h'." << endl;
+    hint << whitespace(leftmargin) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+    hint << whitespace(leftmargin) << "Want to turn these messages off?  Type '-d' to disable." << endl;
+    return hint.str();
 }
 
 string hint(int verbSize, bool knowWordSize, int verboSize, \
             string hintWord, int lHintNum)
 {
-  std::stringstream hint;
-  hint << whitespace(verbSize-3) << "-> ";
+    std::stringstream hint;
+    hint << whitespace(verbSize-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
         if (hintWord[jj] == ' ')
@@ -93,7 +93,7 @@ void input(vector<wordSet> & ws, char * inFile)
     while ( !infile.eof() )
     {
         getline(infile, temp1);
-        found = temp1.find("\t");                   // Find delimiter (default is tab)
+        found = temp1.find("\t");                   // Find tab delimiter
         if (found == string::npos || temp1 == "")   // Skip empty lines
             continue;
         temp2 = temp1;                      // Make a copy of the line read in
@@ -117,10 +117,13 @@ void input(vector<wordSet> & ws, char * inFile)
 
 void insertWords(string words, wordSet & tempset, int step)
 {
-    // debug things are temporary here until we're sure of stability of input()
+    // debug things are temporarily here until we're sure of stability of input()
+
+    // the below algorithm could be replaced by a do { } while ( ) statement
+    // if the comma-erasing is moved to the beginning... but this is non-crucial
     size_t found;
     if (debug) cout << "words are: '" << words << "'" << endl;
-    while ( words.find(",") != string::npos )
+    while ( words.find(",") != string::npos )   // while comma is found
     {
         found = words.rfind(",");
         string tempWord = words.substr(found+1);
@@ -139,11 +142,11 @@ void insertWords(string words, wordSet & tempset, int step)
         words.erase(found);
     }
     if (debug) cout << "New word: " << words << endl;
-    switch (step)
+    switch (step)   // Otherwise catch non-comma case
     {
         case 1:
             if (debug) cout << "case : " << step << endl;
-            tempset.verbs.push_back(words); // Catch non-comma case
+            tempset.verbs.push_back(words);
             break;
         case 2:
             if (debug) cout << "case : " << step << endl;
@@ -152,7 +155,7 @@ void insertWords(string words, wordSet & tempset, int step)
     }
 }
 
-// Obsolete
+// isnew() is obsolete
 bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
     // Also sets the value where a non-new word occurs
@@ -161,45 +164,44 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
     if (ws.size() == 0)
         isNew = true;
     else
-    {
         for (int i = 0; i < ws.size(); i++)
-        {
             if ( !test.compare(ws[i].verbos[0]) )
             {
                 isNew = false;
                 index = i;
                 break;
             }
-        }
-    }
+
     return isNew;
 }
 
 
 string ordinal(int num)
 {
-  string ords[10] = { "th", "st", "nd", "rd", "th", \
+    string ords[10] = { "th", "st", "nd", "rd", "th", \
                       "th", "th", "th", "th", "th"};
-  std::stringstream ord;
-  ord << num << ords[num%10];
-  return ord.str();
+    std::stringstream ord;
+    ord << num << ords[num % 10];
+    return ord.str();
 }
 
-void printHelp(char * prog) // Have a 'help' stream?
+string printHelp(char * prog)
 {
-    cout << "Commandline language learner. Version something." << endl;
-    cout << "Kandy Software. Always wary." << endl;
-    cout << endl;
-    cout << "usage:" << endl;
-    cout << "  " << prog << " [options]" << endl;
-    cout << endl;
-    cout << "options:" << endl;
-    cout << "    -i <string>    input file name" << endl;
-    cout << "    -v             turn off verbose output" << endl;
-    cout << "    -l             list available dictionaries" << endl;
-    cout << "    -h             print out this help menu" << endl;
-    cout << "    -d             print debugging information to troubleshoot" << endl;
-    cout << endl;
+    std::stringstream help;
+    help << "Commandline language learner. Version something." << endl;
+    help << "Kandy Software. Always wary." << endl;
+    help << endl;
+    help << "usage:" << endl;
+    help << "  " << prog << " [options]" << endl;
+    help << endl;
+    help << "options:" << endl;
+    help << "    -i <string>    input file name" << endl;
+    help << "    -v             turn off verbose output" << endl;
+    help << "    -l             list available dictionaries" << endl;
+    help << "    -h             print out this help menu" << endl;
+    help << "    -d             print debugging information to troubleshoot" << endl;
+    help << endl;
+    return help.str();
 }
 
 int randIndex(int num)
@@ -207,10 +209,10 @@ int randIndex(int num)
     return (rand() % num);
 }
 
-double reaction(double time, int wrdsz)
+double reaction(double time, int numLttrs)
 {
     // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
-    double reactionTime = time - 0.28 * wrdsz;
+    double reactionTime = time - 0.28 * numLttrs;
     if (reactionTime < 0.0)
         reactionTime = 0.0;
     if (debug) cout << "reactionTime = " << reactionTime << endl;
@@ -232,7 +234,7 @@ int weightedIndex(wordData * data, int numEntries)
     vector<double> cumulative;
     std::partial_sum(&prob[0], &prob[0] + numEntries, \
                      std::back_inserter(cumulative));
-    if (debug) cout << "partial sum calculated" << endl;
+    if (debug) cout << "partial_sum() calculated" << endl;
     boost::uniform_real<> dist(0.0, cumulative.back());
     boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
     return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
@@ -240,8 +242,8 @@ int weightedIndex(wordData * data, int numEntries)
 
 string whitespace(int length)
 {
-  string whitespace;
-  for (int k = 0; k < length + 2; k++)
+    string whitespace;
+    for (int k = 0; k < length + 2; k++)
       whitespace += " ";
-  return whitespace;
+    return whitespace;
 }
