@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     //  strings.  This would be a lot easier to implement if the synonyms weren't
     //  a part of the design.
 
-//    vector< vector<string> > * answer = &(spen.verbs);
+//    vector< vector<string> > * answer = spen.verbs;
 //    vector< vector<string> > * question = &spen.verbos;
 
     /*****     Take optional input from command line     *****/
@@ -110,18 +110,15 @@ int main(int argc, char **argv)
         cout << endl;
     }
     wordData * wordy = new wordData[numEntries];
-    // Populate wordData arrays -- turn this into a class function somehow?
-    for (int i = 0; i < numEntries; i++)
+
+    for (int ii = 0; ii < numEntries; ii++)
     {
-        wordy[i].numAsked = 0;
-        wordy[i].percentRight = 0.0;
+        wordy[ii].populate(numEntries);
 
         // Find longest Spanish word for column spacing
-        if (spen[i].verbos[0].size() > lengthLongestWord)
-            lengthLongestWord = spen[i].verbos[0].size();
+        if (spen[ii].verbos[0].size() > lengthLongestWord)
+            lengthLongestWord = spen[ii].verbos[0].size();
     }
-    /*****     Initialize other things     *****/
-    populate(wordy,numEntries);
 
     cout << "Okay, it's all read in." << endl;
     if (debug) cout << "Number of entries = " << numEntries << endl;
