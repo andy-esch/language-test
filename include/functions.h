@@ -25,6 +25,7 @@
 
 #include "wordSet.h"
 #include "wordData.h"
+// Remove wordData.h if this goes through
 
 using std::cin;
 using std::cout;
@@ -44,5 +45,6 @@ string printHelp(char *);
 int randIndex(int);
 double reaction(double, int);
 int weightedIndex(wordData *, int);
+//int weightedIndex(wordSet *, int);
 string whitespace(int length);
 #endif

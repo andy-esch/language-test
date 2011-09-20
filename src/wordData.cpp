@@ -76,26 +76,37 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
     return weight;
 }
 
-void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
+//void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
+void wordData::updateProbs(int index, int numOfEntries, double weight, wordSet * ws)
 {   // Updates probabilities
-    double beta = 1.0 - weight * wordInfo[index].probability;
+//    double beta = 1.0 - weight * wordInfo[index].probability;
+    double beta = 1.0 - weight * ws[index].stats.probability;
     double alpha = beta + weight;
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != index )
-            wordInfo[ii].probability *= beta;
-        else
-            wordInfo[ii].probability *= alpha;
+//        if ( ii != index )
+//            wordInfo[ii].probability *= beta;
+//        else
+//            wordInfo[ii].probability *= alpha;
+
+         if ( ii != index )
+            spen[i].stats.probability *= beta;
+         else
+            spen[i].stats.probability *= alpha;
     }   
 }
 
+//void wordData::updateScore(int index, bool wrong, double timeDiff, \
+//                           int numOfEntries, wordData * wordInfo)
 void wordData::updateScore(int index, bool wrong, double timeDiff, \
-                           int numOfEntries, wordData * wordInfo)
+                           int numOfEntries, wordSet * ws)
 {
     // Update probabilities
+//    updateProbs(index, numOfEntries, \
+//                wordData::weight(wrong,timeDiff), wordInfo);
     updateProbs(index, numOfEntries, \
-                wordData::weight(wrong,timeDiff), wordInfo);
+                wordData::weight(wrong,timeDiff), ws);
 
     // Update number of individual queries of word
     numAsked++;
@@ -112,7 +123,9 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
     avgTime = reweight(numAsked,avgTime,timeDiff);
 }
 
-void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
+//void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
+//                           char typeOfHint, unsigned int numLetReqstd)
+void wordData::updateScore(int index, int numOfEntries, wordSet * ws, \
                            char typeOfHint, unsigned int numLetReqstd)
 { // This is the hints variant of this function
     updateProbs(index, numOfEntries, \

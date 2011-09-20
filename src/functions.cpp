@@ -221,6 +221,7 @@ double reaction(double time, int numLttrs)
 }
 
 int weightedIndex(wordData * data, int numEntries)
+//int weightedIndex(wordSet * ws, int numEntries)
 {
     extern boost::mt19937 gen;
     double prob[numEntries];
@@ -230,6 +231,7 @@ int weightedIndex(wordData * data, int numEntries)
         // structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
+//      prob[ii] = ws[ii].stats.probability;
 
     vector<double> cumulative;
     std::partial_sum(&prob[0], &prob[0] + numEntries, \

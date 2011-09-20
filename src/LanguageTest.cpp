@@ -111,7 +111,6 @@ int main(int argc, char **argv)
     /*****      Input Dictionary     *****/
     input(spen,&inFile[0]);
     numEntries = spen.size();
-
     if (debug) 
     {
         cout << "Summary of inputted contents: " << endl;
@@ -124,6 +123,7 @@ int main(int argc, char **argv)
     for (int ii = 0; ii < numEntries; ii++)
     {
         wordy[ii].populate(numEntries);
+//*        spen[ii].stats.populate(numEntries);
 
         // Find longest Spanish word for column spacing
         if (spen[ii].verbos[0].size() > lengthLongestWord)
@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 
     /*****      Language Quiz      *****/
     int i = weightedIndex(wordy, numEntries);
+//*     int i = weightedIndex(spen, numEntries);
     int jverbos = randIndex(spen[i].verbos.size());	// verbos index
 	int jverbs = randIndex(spen[i].verbs.size());	// verbs index
     while ( !cin.eof() )    // Should there be other conditions?
@@ -186,6 +187,8 @@ int main(int argc, char **argv)
                             }
                             wordy[i].updateScore(i, numEntries, \
                                                  wordy, 'l', incr);
+                            spen[i].stats.updateScore(i, numEntries, \
+                                                      
                         }
                         else if ( lHintNum >= verboSize )
                             cout << "You have the full word via hints!" << endl;

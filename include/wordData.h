@@ -12,6 +12,9 @@
 
 #include <cmath>
 #include <iostream>
+
+#include "wordSet.h"
+
 using std::cout;
 using std::endl;
 
@@ -24,13 +27,16 @@ public:
     float percentRight;
     float avgTime;
     double probability;
-    void updateScore(int, bool, double, int, wordData *);
-    void updateScore(int, int, wordData *, char, unsigned int=0);
+//    void updateScore(int, bool, double, int, wordData *);
+    void updateScore(int, bool, double, int, wordSet *);
+//    void updateScore(int, int, wordData *, char, unsigned int=0);
+    void updateScore(int, int, wordSet *, char, unsigned int=0);
     void populate(int);
 private:
     double reweight(int, double, double);
     double weight(bool, double);
     double weight(char, int, double);
-    void updateProbs(int, int, double, wordData *);
+//    void updateProbs(int, int, double, wordData *);
+    void updateProbs(int, int, double, wordSet *);
 };
 #endif // _WORDDATA_H_
