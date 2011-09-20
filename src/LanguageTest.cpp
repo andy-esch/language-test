@@ -14,7 +14,7 @@
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <cstdlib>
-#include <cstring>
+#include <string> // should be <string> instead?  used to be <cstring>
 #include <ctime>
 #include <iostream>
 #include <vector>
@@ -55,6 +55,10 @@ int main(int argc, char **argv)
     //  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
     //  strings.  This would be a lot easier to implement if the synonyms weren't
     //  a part of the design.
+	//  Update: We could copy the addresses of all the entries of verbs, say,
+	//   into an array, and the addresses of all the verbos into another array
+	//   and have those as question/answer arrays with more flexibility with
+	//   what is currently implemented... hmm...
 
 //    vector< vector<string> > * answer = spen.verbs;
 //    vector< vector<string> > * question = &spen.verbos;
@@ -126,13 +130,14 @@ int main(int argc, char **argv)
 
     /*****      Language Quiz      *****/
     int i = weightedIndex(wordy, numEntries);
-    int j = randIndex(spen[i].verbs.size());
+    int jverbos = randIndex(spen[i].verbos.size());	// verbos index
+	int jverbs = randIndex(spen[i].verbs.size());	// verbs index
     while ( !cin.eof() )    // Should there be other conditions?
     {
         bool showWordSize = false;
         int numOfTries = 1;
-        int verboSize = spen[i].verbos[j].size();
-        int verbSize  = spen[i].verbs[j].size();
+        int verboSize = spen[i].verbos[jverbos].size();
+        int verbSize  = spen[i].verbs[jverbs].size();
 
         if (debug)
         {
@@ -140,7 +145,7 @@ int main(int argc, char **argv)
             cout << "verboSize = " << verboSize << endl;
             cout << "New word: " << endl;
         }
-        cout << spen[i].verbs[j] << ": ";
+        cout << spen[i].verbs[jverbs] << ": ";
         while (!cin.eof() && isWrong)
         {
             timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
@@ -165,13 +170,13 @@ int main(int argc, char **argv)
                             lHintNum+=incr;
                             // If white space between current position and incremented position, increment hint
                             for (int ii = lHintNum-incr; ii < lHintNum; ii++)
-                                if (spen[i].verbos[j][ii] == ' ')
+                                if (spen[i].verbos[jverbos][ii] == ' ')
                                     lHintNum++;
                             
                             if (verbose)
                             {
                                 cout << "The " << ordinal(lHintNum);
-                                cout << " letter is '" << spen[i].verbos[j][lHintNum-1] << "'" << endl;
+                                cout << " letter is '" << spen[i].verbos[jverbos][lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numEntries, \
                                                  wordy, 'l', incr);
@@ -180,10 +185,10 @@ int main(int argc, char **argv)
                             cout << "You have the full word via hints!" << endl;
 
                         cout << hint(verbSize, showWordSize, \
-                                     verboSize, spen[i].verbos[j], lHintNum);
+                                     verboSize, spen[i].verbos[jverbos], lHintNum);
                         break;
                     case 'a':
-                        cout << "Answer: " << spen[i].verbos[j] << endl;
+                        cout << "Answer: " << spen[i].verbos[jverbos] << endl;
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = verboSize;
                         wordy[i].updateScore(i, numEntries, wordy, 'a');
@@ -191,7 +196,7 @@ int main(int argc, char **argv)
                     case 'n':
                         showWordSize = true;
                         cout << hint(verbSize, showWordSize, verboSize, \
-                                     spen[i].verbos[j], lHintNum);
+                                     spen[i].verbos[jverbos], lHintNum);
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
                         if (verbose)
                             cout << "Number of letters: " << verboSize << endl;
@@ -230,7 +235,7 @@ int main(int argc, char **argv)
                 // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
-                                              spen[i].verbos[j].size()), \
+                                              spen[i].verbos[jverbos].size()), \
                                      numEntries, wordy);
             }
 
@@ -240,7 +245,7 @@ int main(int argc, char **argv)
                 {
                     cout << hintOptions(verbSize);
                     cout << endl;
-                    cout << spen[i].verbs[j] << ": ";
+                    cout << spen[i].verbs[jverbs] << ": ";
                 }
                 else
                     cout << whitespace(verbSize);
@@ -260,8 +265,9 @@ int main(int argc, char **argv)
 
             i = weightedIndex(wordy,numEntries);
             if (debug) cout << "first index = " << i << endl;
-            j = randIndex(spen[i].verbs.size()); // This can continue to rely on the randIndex() function?
-            if (debug) cout << "second index = " << j << endl;
+            jverbos = randIndex(spen[i].verbos.size()); // This can continue to rely on the randIndex() function?
+			jverbs = randIndex(spen[i].verbs.size());
+            if (debug) cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
             isWrong = true;
             lHintNum = 0;
         }
