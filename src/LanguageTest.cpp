@@ -14,7 +14,7 @@
 #include <boost/random/uniform_real.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <cstdlib>
-#include <string> // should be <string> instead?  used to be <cstring>
+#include <string>
 #include <ctime>
 #include <iostream>
 #include <vector>
@@ -59,9 +59,14 @@ int main(int argc, char **argv)
 	//   into an array, and the addresses of all the verbos into another array
 	//   and have those as question/answer arrays with more flexibility with
 	//   what is currently implemented... hmm...
-
-//    vector< vector<string> > * answer = spen.verbs;
-//    vector< vector<string> > * question = &spen.verbos;
+	//  The following works roughly as expected, but only copies the first entry
+	//   in the array
+	//	string *answers[numEntries];
+	//	for (int kk = 0; kk < numEntries; kk++)
+	//	{
+	//		answers[kk] = &(spen[kk].verbos[0]);
+	//		cout << "answer " << kk << ": " << *answers[kk] << endl;
+	//	}
 
     /*****     Take optional input from command line     *****/
     while ( (c = getopt(argc, argv, ":i:vhdl")) != -1 )
@@ -106,6 +111,7 @@ int main(int argc, char **argv)
     /*****      Input Dictionary     *****/
     input(spen,&inFile[0]);
     numEntries = spen.size();
+
     if (debug) 
     {
         cout << "Summary of inputted contents: " << endl;
@@ -278,6 +284,6 @@ int main(int argc, char **argv)
 
     /*****      Close program      *****/
     delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?
-    
+
     return 0;
 }
