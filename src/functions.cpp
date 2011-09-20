@@ -178,19 +178,11 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 
 string ordinal(int num)
 {
-  string ords[10] = { "th", "st", "nd", "rd", "th", "th", "th", "th",	\
-		      "th", "th"};
+  string ords[10] = { "th", "st", "nd", "rd", "th", \
+                      "th", "th", "th", "th", "th"};
   std::stringstream ord;
   ord << num << ords[num%10];
   return ord.str();
-}
-
-
-void populate(wordData * prob, const int size)
-{
-    double invSize = 1.0 / static_cast<double> (size);
-    for (int i = 0; i < size; i++)
-        prob[i].probability = invSize;
 }
 
 void printHelp(char * prog) // Have a 'help' stream?

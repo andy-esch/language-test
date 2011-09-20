@@ -40,7 +40,6 @@ void input(vector<wordSet> &, char *);
 void insertWords(string, wordSet &,int);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
 string ordinal(int num);
-void populate(wordData *, const int);
 void printHelp(char *);
 int randIndex(int);
 double reaction(double, int);
