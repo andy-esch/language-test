@@ -49,7 +49,7 @@ int getTxtFiles(string dir, vector<string> &files)
         temp = string(dirp->d_name);
         if ( temp.size() > 4 )
         {
-            if ( !temp.compare(temp.size() - 3, 3, "txt") )
+            if ( !temp.compare(temp.size() - 3, 3, "txt") ) // Only store .txt files
                 files.push_back(temp);
         }
     }
@@ -67,16 +67,16 @@ int getTxtFiles(string dir, vector<string> &files)
                                     // output, which is fairly easy with strings
 string listDicts(void)
 { 
-    string dir = string("./vocab/"); // choose current directory
-    string temp;    // if no files are found
+    string dir = string("./vocab/");
+    string temp;
     vector<string> files = vector<string>();
     int numOfDicts = 1, dictPick;
     int retValue = getTxtFiles(dir,files);
 
     // If directory is not found -- do something different instead?
-    if ( retValue > 0 )
+    if ( retValue != 0 )
     {
-        cout << "Exiting program" << endl;
+        cout << "Exiting program." << endl;
         exit(0);
     }
 
@@ -104,10 +104,12 @@ string listDicts(void)
         cout << "No dictionaries found." << endl;
         cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;        
         cin >> temp;
-        files.push_back(temp);
-        dictPick = 1;   // ensures return value has correct form
+
         if ( cin.eof() || temp == "exit" )
             exit(0);
+
+        files.push_back(temp);
+        dictPick = 1;   // ensures return value has correct form
     }
 
     cin.clear();
