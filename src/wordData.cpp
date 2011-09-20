@@ -12,6 +12,14 @@
 
 extern bool debug;
 
+void wordData::populate(int size)
+{   // Populates wordData object to initialization values
+    numAsked = 0;
+    percentRight = 0.0;
+    avgTime = 0.0;
+    probability = 1.0 / static_cast<double> (size);
+}
+
 double wordData::weight(bool wrong, double diff)
 {   // weight for answering (non-hints)
     double weight;
@@ -107,7 +115,6 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
 void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
                            char typeOfHint, unsigned int numLetReqstd)
 { // This is the hints variant of this function
-    // Update probabilities
     updateProbs(index, numOfEntries, \
                 weight(typeOfHint,numLetReqstd,wordStats[index].probability), \
                 wordStats);

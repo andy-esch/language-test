@@ -15,15 +15,18 @@
 using std::cout;
 using std::endl;
 
-class wordData {
+class wordData
+{   // Is there such a thing as 'default class values'? like there are default
+    // parameter values for function arguments?  And if so, can they just be
+    // defined below, such as float var1 = 3.0?
 public:
     unsigned int numAsked;
     float percentRight;
     float avgTime;
     double probability;
-    unsigned int rank;
     void updateScore(int, bool, double, int, wordData *);
     void updateScore(int, int, wordData *, char, unsigned int=0);
+    void populate(int);
 private:
     double reweight(int, double, double);
     double weight(bool, double);
