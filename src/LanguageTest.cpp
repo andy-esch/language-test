@@ -89,7 +89,7 @@ int main(int argc, char **argv)
                 verbose = true;
                 break;
             case 'h': // Print usage info then exit
-                cout << printHelp(argv[0]);
+                cout << help(argv[0]);
                 exit(0);
             case 'd': // Show debug output info
                 debug = true;
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
                 break;
             default:
                 std::cerr << "Invalid commandline options." << endl;
-                printHelp(argv[0]);
+                help(argv[0]);
                 exit(0);
                 break;
         }

@@ -40,7 +40,7 @@ void input(vector<wordSet> &, char *);
 void insertWords(string, wordSet &,int);
 bool isnew(vector<wordSet> &, string, long unsigned int &);
 string ordinal(int num);
-string printHelp(char *);
+string help(char *);
 int randIndex(int);
 double reaction(double, int);
 int weightedIndex(wordData *, int);
