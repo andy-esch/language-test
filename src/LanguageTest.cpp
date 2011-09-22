@@ -21,7 +21,7 @@
 
 #include "wordData.h"
 #include "functions.h"
-#include "wordSet.h"
+#include "Flashcard.h"
 #include "listDicts.h"
 #include "testResults.h"
 
@@ -118,11 +118,11 @@ int main(int argc, char **argv)
             spen[ii].summarizeContents(ii);
         cout << endl;
     }
-    wordData * wordy = new wordData[numEntries];
+        //    wordData * wordy = new wordData[numEntries]; // No longer needed with new class definition
     // Populate wordData[]
     for (int ii = 0; ii < numEntries; ii++)
     {
-        wordy[ii].populate(numEntries);
+        wordy[ii].wordStats.populate(numEntries);
 //*        spen[ii].stats.populate(numEntries);
 
         // Find longest Spanish word for column spacing

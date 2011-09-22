@@ -8,8 +8,17 @@
  *
  */
 
-#include "wordData.h"
+#include "wordStats.h"
 
+
+wordStats::wordStats()  // Default constructor
+{
+    numAsked = 0;
+    percentRight = 0.0;
+    avgTime = 0.0;
+    probability = 0.0; // This needs to be changed to 1/numEntries
+}
+/*
 extern bool debug;
 
 void wordData::populate(int size)
@@ -138,3 +147,4 @@ double wordData::reweight(int num, double old, double newish)
     double nd = static_cast<double> (num);
     return ((nd - 1.0) * old + newish)/nd;
 }
+*/

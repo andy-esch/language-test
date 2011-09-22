@@ -1,5 +1,5 @@
 /*
- *  wordSet.cpp
+ *  Flashcard.cpp
  *  
  *  Description:
  *
@@ -8,9 +8,28 @@
  *
  */
 
-#include "wordSet.h"
+#include "Flashcard.h"
 
-void wordSet::summarizeContents(int index1)
+int main()
+{
+    Flashcard fl1;
+    std::cout << "Hi!" << std::endl;
+    
+    return 0;
+}
+
+string Flashcard::printLangOneWord(int i, int j)
+{
+    return langOneWord[i];
+}
+
+string Flashcard::printLangTwoWord(int i, int j)
+{
+    return langTwoWord[i];
+}
+
+/*
+void Flashcard::summarizeContents(int index1)
 {
     cout << "verbs: " << endl;
     for (int jj = 0; jj < verbs.size(); jj++)
@@ -22,8 +41,19 @@ void wordSet::summarizeContents(int index1)
     cout << endl;
 }
 
-void wordSet::clearWS()
+void Flashcard::clearWS(void)
 {
-    verbos.clear();
-    verbs.clear();
+    langOneWord.clear();
+    langTwoWord.clear();
 }
+
+string Flashcard::outputOne(int i)
+{
+    return langOneWord[i];
+}
+
+string Flashcard::outputTwo(int i)
+{
+    return langOneWord[i];
+}
+*/
