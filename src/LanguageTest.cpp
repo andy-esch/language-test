@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     srand(time(NULL));
     time_t timeStart, timeEnd;
     string temp;
-    char inFile[30];
+    char inFile[60];
     vector<wordSet> spen;
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
@@ -147,9 +147,13 @@ int main(int argc, char **argv)
 
         if (debug)
         {
+            cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
             cout << "verboSize = " << verboSize << endl;
-            cout << "verboSize = " << verboSize << endl;
+            cout << "verbSize = " << verbSize << endl;
+            cout << "cin is " << (cin.good()?"":"not so ") << "good" << endl;
+            cout << "cin = '" << cin.good() << "'" << endl;
             cout << "New word: " << endl;
+            
         }
         cout << spen[i].verbs[jverbs] << ": ";
         while (!cin.eof() && isWrong)
@@ -273,7 +277,6 @@ int main(int argc, char **argv)
             if (debug) cout << "first index = " << i << endl;
             jverbos = randIndex(spen[i].verbos.size()); // This can continue to rely on the randIndex() function?
 			jverbs = randIndex(spen[i].verbs.size());
-            if (debug) cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
             isWrong = true;
             lHintNum = 0;
         }
