@@ -148,10 +148,8 @@ int main(int argc, char **argv)
         if (debug)
         {
             cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
-            cout << "verboSize = " << verboSize << endl;
-            cout << "verbSize = " << verbSize << endl;
-            cout << "cin is " << (cin.good()?"":"not so ") << "good" << endl;
-            cout << "cin = '" << cin.good() << "'" << endl;
+            cout << "(verbSize, verboSize) = (" << verbSize << ", " << verboSize << ")" << endl;
+            cout << "cin is " << (cin.good()?"":"not so ") << "good (cin = '" << cin.good() << "')" << endl;
             cout << "New word: " << endl;
             
         }
@@ -161,6 +159,7 @@ int main(int argc, char **argv)
             timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
             getline(cin, temp);
             timeEnd = time(NULL);
+            if (debug) cout << "You entered: " << temp << endl;
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
             if ( temp[0] == '-' )   // This structure feels a bit kludgey
             {
@@ -198,7 +197,10 @@ int main(int argc, char **argv)
                                      verboSize, spen[i].verbos[jverbos], lHintNum);
                         break;
                     case 'a':
-                        cout << "Answer: " << spen[i].verbos[jverbos] << endl;
+                        cout << "Answer: " << spen[i].verbos[0];
+                        for (int ii = 1; ii < spen[i].verbos.size(); ii++)  // Print other possible answers
+                            cout << ", " << spen[i].verbos[ii];
+                        cout << endl;
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = verboSize;
                         wordy[i].updateScore(i, numEntries, wordy, 'a');
@@ -225,6 +227,21 @@ int main(int argc, char **argv)
                         if (verbose) cout << "You skipped a word." << endl;
                         wordy[i].updateScore(i, numEntries, wordy, 's');
                         isWrong = false;
+                        break;
+                    case 'y':
+                        /* The problem with this is that if they enter the synonym
+                           they are using a correct answer -- so getting an answer
+                           cheaply versus doing -a */
+                        if (spen[i].verbos.size() == 1)
+                            cout << "Sorry, no synonyms available for " << spen[i].verbs[jverbs] << endl;
+                        else
+                        {
+                            int synonymIndex = randIndex(spen[i].verbos.size());
+                            while (synonymIndex == jverbos)
+                                synonymIndex = randIndex(spen[i].verbos.size());
+                            cout << "Synonym: " << spen[i].verbos[synonymIndex] << endl;
+                        }
+                        wordy[i].updateScore(i, numEntries, wordy, 'y');
                         break;
                     case 'h':
                         cout << hintOptions(verbSize);
