@@ -7,3 +7,4 @@ la vaca	cow
 la culebra	snake
 el pez	fish
 la ballena	whale
+el cangrejo	crab

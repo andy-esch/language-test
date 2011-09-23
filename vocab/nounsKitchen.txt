@@ -6,13 +6,12 @@ el huevo	egg
 la fruta	fruit
 la manzana	apple
 la naranja	orange
-el platano	banana
+el plátano	banana
 la zanahoria	carrot
 la patata	potato
 la alubia	bean
 la carne de vaca,la carne	beef
 el chorizo	salami
-el cangrejo	crab
 el maíz	corn
 el pepino	cucumber
 la galleta	cookie
@@ -31,7 +30,7 @@ el cuchillo	knife
 el pastel	pie
 el pastel de manzana	apple pie
 el pastel de bodas	wedding cake
-pastel de cumpleaños	birthday cake
+el pastel de cumpleaños	birthday cake
 el horno	oven
 la sopa	soup
 la esponja	sponge
