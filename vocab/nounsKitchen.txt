@@ -15,7 +15,7 @@ el chorizo	salami
 el cangrejo	crab
 el maiz	corn
 el pepino	cucumber
-lata galleta	cookie
+la galleta	cookie
 el queso	cheese
 la cereza	cherry
 la coliflor	cauliflower
@@ -34,27 +34,24 @@ la sopa	soup
 la esponja	sponge
 la agua	water
 la cantimplora	water bottle
-la fresa	strawberry
+la fresa,la frutilla	strawberry
 la cuchara	spoon
 la sal	salt
 la olla	pot
 la nuez	nut
 la servilleta	napkin
 el horno microondas	microwave oven
-la comida	meal
+la comida	meal,food
 el almuerzo	lunch
 el regaliz	licorice
 el jugo	juice
 el pan de jengibre	gingerbread
-la comida	food
 la crema	cream
 el pollo	chicken
 la lata	can
 el desayuno	breakfast
 el tazon	bowl
-la zarzamora	blackberry
-la mora	blackberry
+la zarzamora,la mora	blackberry
 la uva	grape
 la limon	lemon
 el tomatillo	tomatillo
-la frutilla	strawberry
