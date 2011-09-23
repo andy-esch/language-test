@@ -239,10 +239,12 @@ int weightedIndex(wordData * data, int numEntries)
                          std::back_inserter(cumulative));
         if (debug) cout << "partial_sum() calculated" << endl;
         boost::uniform_real<> dist(0.0, cumulative.back());
-        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
-        currIndex = (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
+        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
+        currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
     } while (currIndex == lastIndex);
+
     lastIndex = currIndex;
+
     return currIndex;
 }
 
