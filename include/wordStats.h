@@ -1,19 +1,17 @@
 /*
- *  worddata.h
+ *  wordStats.h
  *  
- *  Description: class definition of worddata
+ *  Description: class definition of wordStats
  *
  *
  *  Created by Añdy Eschbacher on 9/11/11.
  *
  */
+
 #ifndef _WORDSTATS_H_
 #define _WORDSTATS_H_
-
 #include <cmath>
 #include <iostream>
-
-#include "Flashcard.h"
 
 using std::cout;
 using std::endl;
@@ -24,12 +22,25 @@ class wordStats
     float percentRight;
     float avgTime;
     double probability;
-//  double reweight(int, double, double);
-//  double weight(bool, double);
-//  double weight(char, int, double);
-/*public:
-*/
+public:
     wordStats();
-        //void populate(int); // Can this be part of the constructor?
+    void output(void);
 };
+
+wordStats::wordStats()  // Default constructor
+{
+    numAsked = 0;
+    percentRight = 0.0;
+    avgTime = 0.0;
+    probability = 0.0; // This needs to be changed to 1/numEntries
+}
+
+void wordStats::output(void)
+{
+    cout << "numAsked = " << numAsked << endl;
+    cout << "percentRight = " << percentRight << endl;
+    cout << "avgTime = " << avgTime << endl;
+    cout << "probability = " << probability << endl;
+}
+
 #endif // _WORDSTATS_H_
