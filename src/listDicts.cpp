@@ -16,21 +16,7 @@
  *  Created by Añdy Eschbacher on 9/13/11.
  *
  */
-
-
-#include <sys/types.h>
-#include <cstdlib>
-#include <dirent.h>
-#include <errno.h>
-#include <vector>
-#include <string>
-#include <iostream>
-
-using std::string;
-using std::vector;
-using std::cin;
-using std::cout;
-using std::endl;
+#include "listDicts.h"
 
 int getTxtFiles(string dir, vector<string> &files)
 {
@@ -72,6 +58,7 @@ string listDicts(void)
     vector<string> files = vector<string>();
     int numOfDicts = 1, dictPick;
     int retValue = getTxtFiles(dir,files);
+    int longestName = 0;
 
     // If directory is not found -- do something different instead?
     if ( retValue != 0 )
@@ -83,18 +70,22 @@ string listDicts(void)
     cout << endl;
     if ( files.size() > 0 ) // If files are found
     {
+        for (int ii = 0; ii < files.size(); ii++)
+            if (files[ii].size() > longestName)
+                longestName = files[ii].size();
+
         cout << "The following dictionaries are available: " << endl;
         cout << endl;
         for (unsigned int i = 0; i < files.size(); i++)
         {
             int strSize = files[i].size();
-            cout << '\t' << numOfDicts << ": " << files[i] << endl;
+            cout << '\t' << numOfDicts << ": " << files[i] << std::setw(longestName - files[i].size() + 4) << "(" << std::setw(3) << numberOfWords(dir+files[i]) << " words)" << endl;
             numOfDicts++;
         }
         cout << endl;
         cout << "Select a dictionary for more information.  Type 0 to exit." << endl;
         cin >> dictPick;
-        if ( cin.eof() || dictPick == 0 )
+        if ( cin.eof() || dictPick <= 0 || dictPick > files.size())
             exit(0);
     }
     else    // If files are not found
@@ -117,4 +108,26 @@ string listDicts(void)
 
     // returns full path of file, e.g. "./vocab/verbs.txt"
     return dir + files[dictPick - 1];
+}
+
+int numberOfWords(string fileName)
+{
+    ifstream inFile(fileName.c_str(),ifstream::in);
+    string temp;
+    int size = 0;
+    if ( inFile.is_open() )
+    {
+        while ( !inFile.eof() )
+        {
+            getline(inFile,temp);
+            size++;
+            temp.clear();
+        }
+        inFile.close();
+    }
+    else
+        cout << "could not open file" << endl;
+
+
+    return size;
 }
