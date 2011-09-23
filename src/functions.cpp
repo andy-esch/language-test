@@ -93,12 +93,19 @@ void input(vector<wordSet> & ws, char * inFile)
     while ( !infile.eof() )
     {
         getline(infile, temp1);
-        found = temp1.find("\t");                   // Find tab delimiter
-        if (found == string::npos || temp1 == "")   // Skip empty lines
+        found = temp1.find("\t");           // Find tab delimiter 
+        int delimWidth = 1;
+        if (temp1 == "")                    // Skip empty lines
             continue;
+        else if (found == string::npos)     // If there is no tab
+        {
+            found = temp1.find("    ");     // Look for four consecutive spaces
+            delimWidth = 4;
+        }
         temp2 = temp1;                      // Make a copy of the line read in
-        temp1.erase(0,found+1);             // Cut out one language
-        temp2.erase(found,temp1.size()+1);  // Cut out other language
+        temp1.erase(0,found + delimWidth);
+        temp2.erase(found,temp2.size() - found);
+
 
         // Insert words into tempset
         insertWords(temp1, tempset, 1);
