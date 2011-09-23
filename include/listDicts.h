@@ -26,6 +26,7 @@ using std::cout;
 using std::endl;
 using std::ios;
 using std::ifstream;
+using std::setw;
 
 int getTxtFiles(string, vector<string> &);
 //void listDicts(char[]);
