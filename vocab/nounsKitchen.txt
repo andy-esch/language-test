@@ -10,10 +10,10 @@ el platano	banana
 la zanahoria	carrot
 la patata	potato
 la alubia	bean
-la carne	beef
+la carne de vaca,la carne	beef
 el chorizo	salami
 el cangrejo	crab
-el maiz	corn
+el maíz	corn
 el pepino	cucumber
 la galleta	cookie
 el queso	cheese
@@ -24,34 +24,41 @@ la berenjena	eggplant
 el huevo frito	fried egg
 el tenedor	fork
 la miel	honey
-el perro caliente	hot dog
+el perrito caliente	hot dog
 la mermelada	jam
 la lima	lime
 el cuchillo	knife
 el pastel	pie
+el pastel de manzana	apple pie
+el pastel de bodas	wedding cake
+pastel de cumpleaños	birthday cake
 el horno	oven
 la sopa	soup
 la esponja	sponge
 la agua	water
 la cantimplora	water bottle
 la fresa,la frutilla	strawberry
-la cuchara	spoon
+la cuchara,la cucharada	spoon
 la sal	salt
-la olla	pot
-la nuez	nut
+la olla,la cacerola	pot
+la nuez	walnut
+el cacahuate	peanut
 la servilleta	napkin
 el horno microondas	microwave oven
 la comida	meal,food
-el almuerzo	lunch
+la bebida	drink
+la bebida alcohólica	alcoholic drink
+el almuerzo,la comida	lunch
 el regaliz	licorice
-el jugo	juice
-el pan de jengibre	gingerbread
-la crema	cream
+el jugo,el zumo	juice
+el pan de jengibre,la galleta de jengibre	gingerbread
+la crema,la nata	cream
 el pollo	chicken
 la lata	can
 el desayuno	breakfast
-el tazon	bowl
-la zarzamora,la mora	blackberry
+el tazón,el cuenco,el bol	bowl
+la zarzamora	blackberry bush
+la mora	blackberry
 la uva	grape
-la limon	lemon
+la limón	lemon
 el tomatillo	tomatillo
