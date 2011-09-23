@@ -222,6 +222,8 @@ double reaction(double time, int numLttrs)
 
 int weightedIndex(wordData * data, int numEntries)
 {
+    static int lastIndex;
+    int currIndex;
     extern boost::mt19937 gen;
     double prob[numEntries];
         // Copy probabilities to simple array so partial_sum() can use it.
@@ -230,14 +232,18 @@ int weightedIndex(wordData * data, int numEntries)
         // structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
-
-    vector<double> cumulative;
-    std::partial_sum(&prob[0], &prob[0] + numEntries, \
-                     std::back_inserter(cumulative));
-    if (debug) cout << "partial_sum() calculated" << endl;
-    boost::uniform_real<> dist(0.0, cumulative.back());
-    boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
-    return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
+    do
+    {
+        vector<double> cumulative;
+        std::partial_sum(&prob[0], &prob[0] + numEntries, \
+                         std::back_inserter(cumulative));
+        if (debug) cout << "partial_sum() calculated" << endl;
+        boost::uniform_real<> dist(0.0, cumulative.back());
+        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
+        currIndex = (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
+    } while (currIndex == lastIndex);
+    lastIndex = currIndex;
+    return currIndex;
 }
 
 string whitespace(int length)
