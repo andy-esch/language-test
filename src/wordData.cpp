@@ -66,6 +66,9 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
         case 'u':
                 // Not yet implemented -- for showing usage of word in question
             break;
+        case 'y':
+            weight = 0.025;
+            break;
         default:
             weight = 0.0; // no effect, shouldn't be triggered
             break;
