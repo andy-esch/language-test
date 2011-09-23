@@ -111,7 +111,7 @@ int numberOfWords(string fileName)
     int size = 0;
     if ( inFile.is_open() )
     {
-        while ( !inFile.eof() )
+        while ( !inFile.eof() )     // Have something to skip empty lines?
         {
             getline(inFile,temp);
             size++;
@@ -122,5 +122,5 @@ int numberOfWords(string fileName)
     else
         cout << "could not open file" << endl;
 
-    return size;
+    return size - 1;
 }
