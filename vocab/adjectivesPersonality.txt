@@ -1,11 +1,9 @@
 ambicioso	ambitious
 pesado	annoying
 discutidor	argumentative
-malhumorado	bad-tempered
-creído	big-headed
-engreído	big-headed
-de mala leche	bitchy
-venenoso	bitchy
+malhumorado	bad-tempered,bad tempered
+creído,engreído	big-headed,big headed
+de mala leche,venenoso	bitchy
 valiente	brave
 cascarrabias	cantankerous
 despreocupado	carefree
@@ -25,10 +23,10 @@ aburrido	boring
 coqueta	flirtatious
 simpático	friendly
 generoso	generous
-trabajador	hard-working
+trabajador	hard-working,hard working
 honesto	honest
 amable	kind
-tranquilo	laid-back
+tranquilo	laid-back,laid back
 vago	lazy
 fiel	loyal
 tacaño	mean
@@ -36,13 +34,13 @@ modesto	modest
 de humor cambiante	moody
 inocentón	naive
 travieso	naughty
-de actitud abierta	open-minded
-de mentalidad cerrada	narrow-minded
+de actitud abierta	open-minded,open minded
+de mentalidad cerrada	narrow-minded,narrow minded
 piadoso	pious
 cortés	polite
 orgulloso	proud
 fiable	reliable
-seguro de sí mismo	self-confident
+seguro de sí mismo	self-confident,self confident
 egoísta	selfish
 prudente	sensible
 sensible	sensitive
@@ -53,5 +51,5 @@ terco	stubborn
 comprensivo	sympathetic
 hablador	talkative
 digno de confianza	trustworthy
-falso	two-faced
+falso	two-faced,two faced
 raro	weird
