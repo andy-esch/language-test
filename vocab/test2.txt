@@ -1,0 +1,10 @@
+el aguacate    avocado
+el arroz    rice
+el tomate    tomato
+la pimienta    pepper
+el huevo    egg
+la fruta    fruit
+la manzana    apple
+la naranja    orange
+el plátano    banana
+la zanahoria    carrot
