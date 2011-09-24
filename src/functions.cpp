@@ -15,6 +15,16 @@
 
 extern bool debug;
 
+    //  To be used to verify if a given test has been passed
+    //  This is only a prototype
+bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
+{
+    bool passVar = ((numOfHints < (numEntries / 30)) && \
+                   (totalAvgTime < 2.0) && \
+                   (totalAvgPercent > 0.9));
+    return passVar;
+}
+
 // Mimics string compare -- returns 1 if there is no match
 bool compareAll(vector<string> & ws, string test)
 {
