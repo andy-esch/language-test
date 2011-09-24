@@ -25,6 +25,8 @@ class wordStats
 public:
     wordStats();
     void output(void);
+    void updateProb(int);
+    friend class Flashcard;
 };
 
 wordStats::wordStats()  // Default constructor
@@ -41,6 +43,11 @@ void wordStats::output(void)
     cout << "percentRight = " << percentRight << endl;
     cout << "avgTime = " << avgTime << endl;
     cout << "probability = " << probability << endl;
+}
+
+void wordStats::updateProb(int num)
+{
+     probability = 1.0 / static_cast<double> (num);
 }
 
 #endif // _WORDSTATS_H_

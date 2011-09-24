@@ -31,30 +31,33 @@ private:
 public:
     Flashcard();
     void output(void);
+    void set_prob(int);
+    void input(string, string);
+    void updateInfo(int);
 };
 
 Flashcard::Flashcard()
 {
-    langOneWord.push_back("sample1");
-    langTwoWord.push_back("sample2");
-    metaData = "This is the metadata.";
     wordData;
 }
 
 void Flashcard::output(void)
 {
-    cout << "langOneword: ";
-    for (int ii = 0; ii < langOneWord.size(); ii++)
-        cout << langOneWord[ii] << ' ';
-    cout << endl;
-
-    cout << "langTwoword: ";
-    for (int jj = 0; jj < langTwoWord.size(); jj++)
-        cout << langTwoWord[jj] << ' ';
-    cout << endl;
-
-    cout << "metaData: " << metaData << endl;
+    // Initialize wordStats values
     wordData.wordStats::output();
+    cout << "wordOne: " << langOneWord[0] << endl;
+    cout << "wordTwo: " << langTwoWord[0] << endl;
+}
+
+void Flashcard::input(string str1, string str2)
+{
+    langOneWord.push_back(str1);
+    langTwoWord.push_back(str2);
+}
+
+void Flashcard::updateInfo(int numEntries)
+{
+    wordData.updateProb(numEntries);
 }
 
 #endif // _FLASHCARD_H_
