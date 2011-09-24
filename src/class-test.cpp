@@ -26,17 +26,19 @@ int main(int argc, char **argv)
     Flashcard fl1;
     string str1("banksy"), str2("andy");
     int numEntries;
+
     for (int ii = 0; ii < 4; ii++)
     {
         fl1.input(str1,str2);
         cards.push_back(fl1);
-        str1 += "1";
-        str2 += "2";
+        str1 += "*";
+        str2 += "*";
+        fl1.clear();
     }
     numEntries = cards.size();
     for (int ii = 0; ii < numEntries; ii++)
     {
-        cards[ii].updateInfo(numEntries);
+        cards[ii].setInitialInfo(numEntries);
         cout << "Card " << ii+1 << ": " << endl;
         cards[ii].output();
         cout << "-------------------" << endl;

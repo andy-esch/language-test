@@ -10,6 +10,7 @@
 
 #ifndef _WORDSTATS_H_
 #define _WORDSTATS_H_
+
 #include <cmath>
 #include <iostream>
 
@@ -25,7 +26,7 @@ class wordStats
 public:
     wordStats();
     void output(void);
-    void updateProb(int);
+    void setInitProb(int);
     friend class Flashcard;
 };
 
@@ -45,7 +46,7 @@ void wordStats::output(void)
     cout << "probability = " << probability << endl;
 }
 
-void wordStats::updateProb(int num)
+void wordStats::setInitProb(int num)
 {
      probability = 1.0 / static_cast<double> (num);
 }

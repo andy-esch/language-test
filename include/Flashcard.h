@@ -10,7 +10,8 @@
 
 #ifndef _FLASHCARD_H_
 #define _FLASHCARD_H_
-#include <vector>
+
+#include <list>
 #include <string>
 #include <iostream>
 
@@ -24,16 +25,17 @@ using std::vector;
 class Flashcard
 {
 private:
-    vector<string> langOneWord;
-    vector<string> langTwoWord;
-    string  metaData;
+    list<string> langOneWord;
+    list<string> langTwoWord;
+    string  metaData;               // Can be: 
     wordStats wordData;
 public:
     Flashcard();
     void output(void);
     void set_prob(int);
     void input(string, string);
-    void updateInfo(int);
+    void clear(void);
+    void setInitialInfo(int);
 };
 
 Flashcard::Flashcard()
@@ -55,9 +57,15 @@ void Flashcard::input(string str1, string str2)
     langTwoWord.push_back(str2);
 }
 
-void Flashcard::updateInfo(int numEntries)
+void Flashcard::clear(void)
 {
-    wordData.updateProb(numEntries);
+    langOneWord.pop_back();
+    langTwoWord.pop_back();
+}
+
+void Flashcard::setInitialInfo(int numEntries)
+{
+    wordData.setInitProb(numEntries);
 }
 
 #endif // _FLASHCARD_H_
