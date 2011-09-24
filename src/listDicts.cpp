@@ -50,6 +50,7 @@ string listDicts(void)
 { 
     string dir("./vocab/"), dictPick;
     vector<string> files;
+    vector<string>::iterator iter;
     int numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
@@ -62,18 +63,20 @@ string listDicts(void)
     }
 
     cout << endl;
-    if ( files.size() > 0 ) // If files are found
+    if ( !files.empty() ) // If files are found
     {
-        for (int ii = 0; ii < files.size(); ii++)
-            if (files[ii].size() > longestName)
-                longestName = files[ii].size();
+        for (iter = files.begin(); iter != files.end(); ++iter)
+            if ((*iter).size() > longestName)
+                longestName = (*iter).size();
 
         cout << "The following dictionaries are available: " << endl;
         cout << endl;
-        for (unsigned int i = 0; i < files.size(); i++)
+        for (iter = files.begin(); iter != files.end(); ++iter)
         {
-            int strSize = files[i].size();
-            cout << '\t' << setw(2) << numOfDicts << ": " << files[i] << setw(longestName - files[i].size() + 9) << numberOfWords(dir+files[i]) << " words" << endl;
+            int strSize = (*iter).size();
+            cout << '\t' << setw(2) << numOfDicts << ": " << *iter << \
+            setw(longestName - (*iter).size() + 9) << numberOfWords(dir+*iter) \
+            << " words" << endl;
             numOfDicts++;
         }
         cout << endl;
@@ -81,7 +84,8 @@ string listDicts(void)
         cin >> dictPick;
         dictInt = atoi(&dictPick[0]);
         
-        if ( cin.eof() || dictInt <= 0 || dictInt > files.size() || dictPick == "exit" || dictPick == "quit")
+        if ( cin.eof() || dictInt <= 0 || dictInt > files.size() \
+            || dictPick == "exit" || dictPick == "quit")
             exit(0);
         else
             dictPick = dir + files[dictInt - 1];
