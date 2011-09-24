@@ -1,8 +1,14 @@
 /*
  *  Flashcard.h
  *  
- *  Description:
+ *  Description: I am experimenting with different STL container types.
+ *  
+ *  See: http://www.cplusplus.com/reference/stl/
+ *  or: http://www.sgi.com/tech/stl/Container.html
+ *  for more information.
  *
+ *  I'm wondering if multiset is the most ideal one?
+ *  http://www.cplusplus.com/reference/stl/multiset/
  *
  *  Created by Añdy Eschbacher on 9/11/11.
  *
@@ -11,7 +17,7 @@
 #ifndef _FLASHCARD_H_
 #define _FLASHCARD_H_
 
-#include <list>
+#include <set>
 #include <string>
 #include <iostream>
 
@@ -25,8 +31,8 @@ using std::vector;
 class Flashcard
 {
 private:
-    list<string> langOneWord;
-    list<string> langTwoWord;
+    set<string> langOneWord;
+    set<string> langTwoWord;
     string  metaData;               // Can be: 
     wordStats wordData;
 public:
@@ -53,8 +59,8 @@ void Flashcard::output(void)
 
 void Flashcard::input(string str1, string str2)
 {
-    langOneWord.push_back(str1);
-    langTwoWord.push_back(str2);
+    langOneWord.insert(str1);
+    langTwoWord.insert(str2);
 }
 
 void Flashcard::clear(void)
