@@ -11,6 +11,8 @@ OBJECTS = functions.o wordData.o wordSet.o listDicts.o testResults.o
 HEADERS = functions.h wordData.h wordSet.h listDicts.h testResults.h
 # ****************************************************
 
+mkcln: ltest clean
+
 ltest: LanguageTest.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o ltest
 
@@ -21,9 +23,10 @@ $(OBJECTS): %.o: %.cpp
 
 .PHONY: clean
 clean:
-ifneq ("$(shell ls | grep '.*\.o')","")
-	@echo "--->  Cleaning object files \n\t\c"
-	rm $(shell ls | grep ".*\.o")
-else
-	@echo "--->  No object files to remove"
-endif
+	rm $(OBJECTS)
+#ifneq ("$(shell ls | grep '.*\.o')","")
+#	@echo "--->  Cleaning object files \n\t\c"
+#	rm $(shell ls | grep ".*\.o")
+#else
+#	@echo "--->  No object files to remove"
+#endif
