@@ -33,7 +33,11 @@ class Flashcard
 private:
     set<string> langOneWord;
     set<string> langTwoWord;
-    string  metaData;               // Can be: 
+    string  metaData;               /* Can be: noun, verb, etc., or what else?
+                                       if it knows its a noun, it should know
+                                       that the article/gender should be used in
+                                       telling how right/wrong the answer is.
+                                     */ 
     wordStats wordData;
 public:
     Flashcard();
