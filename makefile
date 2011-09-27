@@ -23,7 +23,7 @@ $(OBJECTS): %.o: %.cpp
 
 .PHONY: clean
 clean:
-	rm $(OBJECTS)
+	rm $(OBJECTS) LanguageTest.o
 #ifneq ("$(shell ls | grep '.*\.o')","")
 #	@echo "--->  Cleaning object files \n\t\c"
 #	rm $(shell ls | grep ".*\.o")
