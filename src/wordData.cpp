@@ -81,27 +81,47 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
 
 void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
 {   // Updates probabilities
-    double beta = 1.0 - weight * wordInfo[index].probability;
-    double alpha = beta + weight;
+
+    double alpha = 1.0 + weight * (1.0 - wordInfo[index].probability);
+    double gamma = 1.0;
+    double probNumAskedIs0 = 0.0;
+    int numOfNumAskedIs0 = 0;
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
-        if ( ii != index )
+        if (wordInfo[ii].numAsked == 0)
+        {
+            probNumAskedIs0 += wordInfo[ii].probability;
+            numOfNumAskedIs0++;
+        }
+    }
+
+    cout << "probNumAskedIs0 = " << probNumAskedIs0 << endl;
+    cout << "numOfNumAskedIs0 = " << numOfNumAskedIs0 << endl;
+
+    double beta = (1.0 - gamma * probNumAskedIs0 - alpha * wordInfo[index].probability) / (1.0 - probNumAskedIs0 - wordInfo[index].probability);
+
+    for (int ii = 0; ii < numOfEntries; ii++)
+    {
+        if ( ii != index && wordInfo[ii].numAsked != 0)
             wordInfo[ii].probability *= beta;
+        else if ( ii != index && wordInfo[ii].numAsked == 0)
+            wordInfo[ii].probability *= gamma;
         else
             wordInfo[ii].probability *= alpha;
-    }   
+    }
+    cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
 }
 
 void wordData::updateScore(int index, bool wrong, double timeDiff, \
                            int numOfEntries, wordData * wordInfo)
 {
+    // Update number of individual queries of word
+    numAsked++;
+
     // Update probabilities
     updateProbs(index, numOfEntries, \
                 wordData::weight(wrong,timeDiff), wordInfo);
-
-    // Update number of individual queries of word
-    numAsked++;
 
     // Update scoring percentage
     if (numAsked == 1)
@@ -121,6 +141,15 @@ void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
     updateProbs(index, numOfEntries, \
                 weight(typeOfHint,numLetReqstd,wordStats[index].probability), \
                 wordStats);
+}
+
+double wordData::sumProbs(wordData * wordStats, int numOfEntries)
+{
+    double sum = 0.0;
+    for (int ii = 0; ii < numOfEntries; ii++)
+        sum += wordStats[ii].probability;
+
+    return sum;
 }
 
 double wordData::reweight(int num, double old, double newish)
