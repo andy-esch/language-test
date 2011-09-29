@@ -1,0 +1,40 @@
+bañarse	to bathe
+levantarse	to get up
+alegrarse	to be happy
+acostarse	to go to bed
+sorprenderse	to be surprised
+divertirse	to have a good time
+quebrarse	to break (arm, leg)
+lastimarse	to hurt oneself
+cepillarse	to brush (hair, teeth)
+decidirse	to make up one's mind
+quemarse	to burn (oneself, one's body)
+ponerse	to put on (clothes)
+calmarse	to calm down
+maquillarse	to put on makeup
+animarse	to cheer up
+pintarse	to put on makeup
+peinarse	to comb (hair)
+despedirse	to say goodbye to
+cortarse	to cut (hair, nails)
+afeitarse	to shave
+caerse	to fall (down)
+sentarse	to sit down
+dormirse	to fall asleep
+quedarse	to stay, remain
+colocarse	to get a job
+ducharse	to take a shower
+enojarse	to get angry
+quitarse	to take off (clothes)
+aburrirse	to get bored
+romperse	to tear (clothes) to break (arm, leg)
+vestirse	to get dressed
+probarse	to try on
+arreglarse	to get ready
+despertarse	to wake up
+asustarse	to get scared
+lavarse	to wash (up)
+enfermarse	to get sick
+preocuparse	to worry
+cansarse	to get tired
+ 	 
