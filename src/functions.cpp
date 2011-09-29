@@ -29,6 +29,15 @@ bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPerc
     return passVar;
 }
 
+float howWrongIsIt(string test, string compare)
+{
+    /* 
+     * This function will tell the user how wrong their word is if they so
+     * choose to know...  There are several ways to say how wrong they are, so
+     * I don't know how to start... AE
+     */
+    return 0.0;
+}
 
 vector<string> stripParentheses(vector<string> words)
 {

@@ -46,4 +46,5 @@ int randIndex(int);
 double reaction(double, int);
 int weightedIndex(wordData *, int);
 string whitespace(int length);
+float howWrongIsIt(string,string);
 #endif
