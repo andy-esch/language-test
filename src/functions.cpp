@@ -12,6 +12,10 @@
 // Header files are in functions.h -- not sure if this is good practice but it's
 //  how the all the other header files are here.  
 #include "functions.h"
+#include <string>
+using namespace std;
+//#include <boost/regex.hpp>
+//boost::regex re;
 
 extern bool debug;
 
@@ -24,6 +28,23 @@ bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPerc
                    (totalAvgPercent > 0.9));
     return passVar;
 }
+
+
+vector<string> stripParentheses(vector<string> words)
+{
+  vector<string> strippedWords;
+  string paren ("(");
+  string str;
+
+  for (int i=0; i< words.size(); i++)
+    {
+      str=words[i];
+      str.erase(str.begin()+str.find(paren),str.end()-0);
+      strippedWords[i] = str;
+    }
+  return strippedWords;
+}
+
 
 // Mimics string compare -- returns 1 if there is no match
 bool compareAll(vector<string> & ws, string test)
