@@ -87,6 +87,12 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
+
+
+
+
+
+
 string hint(int verbSize, bool knowWordSize, int verboSize, \
             string hintWord, int lHintNum)
 {
@@ -237,10 +243,10 @@ string ordinal(int num)
     return ord.str();
 }
 
-string printHelp(char * prog)
+string help(char * prog)
 {
     std::stringstream help;
-    help << "Commandline language learner. Version something." << endl;
+    help << "Commandline language learner. Version 1.0 Beta" << endl;
     help << "Kandy Software. Always wary." << endl;
     help << endl;
     help << "usage:" << endl;
