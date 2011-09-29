@@ -35,7 +35,6 @@ vector<string> stripParentheses(vector<string> words)
   vector<string> strippedWords;
   string paren ("(");
   string str;
-
   for (int i=0; i< words.size(); i++)
     {
       str=words[i];
@@ -44,6 +43,21 @@ vector<string> stripParentheses(vector<string> words)
     }
   return strippedWords;
 }
+
+
+// Mimics string compare -- returns 1 if there is no match
+bool isInvalidAnswer(string answer, vector<string> & ws)
+{
+    bool isWrong = false;
+    vector<string> strippedws = stripParentheses(ws);
+
+    for (int i = 0; i < ws.size(); i++)
+      if ( answer.compare(ws[i]) && answer.compare(strippedws[i]) )
+            isWrong = true;
+
+    return isWrong;
+}
+
 
 
 // Mimics string compare -- returns 1 if there is no match
