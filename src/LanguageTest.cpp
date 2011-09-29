@@ -41,8 +41,9 @@ int main(int argc, char **argv)
     srand(time(NULL));
     time_t timeStart, timeEnd;
     string temp;
-    char inFile[30];
-    vector<wordSet> spen;
+    char inFile[60];
+    vector<wordSet> cards;
+    vector<wordSet>::iterator spenit;  // Look into this as helping the q/a pointers
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
     bool verbose = false, isWrong = true;
@@ -109,14 +110,14 @@ int main(int argc, char **argv)
     }
 
     /*****      Input Dictionary     *****/
-    input(spen,&inFile[0]);
-    numEntries = spen.size();
+    input(cards,&inFile[0]);
+    numEntries = cards.size();
 
     if (debug) 
     {
         cout << "Summary of inputted contents: " << endl;
         for (int ii = 0; ii < numEntries; ii++)
-            spen[ii].summarizeContents(ii);
+            cards[ii].summarizeContents(ii);
         cout << endl;
     }
     wordData * wordy = new wordData[numEntries];
@@ -126,8 +127,8 @@ int main(int argc, char **argv)
         wordy[ii].populate(numEntries);
 
         // Find longest Spanish word for column spacing
-        if (spen[ii].verbos[0].size() > lengthLongestWord)
-            lengthLongestWord = spen[ii].verbos[0].size();
+        if (cards[ii].verbos[0].size() > lengthLongestWord)
+            lengthLongestWord = cards[ii].verbos[0].size();
     }
 
     cout << "Okay, it's all read in." << endl;
@@ -136,27 +137,30 @@ int main(int argc, char **argv)
 
     /*****      Language Quiz      *****/
     int i = weightedIndex(wordy, numEntries);
-    int jverbos = randIndex(spen[i].verbos.size());	// verbos index
-	int jverbs = randIndex(spen[i].verbs.size());	// verbs index
+    int jverbos = randIndex(cards[i].verbos.size());	// verbos index
+	int jverbs = randIndex(cards[i].verbs.size());	// verbs index
     while ( !cin.eof() )    // Should there be other conditions?
     {
         bool showWordSize = false;
         int numOfTries = 1;
-        int verboSize = spen[i].verbos[jverbos].size();
-        int verbSize  = spen[i].verbs[jverbs].size();
+        int verboSize = cards[i].verbos[jverbos].size();
+        int verbSize  = cards[i].verbs[jverbs].size();
 
         if (debug)
         {
-            cout << "verboSize = " << verboSize << endl;
-            cout << "verboSize = " << verboSize << endl;
+            cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
+            cout << "(verbSize, verboSize) = (" << verbSize << ", " << verboSize << ")" << endl;
+            cout << "cin is " << (cin.good()?"":"not so ") << "good (cin = '" << cin.good() << "')" << endl;
             cout << "New word: " << endl;
+            
         }
-        cout << spen[i].verbs[jverbs] << ": ";
+        cout << cards[i].verbs[jverbs] << ": ";
         while (!cin.eof() && isWrong)
         {
             timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
             getline(cin, temp);
             timeEnd = time(NULL);
+            if (debug) cout << "You entered: " << temp << endl;
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
             if ( temp[0] == '-' )   // This structure feels a bit kludgey
             {
@@ -176,13 +180,13 @@ int main(int argc, char **argv)
                             lHintNum+=incr;
                             // If white space between current position and incremented position, increment hint
                             for (int ii = lHintNum-incr; ii < lHintNum; ii++)
-                                if (spen[i].verbos[jverbos][ii] == ' ')
+                                if (cards[i].verbos[jverbos][ii] == ' ')
                                     lHintNum++;
                             
                             if (verbose)
                             {
                                 cout << "The " << ordinal(lHintNum);
-                                cout << " letter is '" << spen[i].verbos[jverbos][lHintNum-1] << "'" << endl;
+                                cout << " letter is '" << cards[i].verbos[jverbos][lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numEntries, \
                                                  wordy, 'l', incr);
@@ -191,10 +195,13 @@ int main(int argc, char **argv)
                             cout << "You have the full word via hints!" << endl;
 
                         cout << hint(verbSize, showWordSize, \
-                                     verboSize, spen[i].verbos[jverbos], lHintNum);
+                                     verboSize, cards[i].verbos[jverbos], lHintNum);
                         break;
                     case 'a':
-                        cout << "Answer: " << spen[i].verbos[jverbos] << endl;
+                        cout << "Answer: " << cards[i].verbos[0];
+                        for (int ii = 1; ii < cards[i].verbos.size(); ii++)  // Print other possible answers
+                            cout << ", " << cards[i].verbos[ii];
+                        cout << endl;
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = verboSize;
                         wordy[i].updateScore(i, numEntries, wordy, 'a');
@@ -202,7 +209,7 @@ int main(int argc, char **argv)
                     case 'n':
                         showWordSize = true;
                         cout << hint(verbSize, showWordSize, verboSize, \
-                                     spen[i].verbos[jverbos], lHintNum);
+                                     cards[i].verbos[jverbos], lHintNum);
                         wordy[i].updateScore(i, numEntries, wordy, 'n');
                         if (verbose)
                             cout << "Number of letters: " << verboSize << endl;
@@ -222,6 +229,21 @@ int main(int argc, char **argv)
                         wordy[i].updateScore(i, numEntries, wordy, 's');
                         isWrong = false;
                         break;
+                    case 'y':
+                        /* The problem with this is that if they enter the synonym
+                           they are using a correct answer -- so getting an answer
+                           cheaply versus doing -a */
+                        if (cards[i].verbos.size() == 1)
+                            cout << "Sorry, no synonyms available for " << cards[i].verbs[jverbs] << endl;
+                        else
+                        {
+                            int synonymIndex = randIndex(cards[i].verbos.size());
+                            while (synonymIndex == jverbos)
+                                synonymIndex = randIndex(cards[i].verbos.size());
+                            cout << "Synonym: " << cards[i].verbos[synonymIndex] << endl;
+                        }
+                        wordy[i].updateScore(i, numEntries, wordy, 'y');
+                        break;
                     case 'h':
                         cout << hintOptions(verbSize);
                         break;
@@ -234,14 +256,14 @@ int main(int argc, char **argv)
 
             if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here
             {                                       // if EOF or hint is given
-                isWrong = compareAll(spen[i].verbos, temp);
+                isWrong = compareAll(cards[i].verbos, temp);
                 if ( verbose ) cout << "You are " << \
                     (isWrong?"wrong, try again!":"right!") << endl;
 
                 // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
-                                              spen[i].verbos[jverbos].size()), \
+                                              cards[i].verbos[jverbos].size()), \
                                      numEntries, wordy);
             }
 
@@ -251,7 +273,7 @@ int main(int argc, char **argv)
                 {
                     cout << hintOptions(verbSize);
                     cout << endl;
-                    cout << spen[i].verbs[jverbs] << ": ";
+                    cout << cards[i].verbs[jverbs] << ": ";
                 }
                 else
                     cout << whitespace(verbSize);
@@ -264,23 +286,22 @@ int main(int argc, char **argv)
         {
             if ( verbose )
             {
-                cout << spen[i].verbos[0] << " has been asked " << wordy[i].numAsked << " times." << endl;
-                cout << "You have " << 100.0 * wordy[i].percentRight << "% on \"" << spen[i].verbos[0] << "\"." << endl;
+                cout << cards[i].verbos[0] << " has been asked " << wordy[i].numAsked << " times." << endl;
+                cout << "You have " << 100.0 * wordy[i].percentRight << "% on \"" << cards[i].verbos[0] << "\"." << endl;
                 cout << "With an average time of " << wordy[i].avgTime << "." << endl;
             }
 
             i = weightedIndex(wordy,numEntries);
             if (debug) cout << "first index = " << i << endl;
-            jverbos = randIndex(spen[i].verbos.size()); // This can continue to rely on the randIndex() function?
-			jverbs = randIndex(spen[i].verbs.size());
-            if (debug) cout << "second indices (jverbs, jverbos) = (" << jverbs << ", " << jverbos << ")" << endl;
+            jverbos = randIndex(cards[i].verbos.size()); // This can continue to rely on the randIndex() function?
+			jverbs = randIndex(cards[i].verbs.size());
             isWrong = true;
             lHintNum = 0;
         }
     }
 
     /*****      Summary of Results      ******/
-    testResults(spen,wordy,numEntries,lengthLongestWord,verbose);
+    testResults(cards,wordy,numEntries,lengthLongestWord,verbose);
 
     /*****      Close program      *****/
     delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?

@@ -8,7 +8,7 @@ comer	to eat
 ver	to see
 nadar	to swim
 tener	to have
-mirar	to look at
+mirar	to look at,to watch,to stare at
 usar	to wear
 saber	to know
 hacer	to do
@@ -36,3 +36,4 @@ escribir	to write
 salir	to leave
 gustar	to please
 decir	to tell
+poder	can,may

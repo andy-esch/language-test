@@ -1,3 +1,7 @@
-el arbol	tree
+el árbol	tree
 la hierba	grass
 el helecho	fern
+la zarzamora	blackberry bush
+el nogal	walnut tree
+el arce	maple tree
+el roble	oak tree

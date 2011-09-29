@@ -33,6 +33,7 @@ using std::ifstream;
 using std::string;
 using std::vector;
 
+bool pass(int, int, float, float);
 bool compareAll(vector<string> &, string);
 string hintOptions(int);
 string hint(int, bool, int, string, int);

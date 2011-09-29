@@ -15,6 +15,16 @@
 
 extern bool debug;
 
+    //  To be used to verify if a given test has been passed
+    //  This is only a prototype
+bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
+{
+    bool passVar = ((numOfHints < (numEntries / 30)) && \
+                   (totalAvgTime < 2.0) && \
+                   (totalAvgPercent > 0.9));
+    return passVar;
+}
+
 // Mimics string compare -- returns 1 if there is no match
 bool compareAll(vector<string> & ws, string test)
 {
@@ -99,12 +109,19 @@ void input(vector<wordSet> & ws, char * inFile)
     while ( !infile.eof() )
     {
         getline(infile, temp1);
-        found = temp1.find("\t");                   // Find tab delimiter
-        if (found == string::npos || temp1 == "")   // Skip empty lines
+        found = temp1.find("\t");           // Find tab delimiter 
+        int delimWidth = 1;
+        if (temp1 == "")                    // Skip empty lines
             continue;
+        else if (found == string::npos)     // If there is no tab
+        {
+            found = temp1.find("    ");     // Look for four consecutive spaces
+            delimWidth = 4;
+        }
         temp2 = temp1;                      // Make a copy of the line read in
-        temp1.erase(0,found+1);             // Cut out one language
-        temp2.erase(found,temp1.size()+1);  // Cut out other language
+        temp1.erase(0,found + delimWidth);
+        temp2.erase(found,temp2.size() - found);
+
 
         // Insert words into tempset
         insertWords(temp1, tempset, 1);
@@ -228,6 +245,8 @@ double reaction(double time, int numLttrs)
 
 int weightedIndex(wordData * data, int numEntries)
 {
+    static int lastIndex;
+    int currIndex;
     extern boost::mt19937 gen;
     double prob[numEntries];
         // Copy probabilities to simple array so partial_sum() can use it.
@@ -236,14 +255,20 @@ int weightedIndex(wordData * data, int numEntries)
         // structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
+    do
+    {
+        vector<double> cumulative;
+        std::partial_sum(&prob[0], &prob[0] + numEntries, \
+                         std::back_inserter(cumulative));
+        if (debug) cout << "partial_sum() calculated" << endl;
+        boost::uniform_real<> dist(0.0, cumulative.back());
+        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
+        currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
+    } while (currIndex == lastIndex);
 
-    vector<double> cumulative;
-    std::partial_sum(&prob[0], &prob[0] + numEntries, \
-                     std::back_inserter(cumulative));
-    if (debug) cout << "partial_sum() calculated" << endl;
-    boost::uniform_real<> dist(0.0, cumulative.back());
-    boost::variate_generator<boost::mt19937&, boost::uniform_real<> > die(gen, dist);
-    return (std::lower_bound(cumulative.begin(), cumulative.end(), die()) - cumulative.begin());
+    lastIndex = currIndex;
+
+    return currIndex;
 }
 
 string whitespace(int length)
