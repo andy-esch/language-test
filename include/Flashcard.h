@@ -17,7 +17,7 @@
 #ifndef _FLASHCARD_H_
 #define _FLASHCARD_H_
 
-#include <set>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -31,8 +31,8 @@ using std::vector;
 class Flashcard
 {
 private:
-    set<string> langOneWord;
-    set<string> langTwoWord;
+    vector<string> langOneWord;
+    vector<string> langTwoWord;
     string  metaData;               /* Can be: noun, verb, etc., or what else?
                                        if it knows its a noun, it should know
                                        that the article/gender should be used in
@@ -63,14 +63,14 @@ void Flashcard::output(void)
 
 void Flashcard::input(string str1, string str2)
 {
-    langOneWord.insert(str1);
-    langTwoWord.insert(str2);
+    langOneWord.push_back(str1);
+    langTwoWord.push_back(str2);
 }
 
 void Flashcard::clear(void)
 {
-    langOneWord.pop_back();
-    langTwoWord.pop_back();
+    langOneWord.clear();
+    langTwoWord.clear();
 }
 
 void Flashcard::setInitialInfo(int numEntries)

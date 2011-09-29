@@ -23,6 +23,7 @@ using std::vector;
 int main(int argc, char **argv)
 {
     vector<Flashcard> cards;
+    vector<Flashcard>::iterator it;
     Flashcard fl1;
     string str1("banksy"), str2("andy");
     int numEntries;
@@ -36,11 +37,12 @@ int main(int argc, char **argv)
         fl1.clear();
     }
     numEntries = cards.size();
-    for (int ii = 0; ii < numEntries; ii++)
+    for (it = cards.begin(); it != cards.end(); it++)
     {
-        cards[ii].setInitialInfo(numEntries);
-        cout << "Card " << ii+1 << ": " << endl;
-        cards[ii].output();
+        static int ii = 0;
+        it->setInitialInfo(numEntries);
+        cout << "Card " << ii++ << ": " << endl;
+        it->output();
         cout << "-------------------" << endl;
     }
     
