@@ -107,7 +107,7 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
             wordInfo[ii].probability *= beta;
         else if ( ii != index && wordInfo[ii].numAsked == 0)
             wordInfo[ii].probability *= gamma;
-        else
+        else if ( ii == index )
             wordInfo[ii].probability *= alpha;
     }
     cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
