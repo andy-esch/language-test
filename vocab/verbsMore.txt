@@ -22,11 +22,8 @@ correr	to run
 cortar	to cut
 creer	to believe
 dañar	to hurt
-dar	to donate
-dar	to give
-decir	to say
-decir	to tell
-decir	to tell
+dar	to donate,to give
+decir	to say,to tell
 deletrear	to spell
 despertar	to wake up
 dibujar	to draw
@@ -49,10 +46,8 @@ formar	to form
 fumar	to smoke
 gastar	to spend
 gustar	to please
-hablar	to speak
-hablar	to talk
-hacer	to do
-hacer	to make
+hablar	to speak,to talk
+hacer	to do,to make
 intentar	to try
 ir	to go
 jugar	to play
@@ -61,9 +56,7 @@ limpiar	to clean
 llegar	to arrive
 llenar	to fill
 llover	to rain
-mirar	to look
-mirar	to look at
-mirar	to watch
+mirar	to look,to look at,to watch
 nadar	to swim
 necesitar	to need
 oir	to hear
@@ -88,10 +81,8 @@ reparar	to fix
 responder	to reply
 romper	to break
 saber	to know
-saber	to know
 marcharse	to leave
-salir	to exit
-salir	to leave
+salir	to exit,to leave
 saltar	to jump
 sentarse	to sit
 tener exito	to succeed
@@ -104,7 +95,6 @@ traducir	to translate
 traer	to bring
 usar	to wear
 utilizar	to use
-vender to sell
 vender	to sell
 venir	to come
 ver	to see
