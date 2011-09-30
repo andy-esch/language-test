@@ -11,7 +11,7 @@
 #include "functions.h"
 
 //#include <boost/regex.hpp>
-//boost::regex re;              // If you need re, do you want to declare it in the function instead?
+//boost::regex re;
 
 extern bool debug;
 
@@ -65,7 +65,7 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
     vector<string> strippedws = stripParentheses(ws);
 
     for (int i = 0; i < strippedws.size(); i++)
-        if ( answer.compare(ws[i]) && answer.compare(strippedws[i]) )     // Should this be an OR instead of AND?
+        if ( answer.compare(ws[i]) && answer.compare(strippedws[i]))
             isWrong = true;
 
     return isWrong;
@@ -127,16 +127,19 @@ void input(vector<wordSet> & ws, char * inFile)
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
-    size_t found;
+    size_t found = string::npos;
     ifstream infile(inFile,ifstream::in);
     wordSet tempset;
+    int lineNum = 1, delimWidth = 1;
+    string delimiters[] = {"\t","    ","   ","  "};
 
-    while (!infile.is_open())
+    while ( !infile.is_open() )
     {
         if (debug) cout << "in input()" << endl;
         cout << "File '" << inFile << "' does not exist as specified." << endl;
         cout << "Enter another filename (or 'exit' to exit): ";
         cin >> inFile;
+
         if (cin.eof() || !strcmp(inFile,"exit") || !strcmp(inFile,"'exit'"))
         {
             cout << endl;
@@ -149,24 +152,49 @@ void input(vector<wordSet> & ws, char * inFile)
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     while ( !infile.eof() )
     {
-        getline(infile, temp1);
-        found = temp1.find("\t");           // Find tab delimiter 
-        int delimWidth = 1;
+        getline(infile, temp1);             // Read in line from file
+
         if (temp1 == "")                    // Skip empty lines
             continue;
-        else if (found == string::npos)     // If there is no tab
-        {
-            found = temp1.find("    ");     // Look for four consecutive spaces
-            delimWidth = 4;
-        }
-        temp2 = temp1;                      // Make a copy of the line read in
-        temp1.erase(0,found + delimWidth);
-        temp2.erase(found,temp2.size() - found);
 
+        for (int ii = 0; ii < 4 && found == string::npos; ii++)
+        {
+            found = temp1.find(delimiters[ii]);
+            delimWidth = delimiters[ii].size();
+        }
+
+        if (found == string::npos) // If none of the delims are found, go to next word
+        {
+            cout << "Skipping: '" << temp1 << "'" << endl;
+            temp1.clear();
+            continue;
+        }
+
+        temp2 = temp1;                      // Make a copy of the line read in
+
+        try // This my be redundant with previous if statement
+        {
+            temp1.erase(0,found + delimWidth);
+            temp2.erase(found,temp2.size() - found);
+        }
+        catch (std::out_of_range &e)
+        {
+            std::cerr << "Caught: '" << e.what() << "' on line " << lineNum << endl;
+            std::cerr << "Type: " << typeid(e).name() << endl;
+            std::cerr << "Not inputting '" << temp1 << "'" << endl;
+            continue;
+        }
+        catch ( std::exception &e )
+        {
+            std::cerr << "Caught: " << e.what() << endl;
+            std::cerr << "Type: " << typeid(e).name() << endl;
+            continue;
+        }
 
         // Insert words into tempset
         insertWords(temp1, tempset, 1);
         insertWords(temp2, tempset, 2);
+
         // Put tempset into wordSet vector
         ws.push_back(tempset);
 
@@ -174,7 +202,11 @@ void input(vector<wordSet> & ws, char * inFile)
         tempset.clearWS();
         temp1.clear();
         temp2.clear();
+        found = string::npos;
+
+        lineNum++;
     }
+    cout << endl;
 
     infile.close();
 }
@@ -294,9 +326,9 @@ int weightedIndex(wordData * data, int numEntries)
     extern boost::mt19937 gen;
     double prob[numEntries];
         // Copy probabilities to simple array so partial_sum() can use it.
-        // It's possible that this step isn't necessary but I cannot figure out a
-        // way to use consecutive pointers in the partial_sum() function for the
-        // structure data[ii].probability
+        // It's possible that this step isn't necessary but I cannot figure out
+        // a way to use consecutive pointers in the partial_sum() function for
+        // the structure data[ii].probability
     for (int ii = 0; ii < numEntries; ii++)
         prob[ii] = data[ii].probability;
     do
@@ -322,3 +354,15 @@ string whitespace(int length)
         whitespace += " ";
     return whitespace;
 }
+
+string goodbye(void)
+{
+    string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
+                         "Adieu", "Ciao", "Tchüss", "Au revoir",
+                         "Namaste"};
+        // What do you think?  Should those be in a file instead?
+
+    return goodbyes[randIndex(9)] + "!";
+}
+
+

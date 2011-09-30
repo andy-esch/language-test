@@ -16,11 +16,12 @@
 #include <boost/random/variate_generator.hpp>
 #include <algorithm>
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <numeric>
 #include <sstream>
 #include <string>
+#include <typeinfo>
 #include <vector>
 
 #include "wordSet.h"
@@ -48,4 +49,5 @@ double reaction(double, int);
 int weightedIndex(wordData *, int);
 string whitespace(int length);
 float howWrongIsIt(string,string);
+string goodbye(void);
 #endif
