@@ -10,4 +10,6 @@
 
 #include "account.h"
 
-void accountExporter(string name, 
+void accountExporter(string name);
+
+void output();
