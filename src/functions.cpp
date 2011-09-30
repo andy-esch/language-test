@@ -42,17 +42,20 @@ float howWrongIsIt(string test, string compare)
 }
 
 vector<string> stripParentheses(vector<string> words)
-{
-    vector<string> strippedWords;
+{ 
+  std::cout << "in stripParentheses!";
+  vector<string> strippedWords;
+  vector<string>::iterator it;
     string paren (" ("), str;
+    std::cout << "in stripParentheses, before for loop";
 
-    for (int i = 0; i < words.size(); i++)
+    for (it=words.begin(); it!=words.end(); it++)
     {
-        str = words[i];
+      std::cout << "in for loop";
+        str = *it;
         str.erase(str.begin() + str.find(paren), str.end() - 0);
-        strippedWords[i] = str;
+        strippedWords[*it] = str;
     }
-
     return strippedWords;
 }
 
@@ -60,12 +63,19 @@ vector<string> stripParentheses(vector<string> words)
 // Mimics string compare -- returns 1 if there is no match
 bool isInvalidAnswer(string answer, vector<string> & ws)
 {
-    bool isWrong = false;
+    std::cout << "about to strip parentheses!";
     vector<string> strippedws = stripParentheses(ws);
+    std::cout << "stripped parentheses!";
+    bool isWrong = true;
+    vector<string>::iterator it;
 
-    for (int i = 0; i < strippedws.size(); i++)
-        if ( answer.compare(ws[i]) && answer.compare(strippedws[i]) )     // Should this be an OR instead of AND?
-            isWrong = true;
+    for (it = ws.begin(); it != ws.end(); it++)
+        if ( !answer.compare(*it) )
+            isWrong = false;
+
+    for (it = strippedws.begin(); it !=strippedws.end(); it++)
+        if ( !answer.compare(*it) )
+            isWrong = false;
 
     return isWrong;
 }
