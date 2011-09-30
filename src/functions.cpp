@@ -44,7 +44,7 @@ float howWrongIsIt(string test, string compare)
 vector<string> stripParentheses(vector<string> words)
 {
     vector<string> strippedWords;
-    string paren ("("), str;
+    string paren (" ("), str;
 
     for (int i = 0; i < words.size(); i++)
     {

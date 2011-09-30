@@ -36,6 +36,7 @@ using std::vector;
 
 bool pass(int, int, float, float);
 bool compareAll(vector<string> &, string);
+bool isInvalidAnswer(string, vector<string> &);
 string hintOptions(int);
 string hint(int, bool, int, string, int);
 void input(vector<wordSet> &, char *);

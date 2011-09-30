@@ -256,7 +256,7 @@ int main(int argc, char **argv)
 
             if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here
             {                                       // if EOF or hint is given
-                isWrong = compareAll(cards[i].verbos, temp);
+	      isWrong = isInvalidAnswer(temp,cards[i].verbos);
                 if ( verbose ) cout << "You are " << \
                     (isWrong?"wrong, try again!":"right!") << endl;
 
