@@ -8,19 +8,14 @@
  *
  */
 
-
-// Header files are in functions.h -- not sure if this is good practice but it's
-//  how the all the other header files are here.  
 #include "functions.h"
 #include <string>
 using namespace std;
-//#include <boost/regex.hpp>
-//boost::regex re;
 
 extern bool debug;
 
-    //  To be used to verify if a given test has been passed
-    //  This is only a prototype
+//  To be used to verify if a given test has been passed
+//  This is only a prototype
 bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
 {
     bool passVar = ((numOfHints < (numEntries / 30)) && \
@@ -29,19 +24,36 @@ bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPerc
     return passVar;
 }
 
+float howWrongIsIt(string test, string compare)
+{
+    /* 
+     * This function will tell the user how wrong their word is if they so
+     * choose to know...  There are several ways to say how wrong they are, so
+     * I don't know how to start... AE
+     * Ideas:
+     *  - percentage of correct letters? - but in correct order?
+     *  - choosing similiar consonant?  b instead of p, etc.
+     *  - chose correct gender
+     *  - etc.
+     *
+     *  I think there must be a good algorithm out there we can use
+     */
+    return 0.0;
+}
 
 vector<string> stripParentheses(vector<string> words)
 {
-  vector<string> strippedWords;
-  string paren ("(");
-  string str;
-  for (int i=0; i< words.size(); i++)
+    vector<string> strippedWords;
+    string paren ("("), str;
+
+    for (int i = 0; i < words.size(); i++)
     {
-      str=words[i];
-      str.erase(str.begin()+str.find(paren),str.end()-0);
-      strippedWords[i] = str;
+        str = words[i];
+        str.erase(str.begin() + str.find(paren), str.end() - 0);
+        strippedWords[i] = str;
     }
-  return strippedWords;
+
+    return strippedWords;
 }
 
 
@@ -51,30 +63,29 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
     bool isWrong = false;
     vector<string> strippedws = stripParentheses(ws);
 
-    for (int i = 0; i < ws.size(); i++)
-      if ( answer.compare(ws[i]) && answer.compare(strippedws[i]) )
+    for (int i = 0; i < strippedws.size(); i++)
+        if ( answer.compare(ws[i]) && answer.compare(strippedws[i]) )     // Should this be an OR instead of AND?
             isWrong = true;
 
     return isWrong;
 }
 
-
-
 // Mimics string compare -- returns 1 if there is no match
 bool compareAll(vector<string> & ws, string test)
 {
-    bool isWrong = true;
+    bool isWrong = false;
+    vector<string>::iterator it;
 
-    for (int i = 0; i < ws.size(); i++)
-        if ( !test.compare(ws[i]) )
-            isWrong = false;
+    for (it = ws.begin(); it != ws.end(); it++)
+        if ( test.compare( *it ) )
+            isWrong = true;
 
     return isWrong;
 }
 
 string hintOptions(int leftmargin)
 {
-    std::stringstream hint;
+    stringstream hint;
     hint << '\a' << endl; // Ring system bell
     hint << whitespace(leftmargin) << "Want a letter?  Type '-l'." << endl;
     hint << whitespace(leftmargin) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
@@ -87,16 +98,10 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
-
-
-
-
-
-
 string hint(int verbSize, bool knowWordSize, int verboSize, \
             string hintWord, int lHintNum)
 {
-    std::stringstream hint;
+    stringstream hint;
     hint << whitespace(verbSize-3) << "-> ";
     for (int jj = 0; jj < verboSize; jj++)
     {
@@ -164,7 +169,7 @@ void input(vector<wordSet> & ws, char * inFile)
         // Put tempset into wordSet vector
         ws.push_back(tempset);
 
-        // Clean variables for next time through
+        // Clear variables for next time through
         tempset.clearWS();
         temp1.clear();
         temp2.clear();
@@ -175,12 +180,9 @@ void input(vector<wordSet> & ws, char * inFile)
 
 void insertWords(string words, wordSet & tempset, int step)
 {
-    // debug things are temporarily here until we're sure of stability of input()
-
-    // the below algorithm could be replaced by a do { } while ( ) statement
-    // if the comma-erasing is moved to the beginning... but this is non-crucial
     size_t found;
     if (debug) cout << "words are: '" << words << "'" << endl;
+
     while ( words.find(",") != string::npos )   // while comma is found
     {
         found = words.rfind(",");
@@ -196,10 +198,14 @@ void insertWords(string words, wordSet & tempset, int step)
                 if (debug) cout << "case : " << step << endl;
                 tempset.verbos.push_back(tempWord);
                 break;
+            default:
+                break; // What should we do for this case?
         }
         words.erase(found);
     }
+
     if (debug) cout << "New word: " << words << endl;
+
     switch (step)   // Otherwise catch non-comma case
     {
         case 1:
@@ -210,6 +216,8 @@ void insertWords(string words, wordSet & tempset, int step)
             if (debug) cout << "case : " << step << endl;
             tempset.verbos.push_back(words);
             break;
+        default:
+            break;  // What should we do for this case?
     }
 }
 
@@ -237,15 +245,15 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
 string ordinal(int num)
 {
     string ords[10] = { "th", "st", "nd", "rd", "th", \
-                      "th", "th", "th", "th", "th"};
-    std::stringstream ord;
+                        "th", "th", "th", "th", "th"};
+    stringstream ord;
     ord << num << ords[num % 10];
     return ord.str();
 }
 
 string help(char * prog)
 {
-    std::stringstream help;
+    stringstream help;
     help << "Commandline language learner. Version 1.0 Beta" << endl;
     help << "Kandy Software. Always wary." << endl;
     help << endl;
@@ -310,6 +318,6 @@ string whitespace(int length)
 {
     string whitespace;
     for (int k = 0; k < length + 2; k++)
-      whitespace += " ";
+        whitespace += " ";
     return whitespace;
 }
