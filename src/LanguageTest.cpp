@@ -37,6 +37,15 @@ bool debug = false;
 
 int main(int argc, char **argv)
 {
+
+  string mystr[] = {"hello (world)", "I am well (cooked)"};
+  string testans = "I am well (uncooked)";
+  vector<string> testparen (mystr, mystr + sizeof(mystr) / sizeof(string) );
+  bool testisWrong = isInvalidAnswer(testans,testparen);
+  if(testisWrong)
+    std::cout << "******Incorrecto!**********";
+  else std::cout << "******Correcto!**********";
+
     /*****        Initialize Variables        *****/
     srand(time(NULL));
     time_t timeStart, timeEnd;

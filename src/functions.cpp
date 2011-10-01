@@ -43,29 +43,35 @@ float howWrongIsIt(string test, string compare)
 
 vector<string> stripParentheses(vector<string> words)
 { 
-  std::cout << "in stripParentheses!";
-  vector<string> strippedWords;
-  vector<string>::iterator it;
-    string paren (" ("), str;
-    std::cout << "in stripParentheses, before for loop";
+  std::cout << "\nMake copy of vector";
+  vector<string> strippedWords = words;
+  std::cout << "\nnew vector is size "<<int (strippedWords.size());
+  string paren (" ("), str;
+  std::cout << "\nBefore for loop.  size of words vector is "<< int (words.size());
+  size_t it;
 
-    for (it=words.begin(); it!=words.end(); it++)
-    {
-      std::cout << "in for loop";
-        str = *it;
-        str.erase(str.begin() + str.find(paren), str.end() - 0);
-        strippedWords[*it] = str;
+  for (int i=0;i<words.size();i++)
+     {
+       str=strippedWords[i];
+       std::cout << "\nin for loop, word before stripping:" << str;
+       it=str.find(paren);
+       std::cout << "\nconstruct iterator";// << *it;
+       str.erase(str.begin() 
+			      + str.find(paren), 
+			      str.end() - 0);
+       strippedWords[i]=str;
+      std::cout << "\nstripped word:" << strippedWords[i];
     }
-    return strippedWords;
+  return strippedWords;
 }
 
 
 // Mimics string compare -- returns 1 if there is no match
 bool isInvalidAnswer(string answer, vector<string> & ws)
 {
-    std::cout << "about to strip parentheses!";
+    std::cout << "\nabout to strip parentheses!";
     vector<string> strippedws = stripParentheses(ws);
-    std::cout << "stripped parentheses!";
+    std::cout << "\nstripped parentheses!";
     bool isWrong = true;
     vector<string>::iterator it;
 
