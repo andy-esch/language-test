@@ -42,7 +42,7 @@ int getTxtFiles(string dir, vector<string> &files)
 //void listDicts(char dictType[])   
 
 /* Perhaps we could pass a character to denote which type of dictionary we want
- to choose from such as n = nouns, v = verbs, etc. or something fancier
+ to choose from such as n = nouns, v = sideA, etc. or something fancier
  eventually? and perhaps different types of sorting of output, which is fairly
  easy with strings */
 
@@ -104,7 +104,7 @@ string listDicts(void)
     cin.clear();
     cin.ignore(10,'\n');
 
-    // returns full path of file, e.g. "./vocab/verbs.txt"
+    // returns full path of file, e.g. "./vocab/sideA.txt"
     return dictPick;
 }
 

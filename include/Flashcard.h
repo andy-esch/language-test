@@ -21,8 +21,8 @@ using std::vector;
 
 class Flashcard {
 public:
-    vector<string> verbos;
-    vector<string> verbs;
+    vector<string> sideB;
+    vector<string> sideA;
     void summarizeContents(int);
     void clearWS();
 };

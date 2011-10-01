@@ -232,11 +232,11 @@ void insertWords(string words, Flashcard & tempset, int step)
         {
             case 1:
                 if (debug) cout << "case : " << step << endl;
-                tempset.verbs.push_back(tempWord);
+                tempset.sideA.push_back(tempWord);
                 break;
             case 2:
                 if (debug) cout << "case : " << step << endl;
-                tempset.verbos.push_back(tempWord);
+                tempset.sideB.push_back(tempWord);
                 break;
             default:
                 break; // What should we do for this case?
@@ -250,11 +250,11 @@ void insertWords(string words, Flashcard & tempset, int step)
     {
         case 1:
             if (debug) cout << "case : " << step << endl;
-            tempset.verbs.push_back(words);
+            tempset.sideA.push_back(words);
             break;
         case 2:
             if (debug) cout << "case : " << step << endl;
-            tempset.verbos.push_back(words);
+            tempset.sideB.push_back(words);
             break;
         default:
             break;  // What should we do for this case?
@@ -271,7 +271,7 @@ bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
         isNew = true;
     else
         for (int i = 0; i < ws.size(); i++)
-            if ( !test.compare(ws[i].verbos[0]) )
+            if ( !test.compare(ws[i].sideB[0]) )
             {
                 isNew = false;
                 index = i;

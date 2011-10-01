@@ -38,7 +38,7 @@ void testResults(vector<Flashcard> & spen, wordData wordy[], \
     
     for (int i = 0; i < numEntries; i++)
     {
-        cout << setw(lengthLongestWord) << spen[i].verbos[0];
+        cout << setw(lengthLongestWord) << spen[i].sideB[0];
         if ( wordy[i].numAsked > 0 )
         {
             cout << setw(6) << static_cast<int> (100*wordy[i].percentRight) \
@@ -52,9 +52,9 @@ void testResults(vector<Flashcard> & spen, wordData wordy[], \
         
         if ( verbose )
         {
-            cout << setw(15) << spen[i].verbs.size() << " word" << ((spen[i].verbs.size()>1)?"s:":":");
-            for (int k = 0; k < spen[i].verbs.size(); k++)
-                cout << setw(15) << spen[i].verbs[k];
+            cout << setw(15) << spen[i].sideA.size() << " word" << ((spen[i].sideA.size()>1)?"s:":":");
+            for (int k = 0; k < spen[i].sideA.size(); k++)
+                cout << setw(15) << spen[i].sideA[k];
         }
         cout << endl;
     }

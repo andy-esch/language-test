@@ -12,18 +12,18 @@
 
 void Flashcard::summarizeContents(int index1)
 {
-    cout << "verbs: " << endl;
-    for (int jj = 0; jj < verbs.size(); jj++)
-        cout << "spen[" << index1 << "].verbs[" << jj << "] = '" << verbs[jj] << "'" << endl;
+    cout << "sideA: " << endl;
+    for (int jj = 0; jj < sideA.size(); jj++)
+        cout << "spen[" << index1 << "].sideA[" << jj << "] = '" << sideA[jj] << "'" << endl;
     cout << endl;
-    cout << "verbos: " << endl;
-    for (int kk = 0; kk < verbos.size(); kk++)
-        cout << "spen[" << index1 << "].verbos[" << kk << "] = '" << verbos[kk] << "'" << endl;
+    cout << "sideB: " << endl;
+    for (int kk = 0; kk < sideB.size(); kk++)
+        cout << "spen[" << index1 << "].sideB[" << kk << "] = '" << sideB[kk] << "'" << endl;
     cout << endl;
 }
 
 void Flashcard::clearWS()
 {
-    verbos.clear();
-    verbs.clear();
+    sideB.clear();
+    sideA.clear();
 }
