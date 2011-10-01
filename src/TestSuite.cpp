@@ -10,3 +10,15 @@ numEntries = cards.size();
     }
 
 
+    int jsideB = randIndex(cards[i].sideB.size());	// sideB index
+    int jsideA = randIndex(cards[i].sideA.size());	// sideA index
+if (debug)
+  {
+    cout << "second indices (jsideA, jsideB) = (" << jsideA << ", " << jsideB << ")" << endl;
+    cout << "(sideAsize, sideBsize) = (" << sideAsize << ", " << sideBsize << ")" << endl;
+    cout << "cin is " << (cin.good()?"":"not so ") << "good (cin = '" << cin.good() << "')" << endl;
+    cout << "New word: " << endl;
+    
+  }
+
+

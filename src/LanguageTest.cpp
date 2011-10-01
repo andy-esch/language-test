@@ -184,10 +184,15 @@ int main(int argc, char **argv)
 	    //**************** begin options switch **********************//
             if ( response[0] == '-' )   // This structure feels a bit kludgey
             {
-	      // this can all be included in a getHints(response[1]) method;
+	      // this can all be included in a getHints(response) method;
+	      // variables that are required are:
+	      // lJintNum, sideBsize, sideBword,wordy,
+	      // First break into smaller methods...
+
                 switch (response[1])
                 {
                     case 'l':
+		      //cout << letterHint(int lHintNum, bool verbose);
                         if ( lHintNum < sideBsize )
                         {
                             unsigned int incr = 1; // Should be moved elsewhere?
@@ -218,6 +223,8 @@ int main(int argc, char **argv)
                         cout << hint(sideAsize, showWordSize, \
                                      sideBsize, sideBword, lHintNum);
                         break;
+
+
                     case 'a':
                         cout << "Answer: " << cards[i].sideB[0];
                         for (int ii = 1; ii < cards[i].sideB.size(); ii++)  // Print other possible answers
@@ -226,8 +233,8 @@ int main(int argc, char **argv)
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = sideBsize;
                         wordy[i].updateScore(i, numFlashcards, wordy, 'a');
-			numOfTries++;//temporarily moved this here
-                        break;
+			break;
+
                     case 'n':
                         showWordSize = true;
                         cout << hint(sideAsize, showWordSize, sideBsize, \
@@ -236,12 +243,14 @@ int main(int argc, char **argv)
                         if (verbose)
                             cout << "Number of letters: " << sideBsize << endl;
                         break;
+
                     case 'd':
                         disableHintMsg = !disableHintMsg;
                         cout << (disableHintMsg?"Disabled":"Enabled");
                         cout << " hint messages. Pass '-d' again to ";
                         cout << (disableHintMsg?"enable.":"disable.") << endl;
                         break;
+
                     case 'e':
                         break;  // This hint will give an example usage?
                                 //  Should it show it used in the language that
@@ -251,6 +260,7 @@ int main(int argc, char **argv)
                         wordy[i].updateScore(i, numFlashcards, wordy, 's');
                         isWrong = false;
                         break;
+
                     case 'y':
                         /* The problem with this is that if they enter the synonym
                            they are using a correct answer -- so getting an answer
@@ -266,9 +276,11 @@ int main(int argc, char **argv)
                         }
                         wordy[i].updateScore(i, numFlashcards, wordy, 'y');
                         break;
+
                     case 'h':
                         cout << hintOptions(sideAsize);
                         break;
+
                     default:
                         cout << "'" << response << "' is not a hint option." << endl;
                         cout << hintOptions(4);
