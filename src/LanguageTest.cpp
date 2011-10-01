@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     srand(time(NULL));
     time_t timeStart, timeEnd;
     string temp;
-    char inFile[60];
+    char inFile[60] = "vocab/sample.txt";
     vector<wordSet> cards;
     vector<wordSet>::iterator spenit;  // Look into this as helping the q/a pointers
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
@@ -72,7 +72,8 @@ int main(int argc, char **argv)
 	//	}
 
     /*****     Take optional input from command line     *****/
-    while ( (c = getopt(argc, argv, ":i:vhdl")) != -1 )
+    cout << "argc = " << argc << endl;
+    while ( (c = getopt(argc, argv, ":i:vhdl")) != -1)
     {
         switch (c)
         {
@@ -307,6 +308,8 @@ int main(int argc, char **argv)
 
     /*****      Close program      *****/
     delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?
+
+    cout << goodbye() << endl;
 
     return 0;
 }
