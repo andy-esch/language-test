@@ -38,8 +38,8 @@ bool debug = false;
 int main(int argc, char **argv)
 {
 
-  string mystr[] = {"hello (world)", "I am well (cooked)"};
-  string testans = "I am well (uncooked)";
+  string mystr[] = {"Hello"};//{"hello (world)", "I am well (cooked)"};
+  string testans = "I am well (cooked)";
   vector<string> testparen (mystr, mystr + sizeof(mystr) / sizeof(string) );
   bool testisWrong = isInvalidAnswer(testans,testparen);
   if(testisWrong)

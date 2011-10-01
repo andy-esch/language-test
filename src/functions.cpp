@@ -49,16 +49,28 @@ vector<string> stripParentheses(vector<string> words)
   string paren (" ("), str;
   std::cout << "\nBefore for loop.  size of words vector is "<< int (words.size());
   size_t it;
+  std::string::iterator it2;
+  std::string::iterator it3;
+
 
   for (int i=0;i<words.size();i++)
      {
        str=strippedWords[i];
        std::cout << "\nin for loop, word before stripping:" << str;
        it=str.find(paren);
-       std::cout << "\nconstruct iterator";// << *it;
-       str.erase(str.begin() 
-			      + str.find(paren), 
-			      str.end() - 0);
+       it2=str.end()-1;
+       it3=str.begin();
+       std::cout << "\nconstruct it:" << it;
+       std::cout << "\nconstruct it2:" << *it2;
+       std::cout << "\nconstruct it3:" << *it3;
+       if(it!=string::npos)
+	 {
+	 std::cout << "\nparen found!" << *it3;
+	 str.erase(str.begin() + str.find(paren), 
+		   str.end());
+	 }
+	 
+       else std::cout << "\nparen NOT found!" << *it3;
        strippedWords[i]=str;
       std::cout << "\nstripped word:" << strippedWords[i];
     }
