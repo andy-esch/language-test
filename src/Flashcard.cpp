@@ -1,5 +1,5 @@
 /*
- *  wordSet.cpp
+ *  Flashcard.cpp
  *  
  *  Description:
  *
@@ -8,9 +8,9 @@
  *
  */
 
-#include "wordSet.h"
+#include "Flashcard.h"
 
-void wordSet::summarizeContents(int index1)
+void Flashcard::summarizeContents(int index1)
 {
     cout << "verbs: " << endl;
     for (int jj = 0; jj < verbs.size(); jj++)
@@ -22,7 +22,7 @@ void wordSet::summarizeContents(int index1)
     cout << endl;
 }
 
-void wordSet::clearWS()
+void Flashcard::clearWS()
 {
     verbos.clear();
     verbs.clear();

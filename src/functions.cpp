@@ -129,14 +129,14 @@ string hint(int verbSize, bool knowWordSize, int verboSize, \
 }
                
                
-void input(vector<wordSet> & ws, char * inFile)
+void input(vector<Flashcard> & ws, char * inFile)
 {
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     size_t found = string::npos;
     ifstream infile(inFile,ifstream::in);
-    wordSet tempset;
+    Flashcard tempset;
     int lineNum = 1, delimWidth = 1;
     string delimiters[] = {"\t","    ","   ","  "};
 
@@ -202,7 +202,7 @@ void input(vector<wordSet> & ws, char * inFile)
         insertWords(temp1, tempset, 1);
         insertWords(temp2, tempset, 2);
 
-        // Put tempset into wordSet vector
+        // Put tempset into Flashcard vector
         ws.push_back(tempset);
 
         // Clear variables for next time through
@@ -218,7 +218,7 @@ void input(vector<wordSet> & ws, char * inFile)
     infile.close();
 }
 
-void insertWords(string words, wordSet & tempset, int step)
+void insertWords(string words, Flashcard & tempset, int step)
 {
     size_t found;
     if (debug) cout << "words are: '" << words << "'" << endl;
@@ -262,7 +262,7 @@ void insertWords(string words, wordSet & tempset, int step)
 }
 
 // isnew() is obsolete
-bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
+bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
     // Also sets the value where a non-new word occurs
     bool isNew = true;

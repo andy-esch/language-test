@@ -24,7 +24,7 @@
 #include <typeinfo>
 #include <vector>
 
-#include "wordSet.h"
+#include "Flashcard.h"
 #include "wordData.h"
 
 using std::cin;
@@ -40,9 +40,9 @@ bool compareAll(vector<string> &, string);
 bool isInvalidAnswer(string, vector<string> &);
 string hintOptions(int);
 string hint(int, bool, int, string, int);
-void input(vector<wordSet> &, char *);
-void insertWords(string, wordSet &,int);
-bool isnew(vector<wordSet> &, string, long unsigned int &);
+void input(vector<Flashcard> &, char *);
+void insertWords(string, Flashcard &,int);
+bool isnew(vector<Flashcard> &, string, long unsigned int &);
 string ordinal(int num);
 string help(char *);
 int randIndex(int);

@@ -21,7 +21,7 @@
 
 #include "wordData.h"
 #include "functions.h"
-#include "wordSet.h"
+#include "Flashcard.h"
 #include "listDicts.h"
 #include "testResults.h"
 
@@ -44,8 +44,8 @@ int main(int argc, char **argv)
     time_t timeStart, timeEnd;
     string temp;
     char inFile[60] = "vocab/sample.txt";
-    vector<wordSet> cards;
-    vector<wordSet>::iterator spenit;  // Look into this as helping the q/a pointers
+    vector<Flashcard> cards;
+    vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
     unsigned int numEntries = 0, lengthLongestWord = 0, lHintNum = 0;
     int c;
     bool verbose = false, isWrong = true;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     //  Below: Rough idea on how to implement choosing whether to be quizzed on one
     //  language or the other, but the data structure prevents easy access since
-    //  spen's type is vector<wordSet>, where wordSet is composed of two vectors of
+    //  spen's type is vector<Flashcard>, where Flashcard is composed of two vectors of
     //  strings.  This would be a lot easier to implement if the synonyms weren't
     //  a part of the design.
 	//  Update: We could copy the addresses of all the entries of verbs, say,

@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "testResults.h"
-#include "wordSet.h"
+#include "Flashcard.h"
 #include "wordData.h"
 
 using std::cout;
@@ -22,7 +22,7 @@ using std::ios;
 using std::setw;
 using std::vector;
 
-void testResults(vector<wordSet> & spen, wordData wordy[], \
+void testResults(vector<Flashcard> & spen, wordData wordy[], \
                  int numEntries, int lengthLongestWord, bool verbose)
 {
     cout << endl;
