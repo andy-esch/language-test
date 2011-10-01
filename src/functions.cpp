@@ -43,47 +43,29 @@ float howWrongIsIt(string test, string compare)
 
 vector<string> stripParentheses(vector<string> words)
 { 
-  std::cout << "\nMake copy of vector";
   vector<string> strippedWords = words;
-  std::cout << "\nnew vector is size "<<int (strippedWords.size());
-  string paren (" ("), str;
-  std::cout << "\nBefore for loop.  size of words vector is "<< int (words.size());
+  string paren (" (");
   size_t it;
-  std::string::iterator it2;
-  std::string::iterator it3;
-
 
   for (int i=0;i<words.size();i++)
      {
-       str=strippedWords[i];
-       std::cout << "\nin for loop, word before stripping:" << str;
-       it=str.find(paren);
-       it2=str.end()-1;
-       it3=str.begin();
-       std::cout << "\nconstruct it:" << it;
-       std::cout << "\nconstruct it2:" << *it2;
-       std::cout << "\nconstruct it3:" << *it3;
+       it=strippedWords[i].find(paren);
        if(it!=string::npos)
 	 {
-	 std::cout << "\nparen found!" << *it3;
-	 str.erase(str.begin() + str.find(paren), 
-		   str.end());
+	 strippedWords[i].erase(strippedWords[i].begin() 
+			     + strippedWords[i].find(paren), 
+		   strippedWords[i].end());
 	 }
-	 
-       else std::cout << "\nparen NOT found!" << *it3;
-       strippedWords[i]=str;
-      std::cout << "\nstripped word:" << strippedWords[i];
     }
   return strippedWords;
 }
 
 
 // Mimics string compare -- returns 1 if there is no match
+// I don't like to do all this extra work for each case, but for now it works.
 bool isInvalidAnswer(string answer, vector<string> & ws)
 {
-    std::cout << "\nabout to strip parentheses!";
     vector<string> strippedws = stripParentheses(ws);
-    std::cout << "\nstripped parentheses!";
     bool isWrong = true;
     vector<string>::iterator it;
 

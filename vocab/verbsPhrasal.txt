@@ -49,7 +49,7 @@ ojo	look out
 buscar algo en un libro	  look up in a book
 meter	put in
 encender	put on
-ponerse la ropa	put on clothes
+ponerse (la ropa)	put on (clothes)
 quedars sin algo	run out of
 ponerse en camino	set off
 parecerse a	take after
