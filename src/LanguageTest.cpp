@@ -42,7 +42,6 @@ int main(int argc, char **argv)
     /*****        Initialize Variables        *****/
     srand(time(NULL));
     time_t timeStart, timeEnd;
-    string temp;
     char inFile[60] = "vocab/sample.txt";
     vector<Flashcard> cards;
     vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
@@ -114,6 +113,8 @@ int main(int argc, char **argv)
         }
     }
 
+    
+
 
 
     /*****      Input Dictionary     *****/
@@ -132,7 +133,7 @@ int main(int argc, char **argv)
 
 
 
-    /******* Prepare formatting variables **********/
+    /******* Prepare variable for formatting purposes **********/
     unsigned int lengthLongestWord = 0;
     for (int i = 0; i < numFlashcards; i++)
     {
@@ -143,62 +144,70 @@ int main(int argc, char **argv)
 
 
 
-
-
-
     /*****      Language Quiz      *****/
     cout << "Beginning Quiz." << endl;
-    int i = weightedIndex(wordy, numFlashcards);
-    int jsideB = randIndex(cards[i].sideB.size());	// sideB index
-    int jsideA = randIndex(cards[i].sideA.size());	// sideA index
+
+
+    /************  Initialise response variable   *******************/
+    string response;
+
+
+    /************  Begin quiz execution ****************************/ 
     while ( !cin.eof() )    // Should there be other conditions?
     {
+
+        /********     Choose a flashcard    ************/    
+        int i = weightedIndex(wordy, numFlashcards);
+
+
+        /************  Select synonym from flashcards  *****************/
+	int synIndexB = randIndex(cards[i].sideB.size());
+	int synIndexA = randIndex(cards[i].sideA.size());
+        string sideBword = cards[i].sideB[synIndexB];
+        string sideAword = cards[i].sideA[synIndexA];
+
         bool showWordSize = false;
         int numOfTries = 1;
-        int sideBsize = cards[i].sideB[jsideB].size();
-        int sideAsize  = cards[i].sideA[jsideA].size();
+        int sideBsize = sideBword.size();
+        int sideAsize  = sideAword.size();
 
-        if (debug)
-        {
-            cout << "second indices (jsideA, jsideB) = (" << jsideA << ", " << jsideB << ")" << endl;
-            cout << "(sideAsize, sideBsize) = (" << sideAsize << ", " << sideBsize << ")" << endl;
-            cout << "cin is " << (cin.good()?"":"not so ") << "good (cin = '" << cin.good() << "')" << endl;
-            cout << "New word: " << endl;
-            
-        }
-        cout << cards[i].sideA[jsideA] << ": ";
+        cout << sideAword << ": ";
+
         while (!cin.eof() && isWrong)
         {
             timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
-            getline(cin, temp);
+            getline(cin, response);
             timeEnd = time(NULL);
-            if (debug) cout << "You entered: " << temp << endl;
             if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
-            if ( temp[0] == '-' )   // This structure feels a bit kludgey
+
+
+	    //**************** begin options switch **********************//
+            if ( response[0] == '-' )   // This structure feels a bit kludgey
             {
-                switch (temp[1])
+	      // this can all be included in a getHints(response[1]) method;
+                switch (response[1])
                 {
                     case 'l':
                         if ( lHintNum < sideBsize )
                         {
                             unsigned int incr = 1; // Should be moved elsewhere?
-                            if (temp[2] == '\0')
+                            if (response[2] == '\0')
                                 incr = 1;
-                            else if (atoi(&temp[2]) < 10 && atoi(&temp[2]) > 0)
-                                incr = atoi(&temp[2]);
+                            else if (atoi(&response[2]) < 10 && atoi(&response[2]) > 0)
+                                incr = atoi(&response[2]);
                             else
                                 incr = 1;
 
                             lHintNum+=incr;
                             // If white space between current position and incremented position, increment hint
                             for (int ii = lHintNum-incr; ii < lHintNum; ii++)
-                                if (cards[i].sideB[jsideB][ii] == ' ')
+                                if (sideBword[ii] == ' ')
                                     lHintNum++;
                             
                             if (verbose)
                             {
                                 cout << "The " << ordinal(lHintNum);
-                                cout << " letter is '" << cards[i].sideB[jsideB][lHintNum-1] << "'" << endl;
+                                cout << " letter is '" << sideBword[lHintNum-1] << "'" << endl;
                             }
                             wordy[i].updateScore(i, numFlashcards, \
                                                  wordy, 'l', incr);
@@ -207,7 +216,7 @@ int main(int argc, char **argv)
                             cout << "You have the full word via hints!" << endl;
 
                         cout << hint(sideAsize, showWordSize, \
-                                     sideBsize, cards[i].sideB[jsideB], lHintNum);
+                                     sideBsize, sideBword, lHintNum);
                         break;
                     case 'a':
                         cout << "Answer: " << cards[i].sideB[0];
@@ -217,11 +226,12 @@ int main(int argc, char **argv)
                         timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
                         lHintNum = sideBsize;
                         wordy[i].updateScore(i, numFlashcards, wordy, 'a');
+			numOfTries++;//temporarily moved this here
                         break;
                     case 'n':
                         showWordSize = true;
                         cout << hint(sideAsize, showWordSize, sideBsize, \
-                                     cards[i].sideB[jsideB], lHintNum);
+                                     sideBword, lHintNum);
                         wordy[i].updateScore(i, numFlashcards, wordy, 'n');
                         if (verbose)
                             cout << "Number of letters: " << sideBsize << endl;
@@ -246,11 +256,11 @@ int main(int argc, char **argv)
                            they are using a correct answer -- so getting an answer
                            cheaply versus doing -a */
                         if (cards[i].sideB.size() == 1)
-                            cout << "Sorry, no synonyms available for " << cards[i].sideA[jsideA] << endl;
+                            cout << "Sorry, no synonyms available for " << sideAword << endl;
                         else
                         {
                             int synonymIndex = randIndex(cards[i].sideB.size());
-                            while (synonymIndex == jsideB)
+                            while (synonymIndex == synIndexB)
                                 synonymIndex = randIndex(cards[i].sideB.size());
                             cout << "Synonym: " << cards[i].sideB[synonymIndex] << endl;
                         }
@@ -260,39 +270,49 @@ int main(int argc, char **argv)
                         cout << hintOptions(sideAsize);
                         break;
                     default:
-                        cout << "'" << temp << "' is not a hint option." << endl;
+                        cout << "'" << response << "' is not a hint option." << endl;
                         cout << hintOptions(4);
                         break;
                 }
             }
 
-            if ( !cin.eof() && (temp[0] != '-') )   // Don't update score here
+
+	    //***********************end of hints options ***************************//
+
+
+
+	    if ( !cin.eof() && (response[0] != '-') )   // Don't update score here
             {                                       // if EOF or hint is given
-	      isWrong = isInvalidAnswer(temp,cards[i].sideB);
+	      isWrong = isInvalidAnswer(response,cards[i].sideB);
                 if ( verbose ) cout << "You are " << \
                     (isWrong?"wrong, try again!":"right!") << endl;
 
                 // Update score
                 wordy[i].updateScore(i, isWrong, \
                                      reaction(difftime(timeEnd,timeStart), \
-                                              cards[i].sideB[jsideB].size()), \
+                                              sideBword.size()), \
                                      numFlashcards, wordy);
             }
 
+
             if (isWrong)
             {
-                if ( (numOfTries % 5) == 0 && !disableHintMsg && temp[0] != '-' )
+                if ( (numOfTries % 5) == 0 && !disableHintMsg && response[0] != '-' )
                 {
                     cout << hintOptions(sideAsize);
                     cout << endl;
-                    cout << cards[i].sideA[jsideA] << ": ";
+                    cout << sideAword << ": ";
                 }
                 else
                     cout << whitespace(sideAsize);
             }
-            else if (temp[1] == 'a' && temp[0] == '-') whitespace(6); // This seems out of place
-            numOfTries++;
+	    //else if (response[1] == 'a' && response[0] == '-') whitespace(6); // This seems out of place
+	    numOfTries++;
+
         }
+
+
+	//************************** end of isWrong and !cin.eof conditional while **************************************//
 
         if ( !cin.eof() )
         {
@@ -303,21 +323,32 @@ int main(int argc, char **argv)
                 cout << "With an average time of " << wordy[i].avgTime << "." << endl;
             }
 
-            i = weightedIndex(wordy,numFlashcards);
-            if (debug) cout << "first index = " << i << endl;
-            jsideB = randIndex(cards[i].sideB.size()); // This can continue to rely on the randIndex() function?
-			jsideA = randIndex(cards[i].sideA.size());
+            // i = weightedIndex(wordy,numFlashcards); //not understanding why this is here, so comment out for now.
+            // if (debug) cout << "first index = " << i << endl;
+            // synIndexB = randIndex(cards[i].sideB.size()); // This can continue to rely on the randIndex() function?
+	    // synIndexA = randIndex(cards[i].sideA.size());
+
+	 
+	    /*********** reset values so that quiz continues   **************/
+
             isWrong = true;
             lHintNum = 0;
         }
     }
 
+    //***************** end of quiz    *********************************/
+
+
+
     /*****      Summary of Results      ******/
     testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
 
-    /*****      Close program      *****/
+
+    /******    Clean up   ********************/
     delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?
 
+
+    /*****      Close program      *****/
     cout << goodbye() << endl;
 
     return 0;
