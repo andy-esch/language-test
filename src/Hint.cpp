@@ -12,71 +12,43 @@
 #include "Hint.h"
 
 
-void Hint::init(string answerKey, bool selectVerbose)
+Hint::Hint(string answerKey, bool selectVerbose)
 {
   key=answerKey;
   hintNum=0;
   verbose=selectVerbose;
   showLetters=false;
   for(int i=0;i<key.size();i++)
-    hint[i]=" ";
+    {
+      hint+= " ";
+    }
 }
 
 
-string Hint::letters()
+void Hint::addLetter()
 {
-  stringstream hint;
-  hint << "-> ";
-  if(hintNum >= key.size())
+  if(hintNum<=key.size())
     {
-      hint << key << " <-" << endl;
-      return hint.str();
+      hint.replace(hintNum,1,string(1,key[hintNum]));
+      hintNum++;
     }
-  
-  int i=0;  
-  while(i<=hintNum)
-    {
-      if (key[i] == ' ')
-	{
-	  hint << " ";
-	  i++;
-	}
-      hint << key[i];
-      i++;
-    }
-  hintNum++;
-  return hint.str();
 }
 
 
-string Hint::fillLetterPlaces()
+void Hint::fillLetterPlaces()
 {
-  stringstream hint;
-  int i=0;
-  showLetters=true;
-  while (i<hintNum)
+  for(int i=hintNum;i<key.size();i++)
     {
-      hint << key[i];
-      i++;
+      if(key[i]==' ')
+	hint.replace(i,1," ");
+      hint.replace(i,1,"-");
     }
-  
-  while (i<key.size())
-    {      
-      if (key[i] == ' ')
-	hint << ' ';
-      else
-	hint << '-';
-      i++;
-    }
-
-  hint << endl;
-  return hint.str();
 }
 
 
-string Hint::answer()
+void Hint::answer()
 {
-  return key;
+  hint = key;
 }
 
 
@@ -121,24 +93,20 @@ string Hint::help()
 }
 
 
-string Hint::handle(char hintType, bool verbose)
+string Hint::buildHint(char hintType, bool verbose)
 {
-  stringstream hint;
   switch (hintType)
     {
     case 'l':
-      hint << letters();
+      addLetter();
       break;
     case 'a':
-      hint << answer();
+      answer();
       break;
     case 'n':
-      hint << fillLetterPlaces();
-      break;
-    case 'h':
-      hint << help();
+      fillLetterPlaces();
       break;
     }
-  return hint.str();
+  return hint;//.str();
 }
 

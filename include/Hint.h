@@ -30,12 +30,11 @@ public:
   bool showLetters;
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
-  void init(string,bool);
+  Hint(string,bool);
   // private:
-  string letters();
-  //  string fillLetters();
-  string fillLetterPlaces();
-  string answer();
+  void addLetter();
+  void fillLetterPlaces();
+  void answer();
   void disableHints();
   string example();
   string synonym();

@@ -174,8 +174,8 @@ int main(int argc, char **argv)
         int sideAsize  = sideAword.size();
 
 
-	Hint myhint;
-	myhint.init(sideBword, false);
+	Hint myhint(sideBword, false);
+
 
 	/************ Prompt user for word **************************/
         cout << sideAword << ": ";
