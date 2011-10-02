@@ -17,28 +17,41 @@ void Hint::init(string answerKey, bool selectVerbose)
   key=answerKey;
   hintNum=0;
   verbose=selectVerbose;
-  hint << whitespace(8) << "->";
+  showLetters=false;
 }
 
 
-
-char Hint::nextLetter()
+string Hint::letters()
 {
-  char letter;
-  if(hintNum>=key.size())
-    return NULL;
-  letter=key[hintNum];
+  stringstream hint;
+  hint << "-> ";
+  if(hintNum >= key.size())
+    {
+      hint << key << " <-" << endl;
+      return hint.str();
+    }
+  
+  int i=0;  
+  while(i<=hintNum)
+    {
+      if (key[i] == ' ')
+	{
+	  hint << " ";
+	  i++;
+	}
+      hint << key[i];
+      i++;
+    }
   hintNum++;
-  return letter;
+  return hint.str();
 }
-
 
 
 string Hint::fillLetterPlaces()
 {
   stringstream hint;
   int i=0;
-
+  showLetters=true;
   while (i<hintNum)
     {
       hint << key[i];
@@ -47,17 +60,16 @@ string Hint::fillLetterPlaces()
   
   while (i<key.size())
     {      
-      if (key[i] != ' ')
-	hint << '-';
-      else
+      if (key[i] == ' ')
 	hint << ' ';
+      else
+	hint << '-';
       i++;
     }
 
   hint << endl;
   return hint.str();
 }
-
 
 
 string Hint::answer()
@@ -113,13 +125,17 @@ string Hint::handle(char hintType, bool verbose)
   switch (hintType)
     {
     case 'l':
-      hint << "->" << nextLetter();
+      hint << letters();
+      break;
     case 'a':
-      hint << "->" << answer() << "<-";
+      hint << answer();
+      break;
     case 'n':
-      hint << "->" << fillLetterPlaces() << "<-";
+      hint << fillLetterPlaces();
+      break;
     case 'h':
       hint << help();
+      break;
     }
   return hint.str();
 }

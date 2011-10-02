@@ -26,12 +26,13 @@ public:
   string key;
   int hintNum;
   bool verbose;
-  //  stringstream hint;
+  bool showLetters;
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
   void init(string,bool);
   // private:
-  char nextLetter();
+  string letters();
+  //  string fillLetters();
   string fillLetterPlaces();
   string answer();
   void disableHints();
