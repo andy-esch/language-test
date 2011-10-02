@@ -214,6 +214,7 @@ int main(int argc, char **argv)
 
 		      if ( lHintNum < sideBsize )
                         {
+			  cout << myhint.nextLetter() << "<---new hint method\n";
                             unsigned int incr = 1; // Should be moved elsewhere?
                             if (response[2] == '\0')
                                 incr = 1;
@@ -245,6 +246,7 @@ int main(int argc, char **argv)
 
 
                     case 'a':
+		      cout << myhint.answer() << "<-- new hint method ";
                         cout << "Answer: " << cards[i].sideB[0];
                         for (int ii = 1; ii < cards[i].sideB.size(); ii++)  // Print other possible answers
                             cout << ", " << cards[i].sideB[ii];
@@ -255,6 +257,7 @@ int main(int argc, char **argv)
 			break;
 
                     case 'n':
+		      cout << myhint.fillLetterPlaces() << "<-- new hint method ";
                         showWordSize = true;
                         cout << hint(sideAsize, showWordSize, sideBsize, \
                                      sideBword, lHintNum);
@@ -297,6 +300,7 @@ int main(int argc, char **argv)
                         break;
 
                     case 'h':
+		      cout << myhint.help() << "<-- new hint method ";
                         cout << hintOptions(sideAsize);
                         break;
 

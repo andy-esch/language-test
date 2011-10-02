@@ -29,7 +29,7 @@ public:
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
   void init(string,bool);
- private:
+  // private:
   char nextLetter();
   string fillLetterPlaces();
   string answer();

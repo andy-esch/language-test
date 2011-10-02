@@ -93,15 +93,15 @@ string Hint::example()
 string Hint::help()
 {
   stringstream hint;
-  hint << '\a' << endl;
-  hint << "Want a letter?  Type '-l'." << endl;
-  hint << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-  hint << "Want the answer?  Type '-a'." << endl;
-  hint << "Want the number of letters?  Type '-n'." << endl;
-  hint << "Want to skip this word?  Type '-s'." << endl;
-  hint << "Want help?  Type '-h'." << endl;
-  hint << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-  hint << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  hint << whitespace(10) << '\a' << endl;
+  hint << whitespace(10) << "Want a letter?  Type '-l'." << endl;
+  hint << whitespace(10) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  hint << whitespace(10) << "Want the answer?  Type '-a'." << endl;
+  hint << whitespace(10) << "Want the number of letters?  Type '-n'." << endl;
+  hint << whitespace(10) << "Want to skip this word?  Type '-s'." << endl;
+  hint << whitespace(10) << "Want help?  Type '-h'." << endl;
+  hint << whitespace(10) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  hint << whitespace(10) << "Want to turn these messages off?  Type '-d' to disable." << endl;
   return hint.str();
 }
 
