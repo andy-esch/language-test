@@ -17,6 +17,7 @@ void Hint::init(string answerKey, bool selectVerbose)
   key=answerKey;
   hintNum=0;
   verbose=selectVerbose;
+  hint << whitespace(8) << "->";
 }
 
 
@@ -107,9 +108,18 @@ string Hint::help()
 
 string Hint::handle(char hintType, bool verbose)
 {
-  // if (hintNum >= key.size())
-  //   hint << " <-";
-  return "handle";
-
-
+  string hint;
+  switch (hintType)
+    {
+    case 'l':
+      hint = myhint.nextLetter();
+    case 'a':
+      hint = myhint.answer() << "<-- new hint method ";
+    case 'n':
+      hint = myhint.fillLetterPlaces() << "<-- new hint method ";
+    case 'h':
+      hint = myhint.help() << "<-- new hint method ";
+    }
+  return hint;
 }
+

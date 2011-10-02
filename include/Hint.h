@@ -26,6 +26,7 @@ public:
   string key;
   int hintNum;
   bool verbose;
+  //  stringstream hint;
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
   void init(string,bool);

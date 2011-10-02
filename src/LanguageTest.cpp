@@ -358,10 +358,10 @@ int main(int argc, char **argv)
                 cout << "With an average time of " << wordy[i].avgTime << "." << endl;
             }
 
-            // i = weightedIndex(wordy,numFlashcards); //not understanding why this is here, so comment out for now.
-            // if (debug) cout << "first index = " << i << endl;
-            // synIndexB = randIndex(cards[i].sideB.size()); // This can continue to rely on the randIndex() function?
-	    // synIndexA = randIndex(cards[i].sideA.size());
+            i = weightedIndex(wordy,numFlashcards); //not understanding why this is here, so comment out for now.
+            if (debug) cout << "first index = " << i << endl;
+            synIndexB = randIndex(cards[i].sideB.size()); // This can continue to rely on the randIndex() function?
+	    synIndexA = randIndex(cards[i].sideA.size());
 
 	 
 	    /*********** reset values so that quiz continues   **************/
