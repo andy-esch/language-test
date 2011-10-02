@@ -18,6 +18,8 @@ void Hint::init(string answerKey, bool selectVerbose)
   hintNum=0;
   verbose=selectVerbose;
   showLetters=false;
+  for(int i=0;i<key.size();i++)
+    hint[i]=" ";
 }
 
 
