@@ -124,6 +124,7 @@ int main(int argc, char **argv)
 
 
     /*****  Prepare an array of wordData objects **********/
+    /*****  WordData can become a field in Flashcard ******/
     numFlashcards = cards.size();
     wordData * wordy = new wordData[numFlashcards];
     for (int i = 0; i < numFlashcards; i++)
@@ -186,14 +187,26 @@ int main(int argc, char **argv)
             {
 	      // this can all be included in a getHints(response) method;
 	      // variables that are required are:
-	      // lJintNum, sideBsize, sideBword,wordy,
+	      // lJintNum, sideBsize, sideBword, wordy,
 	      // First break into smaller methods...
+
+
+	      // each hint needs to do some of the same things:
+	      // 1. create a "next hint" string to output to screen
+	      // 2. update score for flashcard
+	      // 3. track how many hints have been given
+
+
+
+
 
                 switch (response[1])
                 {
                     case 'l':
 		      //cout << letterHint(int lHintNum, bool verbose);
-                        if ( lHintNum < sideBsize )
+                      //uses: lHintNum, sideBsize, sideBword, response, functions::ordinal
+
+		      if ( lHintNum < sideBsize )
                         {
                             unsigned int incr = 1; // Should be moved elsewhere?
                             if (response[2] == '\0')
