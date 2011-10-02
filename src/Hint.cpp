@@ -12,7 +12,7 @@
 #include "Hint.h"
 
 
-void Hint::init(string answerKey, bool selectVerbose);
+void Hint::init(string answerKey, bool selectVerbose)
 {
   key=answerKey;
   hintNum=0;
@@ -29,7 +29,7 @@ char Hint::nextLetter()
     hintNum++;
     return letter;
   }
-  else return null;
+  else return NULL;
 }
 
 
@@ -46,7 +46,7 @@ string Hint::fillLetterPlaces()
   
   while (i<key.size())
     {      
-      if (key[jj] != ' ')
+      if (key[i] != ' ')
 	hint << '-';
       else
 	hint << ' ';
@@ -74,7 +74,6 @@ string Hint::example()
 {
   string hint = "an example of usage";
   return hint;
-
 }
 
 // This belongs elsewhere
@@ -93,15 +92,24 @@ string Hint::example()
 
 string Hint::help()
 {
-  string hint;
-  return hint;
+  stringstream hint;
+  hint << '\a' << endl;
+  hint << "Want a letter?  Type '-l'." << endl;
+  hint << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+  hint << "Want the answer?  Type '-a'." << endl;
+  hint << "Want the number of letters?  Type '-n'." << endl;
+  hint << "Want to skip this word?  Type '-s'." << endl;
+  hint << "Want help?  Type '-h'." << endl;
+  hint << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+  hint << "Want to turn these messages off?  Type '-d' to disable." << endl;
+  return hint.str();
 }
 
-string Hint::handle()
+string Hint::handle(char hintType, bool verbose)
 {
-  if (hintNum >= key.size())
-    hint << " <-";
-
+  // if (hintNum >= key.size())
+  //   hint << " <-";
+  return "handle";
 
 
 }

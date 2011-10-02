@@ -24,6 +24,7 @@
 #include "Flashcard.h"
 #include "listDicts.h"
 #include "testResults.h"
+#include "Hint.h"
 
 using std::cerr;
 using std::cin;
@@ -124,7 +125,7 @@ int main(int argc, char **argv)
 
 
     /*****  Prepare an array of wordData objects **********/
-    /*****  WordData can become a field in Flashcard ******/
+    /*****  [WordData can become a field in Flashcard] ******/
     numFlashcards = cards.size();
     wordData * wordy = new wordData[numFlashcards];
     for (int i = 0; i < numFlashcards; i++)
@@ -172,6 +173,11 @@ int main(int argc, char **argv)
         int sideBsize = sideBword.size();
         int sideAsize  = sideAword.size();
 
+
+	Hint myhint;
+	myhint.init(sideBword, false);
+
+	/************ Prompt user for word **************************/
         cout << sideAword << ": ";
 
         while (!cin.eof() && isWrong)

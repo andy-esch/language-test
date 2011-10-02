@@ -19,6 +19,7 @@ using std::endl;
 using std::string;
 using std::vector;
 
+
 class Hint {
 
 public:
@@ -26,7 +27,7 @@ public:
   int hintNum;
   bool verbose;
   //int penalty; //each hint method call can increase this.
-  string handle(enum, bool);
+  string handle(char,bool);
   void init(string,bool);
  private:
   char nextLetter();
