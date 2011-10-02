@@ -189,135 +189,15 @@ int main(int argc, char **argv)
 
 
 	    //**************** begin options switch **********************//
-            if ( response[0] == '-' )   // This structure feels a bit kludgey
+            if ( response[0] == '-' ) 
             {
-	      // this can all be included in a getHints(response) method;
-	      // variables that are required are:
-	      // lJintNum, sideBsize, sideBword, wordy,
-	      // First break into smaller methods...
+	      cout << myhint.handle(response[1],false);
+	    }
+            
 
-
-	      // each hint needs to do some of the same things:
-	      // 1. create a "next hint" string to output to screen
-	      // 2. update score for flashcard
-	      // 3. track how many hints have been given
-
-
-
-	      cout << "handle method:   " << myhint.handle(response[1],false);
-
-
-                switch (response[1])
-                {
-                    case 'l':
-		      //  cout << myhint.letters() << "<---new hint method\n";
-
-		      if ( lHintNum < sideBsize )
-                        {
-
-                            unsigned int incr = 1; // Should be moved elsewhere?
-                            if (response[2] == '\0')
-                                incr = 1;
-                            else if (atoi(&response[2]) < 10 && atoi(&response[2]) > 0)
-                                incr = atoi(&response[2]);
-                            else
-                                incr = 1;
-
-                            lHintNum+=incr;
-                            // If white space between current position and incremented position, increment hint
-                            for (int ii = lHintNum-incr; ii < lHintNum; ii++)
-                                if (sideBword[ii] == ' ')
-                                    lHintNum++;
-                            
-                            if (verbose)
-                            {
-                                cout << "The " << ordinal(lHintNum);
-                                cout << " letter is '" << sideBword[lHintNum-1] << "'" << endl;
-                            }
-                            wordy[i].updateScore(i, numFlashcards, \
-                                                 wordy, 'l', incr);
-                        }
-                        else if ( lHintNum >= sideBsize )
-                            cout << "You have the full word via hints!" << endl;
-
-                        cout << hint(sideAsize, showWordSize, \
-                                     sideBsize, sideBword, lHintNum);
-                        break;
-
-
-                    case 'a':
-		      //		      cout << myhint.answer() << "<-- new hint method ";
-                        cout << "Answer: " << cards[i].sideB[0];
-                        for (int ii = 1; ii < cards[i].sideB.size(); ii++)  // Print other possible answers
-                            cout << ", " << cards[i].sideB[ii];
-                        cout << endl;
-                        timeEnd = timeStart + 100;  // Initial attempt at penalizing -- not effective
-                        lHintNum = sideBsize;
-                        wordy[i].updateScore(i, numFlashcards, wordy, 'a');
-			break;
-
-                    case 'n':
-		      //		      cout << myhint.fillLetterPlaces() << "<-- new hint method ";
-                        showWordSize = true;
-                        cout << hint(sideAsize, showWordSize, sideBsize, \
-                                     sideBword, lHintNum);
-                        wordy[i].updateScore(i, numFlashcards, wordy, 'n');
-                        if (verbose)
-                            cout << "Number of letters: " << sideBsize << endl;
-                        break;
-
-                    case 'd':
-                        disableHintMsg = !disableHintMsg;
-                        cout << (disableHintMsg?"Disabled":"Enabled");
-                        cout << " hint messages. Pass '-d' again to ";
-                        cout << (disableHintMsg?"enable.":"disable.") << endl;
-                        break;
-
-                    case 'e':
-                        break;  // This hint will give an example usage?
-                                //  Should it show it used in the language that
-                                //  the answer is expected to be in?
-                    case 's':
-                        if (verbose) cout << "You skipped a word." << endl;
-                        wordy[i].updateScore(i, numFlashcards, wordy, 's');
-                        isWrong = false;
-                        break;
-
-                    case 'y':
-                        /* The problem with this is that if they enter the synonym
-                           they are using a correct answer -- so getting an answer
-                           cheaply versus doing -a */
-                        if (cards[i].sideB.size() == 1)
-                            cout << "Sorry, no synonyms available for " << sideAword << endl;
-                        else
-                        {
-                            int synonymIndex = randIndex(cards[i].sideB.size());
-                            while (synonymIndex == synIndexB)
-                                synonymIndex = randIndex(cards[i].sideB.size());
-                            cout << "Synonym: " << cards[i].sideB[synonymIndex] << endl;
-                        }
-                        wordy[i].updateScore(i, numFlashcards, wordy, 'y');
-                        break;
-
-                    case 'h':
-		      //		      cout << myhint.help() << "<-- new hint method ";
-                        cout << hintOptions(sideAsize);
-                        break;
-
-                    default:
-                        cout << "'" << response << "' is not a hint option." << endl;
-                        cout << hintOptions(4);
-                        break;
-                }
-            }
-
-
-	    //***********************end of hints options ***************************//
-
-
-
-	    if ( !cin.eof() && (response[0] != '-') )   // Don't update score here
-            {                                       // if EOF or hint is given
+	    //****************end of hints options **********************//
+	    if ( !cin.eof() && (response[0] != '-') )
+            {
 	      isWrong = isInvalidAnswer(response,cards[i].sideB);
                 if ( verbose ) cout << "You are " << \
                     (isWrong?"wrong, try again!":"right!") << endl;

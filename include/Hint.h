@@ -25,13 +25,12 @@ class Hint {
 public:
   string key;
   int hintNum;
-  string hint;
   bool verbose;
-  bool showLetters;
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
   Hint(string,bool);
-  // private:
+private:
+  string hint;
   void addLetter();
   void fillLetterPlaces();
   void answer();

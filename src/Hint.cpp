@@ -17,7 +17,6 @@ Hint::Hint(string answerKey, bool selectVerbose)
   key=answerKey;
   hintNum=0;
   verbose=selectVerbose;
-  showLetters=false;
   for(int i=0;i<key.size();i++)
     {
       hint+= " ";
@@ -32,6 +31,10 @@ void Hint::addLetter()
       hint.replace(hintNum,1,string(1,key[hintNum]));
       hintNum++;
     }
+  if(key[hintNum]==' ')
+    addLetter();
+  if(hintNum==key.size())
+    hint+=" <-";
 }
 
 
@@ -63,18 +66,6 @@ string Hint::example()
   return hint;
 }
 
-// This belongs elsewhere
-// string Hint::skipWord()
-// {
-// }
-
-// if synonym hint is selected, create new Hint object with new key
-// and perform answer() on it.
-// string Hint::synonym()
-// {
-//   string hint;
-//   return hint;
-// }
 
 
 string Hint::help()
@@ -93,20 +84,34 @@ string Hint::help()
 }
 
 
-string Hint::buildHint(char hintType, bool verbose)
+string Hint::handle(char hintType, bool verbose)
 {
+  stringstream out;
   switch (hintType)
     {
     case 'l':
       addLetter();
+      out << "-> " << hint;
       break;
     case 'a':
       answer();
+      out << "-> " << hint;
       break;
     case 'n':
       fillLetterPlaces();
+      out << "-> " << hint;
+      break;
+    case 'h':
+      out << help();
       break;
     }
-  return hint;//.str();
+  out << endl;
+  return out.str();//.str();
 }
 
+
+// string Hint::skipWord()
+// help()
+// if synonym hint is selected, create new Hint object with new key
+// and perform answer() on it.
+// string Hint::synonym()
