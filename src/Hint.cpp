@@ -25,13 +25,13 @@ void Hint::init(string answerKey, bool selectVerbose)
 char Hint::nextLetter()
 {
   char letter;
-  if(hintNum<key.size()){
-    letter=key[hintNum];
-    hintNum++;
-    return letter;
-  }
-  else return NULL;
+  if(hintNum>=key.size())
+    return NULL;
+  letter=key[hintNum];
+  hintNum++;
+  return letter;
 }
+
 
 
 string Hint::fillLetterPlaces()
@@ -106,20 +106,21 @@ string Hint::help()
   return hint.str();
 }
 
+
 string Hint::handle(char hintType, bool verbose)
 {
-  string hint;
+  stringstream hint;
   switch (hintType)
     {
     case 'l':
-      hint = myhint.nextLetter();
+      hint << "->" << nextLetter();
     case 'a':
-      hint = myhint.answer() << "<-- new hint method ";
+      hint << "->" << answer() << "<-";
     case 'n':
-      hint = myhint.fillLetterPlaces() << "<-- new hint method ";
+      hint << "->" << fillLetterPlaces() << "<-";
     case 'h':
-      hint = myhint.help() << "<-- new hint method ";
+      hint << help();
     }
-  return hint;
+  return hint.str();
 }
 
