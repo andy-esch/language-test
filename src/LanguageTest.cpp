@@ -143,8 +143,6 @@ int main(int argc, char **argv)
     }
 
 
-
-
     /*****      Language Quiz      *****/
     cout << "Beginning Quiz." << endl;
 
@@ -154,13 +152,14 @@ int main(int argc, char **argv)
 
 
     /************  Begin quiz execution ****************************/ 
-    while ( !cin.eof() )    // Should there be other conditions?
-    {
-
+    while ( !cin.eof() )    // Should there be other conditions? 
+                            // --Yes - all probabilities can't be zero.
+      {
+	
         /********     Choose a flashcard    ************/    
         int i = weightedIndex(wordy, numFlashcards);
-
-
+	
+	
         /************  Select synonym from flashcards  *****************/
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
@@ -174,77 +173,42 @@ int main(int argc, char **argv)
 	/************ Prompt user for word **************************/
         cout << sideAword << ": ";
 
+
         while (!cin.eof() && isWrong)
-        {
+	  {
             timeStart = time(NULL); //could use more accurate timing mechanism
             getline(cin, response);
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
+	    
 
 	    //**************** options switch **********************//
             if ( response[0] == '-' ) 
 	      cout << myhint.handle(response[1],false);
-
-
-            //*************  check response ***********************//
-	    if ( !cin.eof() && (response[0] != '-') )
-            {
-	      isWrong=InvalidAnswer(response,cards[i].sideB);
-	      if ( verbose ) cout << "You are " <<			\
-			       (isWrong)?"wrong, try again!"
-				:"right!") << endl;
-
-                // Update score
-                wordy[i].updateScore(i, isWrong, \
-                                     reaction(difftime(timeEnd,timeStart), \
-                                              sideBword.size()), \
-                                     numFlashcards, wordy);
-            }
-
 	    
-            if (isWrong)
-            {
-                if ( (numOfTries % 5) == 0 && !disableHintMsg && response[0] != '-' )
-                {
-                    cout << hintOptions(10);
-                    cout << endl;
-                    cout << sideAword << ": ";
-                }
-                else
-                    cout << whitespace(10);
-            }
-	    //else if (response[1] == 'a' && response[0] == '-') whitespace(6); // This seems out of place
-	    numOfTries++;
-
-        }
-
-
-	//************************** end of isWrong and !cin.eof conditional while **************************************//
-
-        if ( !cin.eof() )
-        {
-            if ( verbose )
-            {
-                cout << cards[i].sideB[0] << " has been asked " << wordy[i].numAsked << " times." << endl;
-                cout << "You have " << 100.0 * wordy[i].percentRight << "% on \"" << cards[i].sideB[0] << "\"." << endl;
-                cout << "With an average time of " << wordy[i].avgTime << "." << endl;
-            }
-
-            i = weightedIndex(wordy,numFlashcards); //not understanding why this is here, so comment out for now.
-            if (debug) cout << "first index = " << i << endl;
-            synIndexB = randIndex(cards[i].sideB.size()); // This can continue to rely on the randIndex() function?
-	    synIndexA = randIndex(cards[i].sideA.size());
-
-	 
-	    /*********** reset values so that quiz continues   **************/
-
-            isWrong = true;
-            lHintNum = 0;
-        }
-    }
-
-
-
+	    
+            //*************  check response ***********************//
+	    else
+	      {
+		isWrong=isInvalidAnswer(response,cards[i].sideB);
+		
+		if (isWrong)
+		  {
+		    if( verbose ) cout << "Wrong!" << endl;
+		    if ( (numOfTries % 5) == 0 && !disableHintMsg)
+		      {
+			cout << hintOptions(sideAword.size()) << endl;
+			cout << sideAword << ": ";
+		      }
+		    else
+		      cout << whitespace(sideAword.size());
+		  }
+		else if( verbose ) cout << "Right!" << endl;
+		numOfTries++;
+	      }
+	  }
+	isWrong = true;
+      }
 
 
     /*****      Summary of Results      ******/
