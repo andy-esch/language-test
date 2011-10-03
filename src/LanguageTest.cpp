@@ -143,36 +143,25 @@ int main(int argc, char **argv)
     }
 
 
-    /*****      Language Quiz      *****/
+    //****** Language Quiz **********//
     cout << "Beginning Quiz." << endl;
 
-
-    /************  Initialise response variable   *******************/
     string response;
 
-
-    /************  Begin quiz execution ****************************/ 
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
-      {
-	
-        /********     Choose a flashcard    ************/    
+      {	
+
+	/******* Choose new flashcard and select words ******************/
         int i = weightedIndex(wordy, numFlashcards);
-	
-	
-        /************  Select synonym from flashcards  *****************/
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
-	
-
-	/************  Init hint **************************************/
 	Hint myhint(sideBword, false);
         int numOfTries = 1;
 
 
-	/************ Prompt user for word **************************/
+	/******* Prompt user for response *****************************/
         cout << sideAword << ": ";
-
 
         while (!cin.eof() && isWrong)
 	  {
@@ -183,7 +172,7 @@ int main(int argc, char **argv)
 	    
 
 	    //**************** options switch **********************//
-            if ( response[0] == '-' ) 
+            if ( response[0] == '-' )
 	      cout << myhint.handle(response[1],false);
 	    
 	    
@@ -216,7 +205,8 @@ int main(int argc, char **argv)
 
 
     /******    Clean up   ********************/
-    delete[] wordy; // Are there any other clean-up things to do so that we're good programmers?
+    delete[] wordy; // Are there any other clean-up things 
+                    // to do so that we're good programmers?
 
 
     /*****      Close program      *****/
