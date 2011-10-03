@@ -125,7 +125,6 @@ int main(int argc, char **argv)
 
 
     /*****  Prepare an array of wordData objects **********/
-    /*****  [WordData can become a field in Flashcard] ******/
     numFlashcards = cards.size();
     wordData * wordy = new wordData[numFlashcards];
     for (int i = 0; i < numFlashcards; i++)
@@ -163,18 +162,13 @@ int main(int argc, char **argv)
 
 
         /************  Select synonym from flashcards  *****************/
-	int synIndexB = randIndex(cards[i].sideB.size());
-	int synIndexA = randIndex(cards[i].sideA.size());
-        string sideBword = cards[i].sideB[synIndexB];
-        string sideAword = cards[i].sideA[synIndexA];
+        string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
+        string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
+	
 
-        bool showWordSize = false;
-        int numOfTries = 1;
-        int sideBsize = sideBword.size();
-        int sideAsize  = sideAword.size();
-
-
+	/************  Init hint **************************************/
 	Hint myhint(sideBword, false);
+        int numOfTries = 1;
 
 
 	/************ Prompt user for word **************************/
@@ -182,25 +176,23 @@ int main(int argc, char **argv)
 
         while (!cin.eof() && isWrong)
         {
-            timeStart = time(NULL); // The time diff is only to seconds, should we get a more accurate timing mechanism?
+            timeStart = time(NULL); //could use more accurate timing mechanism
             getline(cin, response);
             timeEnd = time(NULL);
-            if (cin.eof()) break;   // Break loop if CTRL-D (EOF) is entered
+            if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
 
-
-	    //**************** begin options switch **********************//
+	    //**************** options switch **********************//
             if ( response[0] == '-' ) 
-            {
 	      cout << myhint.handle(response[1],false);
-	    }
-            
 
-	    //****************end of hints options **********************//
+
+            //*************  check response ***********************//
 	    if ( !cin.eof() && (response[0] != '-') )
             {
-	      isWrong = isInvalidAnswer(response,cards[i].sideB);
-                if ( verbose ) cout << "You are " << \
-                    (isWrong?"wrong, try again!":"right!") << endl;
+	      isWrong=InvalidAnswer(response,cards[i].sideB);
+	      if ( verbose ) cout << "You are " <<			\
+			       (isWrong)?"wrong, try again!"
+				:"right!") << endl;
 
                 // Update score
                 wordy[i].updateScore(i, isWrong, \
@@ -209,17 +201,17 @@ int main(int argc, char **argv)
                                      numFlashcards, wordy);
             }
 
-
+	    
             if (isWrong)
             {
                 if ( (numOfTries % 5) == 0 && !disableHintMsg && response[0] != '-' )
                 {
-                    cout << hintOptions(sideAsize);
+                    cout << hintOptions(10);
                     cout << endl;
                     cout << sideAword << ": ";
                 }
                 else
-                    cout << whitespace(sideAsize);
+                    cout << whitespace(10);
             }
 	    //else if (response[1] == 'a' && response[0] == '-') whitespace(6); // This seems out of place
 	    numOfTries++;
@@ -251,7 +243,7 @@ int main(int argc, char **argv)
         }
     }
 
-    //***************** end of quiz    *********************************/
+
 
 
 
