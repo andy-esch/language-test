@@ -29,6 +29,8 @@ public:
   //int penalty; //each hint method call can increase this.
   string handle(char,bool);
   Hint(string,bool);
+  Hint();
+  void setKey(string);
 private:
   string hint;
   void addLetter();
