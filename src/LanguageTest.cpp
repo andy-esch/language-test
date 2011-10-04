@@ -70,7 +70,6 @@ int main(int argc, char **argv)
 	//	}
 
     /*****     Take optional input from command line     *****/
-    cout << "argc = " << argc << endl;
     while ( (c = getopt(argc, argv, ":i:vhdl")) != -1)
     {
         switch (c)

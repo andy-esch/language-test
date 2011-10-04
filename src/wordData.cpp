@@ -45,10 +45,13 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
     double weight = 0.0;
 
     switch (typeOfHint)
-    {   // Bounds on weight: I think they're for p = currProb:
+    {   // Bounds on weight: Let p = currProb, then:
         //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
         //  and we have a lot more freedom on the upper bound, even up to 1.0
         //  safely since p <= 1.0 by definition
+        // All of this is not firmly grounded yet.  The -s case worries me
+        // because I've gotten -0.0, which may be floating point errors.  Not
+        // sure how to handle those delicately :(
         case 'l':   // get a letter
             weight = 0.3 * static_cast<double> (numLetReqstd);
             if (weight >= 1.0 / currProb)  // to ensure that probability constraints aren't broken
