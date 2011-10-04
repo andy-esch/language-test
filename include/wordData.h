@@ -20,17 +20,19 @@ class wordData
     // parameter values for function arguments?  And if so, can they just be
     // defined below, such as float var1 = 3.0?
 public:
-    unsigned int numAsked;
-    float percentRight;
-    float avgTime;
-    double probability;
-    void updateScore(int, bool, double, int, wordData *);
-    void updateScore(int, int, wordData *, char, unsigned int=0);
-    void populate(int);
-private:
-    double reweight(int, double, double);
-    double weight(bool, double);
-    double weight(char, int, double);
-    void updateProbs(int, int, double, wordData *);
+  wordData();
+  unsigned int numAsked;
+  float percentRight;
+  float avgTime;
+  double probability;
+  void updateScore(int, bool, double, int, wordData *);
+  void updateScore(int, int, wordData *, char, unsigned int=0);
+  void populate(int);
+ private:
+  void setProbability(int N);
+  double reweight(int, double, double);
+  double weight(bool, double);
+  double weight(char, int, double);
+  void updateProbs(int, int, double, wordData *);
 };
 #endif // _WORDDATA_H_
