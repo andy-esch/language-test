@@ -26,7 +26,7 @@ public:
     vector<string> sideA;
     //    Flashcard(vector<string>,vector<string>);
     //    Flashcard();
-    void summarizeContents(int);
+    void toScreen();
     void clearWS();
     wordData getWordData();
 private:
