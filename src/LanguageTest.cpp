@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
 
 
-    /*****  Prepare an array of wordData objects **********/
+    /*****  Prepare an array of WordData objects **********/
     numFlashcards = cards.size();
     for(int i=0;i<numFlashcards;i++)
       {

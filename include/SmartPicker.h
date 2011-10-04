@@ -33,7 +33,7 @@ private:
   unsigned int currentIndex;
   void setCurrentIndex(int);
 public:
-  unsigned int nextIndex(bool sideA, vector<Flashcard>);
-  unsigned int leastPickedIndex(bool sideA, vector<Flashcard>);
+  unsigned int nextIndex(vector<Flashcard>);
+  unsigned int leastPickedIndex(vector<Flashcard>);
 };
 #endif

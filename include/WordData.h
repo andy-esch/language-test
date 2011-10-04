@@ -21,8 +21,8 @@ class WordData
   WordData();
   unsigned int numAsked;
   unsigned int numCorrect;
-  float answeringTime;
-  float getPercentCorrect();
-  float getAverageTime();
+  double answeringTime;
+  double getPercentCorrect();
+  double getAverageTime();
 };
 #endif // _WORDDATA_H_

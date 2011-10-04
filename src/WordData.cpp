@@ -1,7 +1,7 @@
 /*
  *  WordData.cpp
  *  
- *  Description: functions for the class wordData
+ *  Description: functions for the class WordData
  *
  *
  *  Created by Añdy Eschbacher on 9/11/11.
@@ -12,7 +12,7 @@
 
 extern bool debug;
 
-wordData::WordData()
+WordData::WordData()
 {
   numAsked=0;
   numCorrect=0;
@@ -20,7 +20,7 @@ wordData::WordData()
 }
 
 
-float WordData::getPercentCorrect()
+double WordData::getPercentCorrect()
 {
   if(numAsked==0)
     return 0.0;
@@ -29,7 +29,7 @@ float WordData::getPercentCorrect()
 }
 
 
-float WordData::getAverageTime()
+double WordData::getAverageTime()
 {
   if(numAsked==0)
     return 0.0;
@@ -48,15 +48,15 @@ float WordData::getAverageTime()
 
 
 
-// void wordData::populate(int size)
-// {   // Populates wordData object to initialization values
+// void WordData::populate(int size)
+// {   // Populates WordData object to initialization values
 //     numAsked = 0;
 //     percentRight = 0.0;
 //     avgTime = 0.0;
 //     probability = 1.0 / static_cast<double> (size);
 // }
 
-// double wordData::weight(bool wrong, double diff)
+// double WordData::weight(bool wrong, double diff)
 // {   // weight for answering (non-hints)
 //     double weight;
 
@@ -76,7 +76,7 @@ float WordData::getAverageTime()
 //     return weight;
 // }
 
-// double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
+// double WordData::weight(char typeOfHint, int numLetReqstd, double currProb)
 // {   // weight for hints
 //     double weight = 0.0;
 
@@ -115,7 +115,7 @@ float WordData::getAverageTime()
 //     return weight;
 // }
 
-// void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
+// void WordData::updateProbs(int index, int numOfEntries, double weight, WordData * wordInfo)
 // {   // Updates probabilities
 //     double beta = 1.0 - weight * wordInfo[index].probability;
 //     double alpha = beta + weight;
@@ -129,12 +129,12 @@ float WordData::getAverageTime()
 //     }   
 // }
 
-// void wordData::updateScore(int index, bool wrong, double timeDiff, \
-//                            int numOfEntries, wordData * wordInfo)
+// void WordData::updateScore(int index, bool wrong, double timeDiff, \
+//                            int numOfEntries, WordData * wordInfo)
 // {
 //     // Update probabilities
 //     updateProbs(index, numOfEntries, \
-//                 wordData::weight(wrong,timeDiff), wordInfo);
+//                 WordData::weight(wrong,timeDiff), wordInfo);
 
 //     // Update number of individual queries of word
 //     numAsked++;
@@ -151,7 +151,7 @@ float WordData::getAverageTime()
 //     avgTime = reweight(numAsked,avgTime,timeDiff);
 // }
 
-// void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
+// void WordData::updateScore(int index, int numOfEntries, WordData * wordStats, \
 //                            char typeOfHint, unsigned int numLetReqstd)
 // { // This is the hints variant of this function
 //     updateProbs(index, numOfEntries, \
@@ -159,7 +159,7 @@ float WordData::getAverageTime()
 //                 wordStats);
 // }
 
-// double wordData::reweight(int num, double old, double newish)
+// double WordData::reweight(int num, double old, double newish)
 // {
 //     double nd = static_cast<double> (num);
 //     return ((nd - 1.0) * old + newish)/nd;

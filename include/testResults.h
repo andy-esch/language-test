@@ -8,9 +8,9 @@
  *
  */
 
-#include "wordData.h"
+#include "WordData.h"
 #include "Flashcard.h"
 #include <vector>
 using std::vector;
 
-void testResults(vector<Flashcard> &, wordData[], int, int, bool);
+void testResults(vector<Flashcard> &, WordData[], int, int, bool);

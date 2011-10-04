@@ -18,7 +18,7 @@
 using std::cout;
 using std::endl;
 using std::string;
-using std::float;
+//using std::float;
 using std::vector;
 
 class Flashcard {
@@ -30,10 +30,11 @@ public:
     //    Flashcard();
     void toScreen();
     void clearWS();
-    wordData getWordData();
+    WordData getWordData();
     void recordPerformance(bool,float);
-    void setWeight;
+    void setWeight(int);
+    WordData data;
 private:
-    wordData data;
+
 };
 #endif

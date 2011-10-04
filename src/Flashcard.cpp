@@ -19,7 +19,7 @@
 
 
 
-string Flashcard::toScreen()
+void Flashcard::toScreen()
 {
     cout << "sideA: " << endl;
     for (int jj = 0; jj < sideA.size()-1; jj++)
@@ -45,9 +45,9 @@ void Flashcard::clearWS()
 
 void Flashcard::recordPerformance(bool correct, float responseTime)
 {
-  WordData.numAsked++;
-  WordData.answeringTime+=responseTime;
-  if(correct) numCorrect++;
+  data.numAsked++;
+  data.answeringTime+=responseTime;
+  if(correct) data.numCorrect++;
 }
 
 
