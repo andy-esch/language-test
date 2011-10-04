@@ -12,6 +12,21 @@
 
 extern bool debug;
 
+wordData::wordData()
+{
+  numAsked=0;
+  percentRight=100.0;
+  avgTime=0.0;
+  probability=1.0;
+}
+
+
+void wordData::setProbability(int N)
+{
+  probability= 1.0 / static_cast<double> (N);
+}
+
+
 void wordData::populate(int size)
 {   // Populates wordData object to initialization values
     numAsked = 0;
