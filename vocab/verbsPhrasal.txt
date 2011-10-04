@@ -4,18 +4,18 @@ regresar	be back
 quedarse sin	be out of
 terminarse	be over
 estar levantado	be up
-estallar una bomba	blow up a bomb
-inflar	blow up
+estallar (una bomba)	blow up (a bomb)
+inflar	inflate
 averiarse	break down
 volver a llamar	call back
-seguir. continuar	carry on
-cumplir una promesa	carry out a promise
+seguir, continuar	carry on
+cumplir (una promesa)	carry out (a promise)
 llevar a cabo	carry out
 poner en orden	clear up
 dar con	come across
 regresar	come back
 entrar	come in
-¡vamos!	come on
+vamos	come on
 consumir menos	cut down on
 desconnectar	cut off
 cortar en pedazos	cut up
@@ -37,7 +37,7 @@ bajar	go down
 salir	go out
 subir	go up
 esperar	hang on, hold on
-colgar el teléfono	hang up the phone
+colgar (el teléfono)	hang up (the phone)
 mantenerse	keep up with
 derribar	knock down
 olvidar	leave behind
@@ -49,7 +49,7 @@ ojo	look out
 buscar algo en un libro	  look up in a book
 meter	put in
 encender	put on
-ponerse la ropa	put on clothes
+ponerse (la ropa)	put on (clothes)
 quedars sin algo	run out of
 ponerse en camino	set off
 parecerse a	take after
@@ -59,4 +59,4 @@ sacar	take out
 tirar	throw away 
 bajar el volumen	turn down
 poner el volumen más fuerte	turn up
-encender los luces	turn on the lights
+encender (los luces)	turn on (the lights)

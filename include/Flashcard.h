@@ -1,5 +1,5 @@
 /*
- *  wordSet.h
+ *  Flashcard.h
  *  
  *  Description:
  *
@@ -19,10 +19,10 @@ using std::endl;
 using std::string;
 using std::vector;
 
-class wordSet {
+class Flashcard {
 public:
-    vector<string> verbos;
-    vector<string> verbs;
+    vector<string> sideB;
+    vector<string> sideA;
     void summarizeContents(int);
     void clearWS();
 };

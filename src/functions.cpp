@@ -13,9 +13,6 @@
 
 #include "functions.h"
 
-//#include <boost/regex.hpp>
-//boost::regex re;
-
 extern bool debug;
 
 //  To be used to verify if a given test has been passed
@@ -46,30 +43,40 @@ float howWrongIsIt(string test, string compare)
 }
 
 vector<string> stripParentheses(vector<string> words)
-{
-    vector<string> strippedWords;
-    string paren ("("), str;
+{ 
+  vector<string> strippedWords = words;
+  string paren (" (");
+  size_t it;
 
-    for (int i = 0; i < words.size(); i++)
-    {
-        str = words[i];
-        str.erase(str.begin() + str.find(paren), str.end() - 0);
-        strippedWords[i] = str;
+  for (int i=0;i<words.size();i++)
+     {
+       it=strippedWords[i].find(paren);
+       if(it!=string::npos)
+	 {
+	 strippedWords[i].erase(strippedWords[i].begin() 
+			     + strippedWords[i].find(paren), 
+		   strippedWords[i].end());
+	 }
     }
-
-    return strippedWords;
+  return strippedWords;
 }
 
 
 // Mimics string compare -- returns 1 if there is no match
+// I don't like to do all this extra work for each case, but for now it works.
 bool isInvalidAnswer(string answer, vector<string> & ws)
 {
-    bool isWrong = false;
     vector<string> strippedws = stripParentheses(ws);
+    bool isWrong = true;
+    vector<string>::iterator it;
 
-    for (int i = 0; i < strippedws.size(); i++)
-        if ( answer.compare(ws[i]) && answer.compare(strippedws[i]))
-            isWrong = true;
+    for (it = ws.begin(); it != ws.end(); it++)
+        if ( !answer.compare(*it) )
+            isWrong = false;
+
+    for (it = strippedws.begin(); it !=strippedws.end(); it++)
+        if ( !answer.compare(*it) )
+            isWrong = false;
 
     return isWrong;
 }
@@ -125,14 +132,14 @@ string hint(int verbSize, bool knowWordSize, int verboSize, \
 }
                
                
-void input(vector<wordSet> & ws, char * inFile)
+void input(vector<Flashcard> & ws, char * inFile)
 {
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     size_t delimPos = string::npos;
     ifstream infile(inFile,ifstream::in);
-    wordSet tempset;
+    Flashcard tempset;
     int lineNum = 1, delimWidth = 1;
     string delimiters[] = {"\t","    ","   ","  "};
 
@@ -201,7 +208,7 @@ void input(vector<wordSet> & ws, char * inFile)
         insertWords(temp1, tempset, 1);
         insertWords(temp2, tempset, 2);
 
-        // Put tempset into wordSet vector
+        // Put tempset into Flashcard vector
         ws.push_back(tempset);
 
         // Clear variables for next time through
@@ -217,7 +224,7 @@ void input(vector<wordSet> & ws, char * inFile)
     infile.close();
 }
 
-void insertWords(string words, wordSet & tempset, int step)
+void insertWords(string words, Flashcard & tempset, int step)
 {
     size_t found;
     if (debug) cout << "words are: '" << words << "'" << endl;
@@ -231,11 +238,11 @@ void insertWords(string words, wordSet & tempset, int step)
         {
             case 1:
                 if (debug) cout << "case : " << step << endl;
-                tempset.verbs.push_back(tempWord);
+                tempset.sideA.push_back(tempWord);
                 break;
             case 2:
                 if (debug) cout << "case : " << step << endl;
-                tempset.verbos.push_back(tempWord);
+                tempset.sideB.push_back(tempWord);
                 break;
             default:
                 break; // What should we do for this case?
@@ -249,11 +256,11 @@ void insertWords(string words, wordSet & tempset, int step)
     {
         case 1:
             if (debug) cout << "case : " << step << endl;
-            tempset.verbs.push_back(words);
+            tempset.sideA.push_back(words);
             break;
         case 2:
             if (debug) cout << "case : " << step << endl;
-            tempset.verbos.push_back(words);
+            tempset.sideB.push_back(words);
             break;
         default:
             break;  // What should we do for this case?
@@ -261,7 +268,7 @@ void insertWords(string words, wordSet & tempset, int step)
 }
 
 // isnew() is obsolete
-bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
+bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
 {   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
     // Also sets the value where a non-new word occurs
     bool isNew = true;
@@ -270,7 +277,7 @@ bool isnew(vector<wordSet> & ws, string test, long unsigned int & index)
         isNew = true;
     else
         for (int i = 0; i < ws.size(); i++)
-            if ( !test.compare(ws[i].verbos[0]) )
+            if ( !test.compare(ws[i].sideB[0]) )
             {
                 isNew = false;
                 index = i;
