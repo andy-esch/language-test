@@ -10,6 +10,15 @@
 
 #include "Flashcard.h"
 
+// Flashcard::Flashcard(vector<string> A, vector<string> B)
+// {
+//   sideA=A;
+//   sideB=B;
+// }
+
+
+
+
 void Flashcard::summarizeContents(int index1)
 {
     cout << "sideA: " << endl;
