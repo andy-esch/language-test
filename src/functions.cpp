@@ -8,6 +8,9 @@
  *
  */
 
+    // Write a function that takes in the cin stream, and sees if it is 'exit'
+    // or quit or eof and does things accordingly
+
 #include "functions.h"
 
 //#include <boost/regex.hpp>
@@ -127,7 +130,7 @@ void input(vector<wordSet> & ws, char * inFile)
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
-    size_t found = string::npos;
+    size_t delimPos = string::npos;
     ifstream infile(inFile,ifstream::in);
     wordSet tempset;
     int lineNum = 1, delimWidth = 1;
@@ -147,6 +150,8 @@ void input(vector<wordSet> & ws, char * inFile)
         }
         else
             infile.open(inFile,ifstream::in);
+        cin.clear();
+        cin.ignore(10,'\n');
     }
 
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
@@ -157,13 +162,14 @@ void input(vector<wordSet> & ws, char * inFile)
         if (temp1 == "")                    // Skip empty lines
             continue;
 
-        for (int ii = 0; ii < 4 && found == string::npos; ii++)
+        // Find the delimiter
+        for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)
         {
-            found = temp1.find(delimiters[ii]);
+            delimPos = temp1.find(delimiters[ii]);
             delimWidth = delimiters[ii].size();
         }
 
-        if (found == string::npos) // If none of the delims are found, go to next word
+        if (delimPos == string::npos) // If no delims found, go to next line
         {
             cout << "Skipping: '" << temp1 << "'" << endl;
             temp1.clear();
@@ -174,8 +180,8 @@ void input(vector<wordSet> & ws, char * inFile)
 
         try // This my be redundant with previous if statement
         {
-            temp1.erase(0,found + delimWidth);
-            temp2.erase(found,temp2.size() - found);
+            temp1.erase(0,delimPos + delimWidth);
+            temp2.erase(delimPos,temp2.size() - delimPos);
         }
         catch (std::out_of_range &e)
         {
@@ -202,7 +208,7 @@ void input(vector<wordSet> & ws, char * inFile)
         tempset.clearWS();
         temp1.clear();
         temp2.clear();
-        found = string::npos;
+        delimPos = string::npos;
 
         lineNum++;
     }
@@ -311,7 +317,7 @@ int randIndex(int num)
 double reaction(double time, int numLttrs)
 {
     // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
-    double reactionTime = time - 0.28 * numLttrs;
+    double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
     if (reactionTime < 0.0)
         reactionTime = 0.0;
     if (debug) cout << "reactionTime = " << reactionTime << endl;
@@ -349,7 +355,7 @@ int weightedIndex(wordData * data, int numEntries)
 
 string whitespace(int length)
 {
-    string whitespace;
+    string whitespace("");
     for (int k = 0; k < length + 2; k++)
         whitespace += " ";
     return whitespace;
@@ -364,5 +370,3 @@ string goodbye(void)
 
     return goodbyes[randIndex(9)] + "!";
 }
-
-
