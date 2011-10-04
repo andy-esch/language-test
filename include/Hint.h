@@ -23,15 +23,14 @@ using std::vector;
 class Hint {
 
 public:
+  Hint(string,bool);
+  Hint();
+  string handle(char,bool);
+  void setKey(string);
+private:
   string key;
   int hintNum;
   bool verbose;
-  //int penalty; //each hint method call can increase this.
-  string handle(char,bool);
-  Hint(string,bool);
-  Hint();
-  void setKey(string);
-private:
   string hint;
   void addLetter();
   void fillLetterPlaces();
@@ -42,3 +41,4 @@ private:
   string help();
 };
 #endif
+//could add an int penalty so that each hint results in penalty points.

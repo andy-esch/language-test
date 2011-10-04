@@ -19,12 +19,13 @@
 #include <iostream>
 #include <vector>
 
-#include "wordData.h"
+#include "WordData.h"
 #include "functions.h"
 #include "Flashcard.h"
 #include "listDicts.h"
 #include "testResults.h"
 #include "Hint.h"
+#include "SmartPicker.h"
 
 using std::cerr;
 using std::cin;
@@ -126,12 +127,10 @@ int main(int argc, char **argv)
 
     /*****  Prepare an array of wordData objects **********/
     numFlashcards = cards.size();
-    wordData * wordy = new wordData[numFlashcards];
-    for (int i = 0; i < numFlashcards; i++)
-    {
-        wordy[i].populate(numFlashcards);
-    }
-
+    for(int i=0;i<numFlashcards;i++)
+      {
+	cards[i].data=WordData();
+      }
 
 
     /******* Prepare variable for formatting purposes **********/
@@ -146,6 +145,7 @@ int main(int argc, char **argv)
     //****** Language Quiz **********//
     cout << "Beginning Quiz." << endl;
 
+    SmartPicker picker;
     string response;
     Hint myhint("  ",false);
 
@@ -154,7 +154,8 @@ int main(int argc, char **argv)
       {	
 
 	/******* Choose new flashcard and select words ******************/
-        int i = weightedIndex(wordy, numFlashcards);
+        int i = picker.leastPickedIndex(cards);
+
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
 	
@@ -202,11 +203,11 @@ int main(int argc, char **argv)
 
 
     /*****      Summary of Results      ******/
-    testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
+    //   testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
 
 
     /******    Clean up   ********************/
-    delete[] wordy; // Are there any other clean-up things 
+    //    delete[] wordy; // Are there any other clean-up things 
                     // to do so that we're good programmers?
 
 

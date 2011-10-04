@@ -41,3 +41,17 @@ void Flashcard::clearWS()
     sideB.clear();
     sideA.clear();
 }
+
+
+void Flashcard::recordPerformance(bool correct, float responseTime)
+{
+  WordData.numAsked++;
+  WordData.answeringTime+=responseTime;
+  if(correct) numCorrect++;
+}
+
+
+void Flashcard::setWeight(int N)
+{
+  weight=1.0/static_cast<double>(N);
+}

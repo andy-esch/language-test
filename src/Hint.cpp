@@ -126,10 +126,10 @@ string Hint::handle(char hintType, bool verbose)
       break;
     }
   out << endl;
-  return out.str();//.str();
+  return out.str();
 }
 
-
+// skip word should be handled elsewhere...
 // string Hint::skipWord()
 // help()
 // if synonym hint is selected, create new Hint object with new key

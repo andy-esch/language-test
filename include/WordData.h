@@ -16,10 +16,8 @@ using std::cout;
 using std::endl;
 
 class WordData
-{   // Is there such a thing as 'default class values'? like there are default
-    // parameter values for function arguments?  And if so, can they just be
-    // defined below, such as float var1 = 3.0?
-public:
+{
+ public:
   WordData();
   unsigned int numAsked;
   unsigned int numCorrect;

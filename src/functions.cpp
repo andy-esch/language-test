@@ -354,6 +354,7 @@ int weightedIndex(wordData * data, int numEntries)
     return currIndex;
 }
 
+
 string whitespace(int length)
 {
     string whitespace;
@@ -367,7 +368,7 @@ string goodbye(void)
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
                          "Namaste"};
-        // What do you think?  Should those be in a file instead?
+        // What do you think?  Should those be in a file instead? Nice! Yeah, we could generate a goodbye file with loads and loads of languages.  It'd be a nice touch :) Maybe a welcome message at the start too.
 
     return goodbyes[randIndex(9)] + "!";
 }
