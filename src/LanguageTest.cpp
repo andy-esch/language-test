@@ -149,8 +149,14 @@ int main(int argc, char **argv)
 	    
 	    /* options switch */
             if ( response[0] == '-' )
-	      cout << myhint.handle(response[1],false);
-	    
+	      { 
+		if(response[1]=='s') 
+		  {
+		    cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
+		    break;
+		  }
+		cout << myhint.handle(response[1],false);
+	      }
             /* else check response */
 	    else
 	      {
