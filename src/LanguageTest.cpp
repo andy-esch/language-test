@@ -133,15 +133,7 @@ int main(int argc, char **argv)
       }
 
 
-    /******* Prepare variable for formatting purposes **********/
-    unsigned int lengthLongestWord = 0;
-    for (int i = 0; i < numFlashcards; i++)
-    {
-        if (cards[i].sideB[0].size() > lengthLongestWord)
-            lengthLongestWord = cards[i].sideB[0].size();
-    }
-
-
+    
     //****** Language Quiz **********//
     cout << "Beginning Quiz." << endl;
 
@@ -155,8 +147,8 @@ int main(int argc, char **argv)
       {	
 
 	/******* Choose new flashcard and select words ******************/
-	 int i = picker.leastPickedIndex(cards);
-	//int i = picker.nextIndex(cards);
+	int i = picker.leastPickedIndex(cards);
+	
 
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
@@ -170,7 +162,7 @@ int main(int argc, char **argv)
         while (!cin.eof() && isWrong)
 	  {
 	    numOfTries++;
-            timeStart = time(NULL); //could use more accurate timing mechanism
+            timeStart = time(NULL); //yep - should use more accurate timer
             getline(cin, response);
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
@@ -202,18 +194,15 @@ int main(int argc, char **argv)
 		    cout << "Right!" << endl;
 		  }
 	      }
-	  }//move onto next word!
+	  }
+	//ready to move onto next word!
 	cards[i].recordPerformance(numOfTries,(timeEnd-timeStart));
 	isWrong = true;
       }
 
 
     /*****      Summary of Results      ******/
-    //   testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
-    for(int i=0;i<cards.size();i++)
-      {
-	cout << cards[i].data.numCorrect << "  " << cards[i].data.getAverageTime() << "  " << cards[i].data.numAsked << endl;
-      }
+    testResults(cards,verbose);
 
     /******    Clean up   ********************/
     //    delete[] wordy; // Are there any other clean-up things 

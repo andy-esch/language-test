@@ -19,12 +19,7 @@ SmartPicker::SmartPicker()
 
 unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
 {
-  if(currentIndex==cards.size())
-    {
-      currentIndex=0;
-      return currentIndex;
-    }
-  else return currentIndex++;
+  return (currentIndex++ % cards.size());
 }
 
 
@@ -40,7 +35,7 @@ unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
     {
       numasked=cards[i].data.numAsked;
       if(numasked<currentLowest)
-	currentLowest=asked;
+	currentLowest=numasked;
     }
 
   for(int i=0;i<cards.size();i++)

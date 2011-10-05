@@ -13,4 +13,4 @@
 #include <vector>
 using std::vector;
 
-void testResults(vector<Flashcard> &, WordData[], int, int, bool);
+void testResults(vector<Flashcard>, bool);
