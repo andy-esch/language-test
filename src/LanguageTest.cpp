@@ -174,7 +174,7 @@ int main(int argc, char **argv)
 	      }
 	  }
 	//ready to move onto next word!
-	cards[i].recordPerformance(numOfTries,(timeEnd-timeStart));
+	cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
 	isWrong = true;
       }
 

@@ -36,10 +36,10 @@ void Flashcard::toScreen()
 }
 
 
-void Flashcard::recordPerformance(int numOfTries, double responseTime)
+void Flashcard::recordPerformance(int numOfTries, bool isWrong, double responseTime)
 {
   data.numAsked++;
-  if(numOfTries==1)
+  if(numOfTries==1 && !isWrong)
     {
       data.numCorrect++;
       data.answeringTime+=responseTime;
