@@ -78,18 +78,6 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
     return isWrong;
 }
 
-// Mimics string compare -- returns 1 if there is no match
-bool compareAll(vector<string> & ws, string test)
-{
-    bool isWrong = false;
-    vector<string>::iterator it;
-
-    for (it = ws.begin(); it != ws.end(); it++)
-        if ( test.compare( *it ) )
-            isWrong = true;
-
-    return isWrong;
-}
 
 string hintOptions(int leftmargin)
 {
@@ -106,27 +94,6 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
-string hint(int verbSize, bool knowWordSize, int verboSize, \
-            string hintWord, int lHintNum)
-{
-    stringstream hint;
-    hint << whitespace(verbSize-3) << "-> ";
-    for (int jj = 0; jj < verboSize; jj++)
-    {
-        if (hintWord[jj] == ' ')
-            hint << ' ';
-        else if (jj < lHintNum)
-            hint << hintWord[jj];
-        else if (knowWordSize)
-            hint << '-';
-        else
-            hint << ' ';
-    }
-    if (lHintNum >= verboSize)
-        hint << " <-";
-    hint << endl;
-    return hint.str();
-}
                
                
 void input(vector<Flashcard> & ws, char * inFile)
@@ -217,6 +184,8 @@ void input(vector<Flashcard> & ws, char * inFile)
 
     infile.close();
 }
+
+
 
 void insertWords(string words, Flashcard & tempset, int step)
 {

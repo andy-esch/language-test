@@ -114,62 +114,43 @@ int main(int argc, char **argv)
     }
 
     
-
-
-
-
-
     
     //****** Language Quiz **********//
-
-    input(cards,&inFile[0]);
-    cout << "Okay, vocab is all read in." << endl;
-
-    /*****  Prepare an array of WordData objects **********/
-    for(int i=0;i<cards.size();i++)
-      {
-	cards[i].data=WordData();
-      }
-
-    cout << "Beginning Quiz." << endl;
-
-
     string response;
     SmartPicker picker;
     Hint myhint("  ",false);
+    input(cards,&inFile[0]);
+    cout << "Beginning Quiz." << endl;
+
+
 
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
       {	
-
-	/******* Choose new flashcard and select words ******************/
 	int i = picker.leastPickedIndex(cards);
 	
-
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
 	
-        int numOfTries = 0;
 	myhint.setKey(sideBword);
-
-	/******* Prompt user for response *****************************/
+        
+	int numOfTries = 0;
+	
         cout << sideAword << ": ";
 
         while (!cin.eof() && isWrong)
 	  {
 	    numOfTries++;
-            timeStart = time(NULL); //yep - should use more accurate timer
+            timeStart = time(NULL); //yep - lets use more accurate timer
             getline(cin, response);
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
 	    
-
-	    //**************** options switch **********************//
+	    /* options switch */
             if ( response[0] == '-' )
 	      cout << myhint.handle(response[1],false);
 	    
-	    
-            //*************  check response ***********************//
+            /* else check response */
 	    else
 	      {
 		isWrong=isInvalidAnswer(response,cards[i].sideB);
@@ -196,15 +177,11 @@ int main(int argc, char **argv)
 	isWrong = true;
       }
 
-
     testResults(cards,verbose);
 
-    //    delete[] wordy; // Are there any other clean-up things 
-                    // to do so that we're good programmers?
-
-
-    /*****      Close program      *****/
     cout << goodbye() << endl;
+
+    //clean up goes here
 
     return 0;
 }

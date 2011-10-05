@@ -36,13 +36,6 @@ void Flashcard::toScreen()
 }
 
 
-void Flashcard::clearWS()
-{
-    sideB.clear();
-    sideA.clear();
-}
-
-
 void Flashcard::recordPerformance(int numOfTries, double responseTime)
 {
   data.numAsked++;
@@ -58,3 +51,23 @@ void Flashcard::setWeight(int N)
 {
   weight=1.0/static_cast<double>(N);
 }
+
+
+
+// void Flashcard::setupData()
+// {
+//   for(int i=0;i<cards.size();i++)
+//     {
+//       cards[i].data=WordData();
+//     }
+// }
+
+
+
+void Flashcard::clearWS()
+{
+    sideB.clear();
+    sideA.clear();
+}
+
+
