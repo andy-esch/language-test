@@ -133,6 +133,7 @@ int main(int argc, char **argv)
     cout << "Beginning Quiz." << endl;
 
     string response;
+    Hint myhint("  ",false);
 
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
@@ -144,7 +145,7 @@ int main(int argc, char **argv)
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
         Hint myhint(sideBword, false);
         int numOfTries = 1;
-
+        myhint.setKey(sideBword);
 
         /******* Prompt user for response *****************************/
         cout << sideAword << ": ";

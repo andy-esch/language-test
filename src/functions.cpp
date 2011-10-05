@@ -343,9 +343,9 @@ int weightedIndex(wordData * data, int numEntries)
         // It's possible that this step isn't necessary but I cannot figure out
         // a way to use consecutive pointers in the partial_sum() function for
         // the structure data[ii].probability
-    if ( num = 0 )
-        for (int ii = 0; ii < numEntries; ii++)
-            prob[ii] = &(data[ii].probability);
+    for (int ii = 0; ii < numEntries; ii++)
+        prob[ii] = &(data[ii].probability);
+
     do
     {
         vector<double> cumulative;

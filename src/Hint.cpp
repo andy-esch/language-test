@@ -24,6 +24,26 @@ Hint::Hint(string answerKey, bool selectVerbose)
 }
 
 
+Hint::Hint()
+{
+  key="  ";
+  hintNum=0;
+  verbose=false;
+  hint="  ";
+}
+
+
+void Hint::setKey(string answerKey)
+{
+  key=answerKey;
+  hint="";
+  for(int i=0;i<key.size();i++)
+    {
+      hint+= " ";
+    }
+}
+
+
 void Hint::addLetter()
 {
   if(hintNum<=key.size())
