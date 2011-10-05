@@ -42,14 +42,11 @@ int main(int argc, char **argv)
 
 
     /*****        Initialize Variables        *****/
-    srand(time(NULL));
-    time_t timeStart, timeEnd;
-    char inFile[60] = "vocab/sample.txt";
-    vector<Flashcard> cards;
-    int c;
     bool verbose = false, isWrong = true;
-    bool disableHintMsg = false;
-    gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
+    //srand(time(NULL));
+    char inFile[60] = "vocab/sample.txt";
+    int c;
+    //gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
     extern int optopt; // Command line processing variable
 
     //  Below: Rough idea on how to implement choosing whether to be quizzed on one
@@ -116,13 +113,17 @@ int main(int argc, char **argv)
     
     
     //****** Language Quiz **********//
+    time_t timeStart, timeEnd;
+    bool disableHintMsg = false;
+
+    vector<Flashcard> cards;
     string response;
     SmartPicker picker;
-    Hint myhint("  ",false);
+    Hint myhint = Hint("  ",verbose);
+
     input(cards,&inFile[0]);
+
     cout << "Beginning Quiz." << endl;
-
-
 
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
