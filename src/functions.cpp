@@ -337,17 +337,19 @@ int weightedIndex(wordData * data, int numEntries)
     static int lastIndex;
     int currIndex;
     extern boost::mt19937 gen;
-    double prob[numEntries];
+    double * prob[numEntries];
+    
         // Copy probabilities to simple array so partial_sum() can use it.
         // It's possible that this step isn't necessary but I cannot figure out
         // a way to use consecutive pointers in the partial_sum() function for
         // the structure data[ii].probability
-    for (int ii = 0; ii < numEntries; ii++)
-        prob[ii] = data[ii].probability;
+    if ( num = 0 )
+        for (int ii = 0; ii < numEntries; ii++)
+            prob[ii] = &(data[ii].probability);
     do
     {
         vector<double> cumulative;
-        std::partial_sum(&prob[0], &prob[0] + numEntries, \
+        std::partial_sum(prob[0], prob[0] + numEntries, \
                          std::back_inserter(cumulative));
         if (debug) cout << "partial_sum() calculated" << endl;
         boost::uniform_real<> dist(0.0, cumulative.back());
@@ -376,4 +378,14 @@ string goodbye(void)
         // What do you think?  Should those be in a file instead?
 
     return goodbyes[randIndex(9)] + "!";
+}
+
+bool exitProg(char * test)
+{
+    return (!strcmp(test,"exit") || !strcmp(test,"quit"));
+        // what are some other things we can put in here?
+        // Also, could we put through the cin.eof() thing here so all the tests
+        // throughout the program have a single function? instead of:
+        // if ( exitProg(test) || cin.eof() )
+        // to: if (exitProg(test,cin)), where the second argument would be some stream, i suppose
 }

@@ -51,4 +51,5 @@ int weightedIndex(wordData *, int);
 string whitespace(int length);
 float howWrongIsIt(string,string);
 string goodbye(void);
+bool exitProg(string);
 #endif
