@@ -10,15 +10,6 @@
 
 #include "Flashcard.h"
 
-// Flashcard::Flashcard(vector<string> A, vector<string> B)
-// {
-//   sideA=A;
-//   sideB=B;
-// }
-
-
-
-
 void Flashcard::toScreen()
 {
     cout << "sideA: " << endl;
@@ -51,17 +42,6 @@ void Flashcard::setWeight(int N)
 {
   weight=1.0/static_cast<double>(N);
 }
-
-
-
-// void Flashcard::setupData()
-// {
-//   for(int i=0;i<cards.size();i++)
-//     {
-//       cards[i].data=WordData();
-//     }
-// }
-
 
 
 void Flashcard::clearWS()
