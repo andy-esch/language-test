@@ -27,7 +27,7 @@ double wordData::weight(bool wrong, double diff)
     if (wrong)
     {    // Probability increase with response time for wrong answers
          // Quick responses are proportional to smaller probability differentials
-      weight = 0.24 * (1 - exp(-0.2 * diff));
+      weight = 0.24 * (1.0 - exp(-0.2 * diff));
     }
     else // if correct
     {    // Probability decreases with response times for correct answers
@@ -69,7 +69,7 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
         case 'u':
                 // Not yet implemented -- for showing usage of word in question
             break;
-        case 'y':
+        case 'y':   // Synonym?
             weight = 0.025;
             break;
         default:
