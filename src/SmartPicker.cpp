@@ -31,11 +31,19 @@ unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
 unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
 {
   srand ( time(0) );
-  vector<int> asked;
+  vector<int> leastAskedIndices;
+  int currentLowest=cards[0].data.numAsked;
   for(int i=0;i<cards.size();i++)
     {
-      asked.push_back(cards[i].data.numAsked);
+      if(cards[i].data.numAsked<currentLowest)
+	currentLowest=i;
     }
+  for(int i=0;i<cards.size();i++)
+    {
+      if(cards[i].data.numAsked==currentLowest)
+	leastAskedIndices.push_currentLowest=i;
+    }
+  
   std::sort(asked.begin(), asked.end());
   int leastPicked = asked[0];
   int count=0;
