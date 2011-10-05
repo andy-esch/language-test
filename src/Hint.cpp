@@ -37,6 +37,7 @@ void Hint::setKey(string answerKey)
 {
   key=answerKey;
   hint="";
+  hintNum=0;
   for(int i=0;i<key.size();i++)
     {
       hint+= " ";
