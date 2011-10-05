@@ -25,6 +25,7 @@
 #include <iostream>
 #include "Flashcard.h"
 #include <ctime>
+#include <time.h>
 
 using std::vector;
 
@@ -33,6 +34,7 @@ private:
   unsigned int currentIndex;
   void setCurrentIndex(int);
 public:
+  SmartPicker();
   unsigned int nextIndex(vector<Flashcard>);
   unsigned int leastPickedIndex(vector<Flashcard>);
 };

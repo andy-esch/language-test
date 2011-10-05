@@ -43,7 +43,7 @@ void Flashcard::clearWS()
 }
 
 
-void Flashcard::recordPerformance(bool correct, float responseTime)
+void Flashcard::recordPerformance(bool correct, double responseTime)
 {
   data.numAsked++;
   data.answeringTime+=responseTime;

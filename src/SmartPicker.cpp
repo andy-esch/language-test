@@ -10,19 +10,28 @@
 
 #include "SmartPicker.h"
 
+SmartPicker::SmartPicker()
+{
+  currentIndex=0;
+}
+
+
 
 unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
 {
-  if(currentIndex==cards.size()-1)
-    return 0;
-  return currentIndex++;
+  if(currentIndex==cards.size())
+    {
+      currentIndex=0;
+      return currentIndex;
+    }
+  else return currentIndex++;
 }
 
 
 unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
 {
+  srand ( time(NULL) );
   vector<int> asked;
-  srand(time(0));
   for(int i=0;i<cards.size();i++)
     {
       asked.push_back(cards[i].data.numAsked);

@@ -145,8 +145,9 @@ int main(int argc, char **argv)
     //****** Language Quiz **********//
     cout << "Beginning Quiz." << endl;
 
-    SmartPicker picker;
+
     string response;
+    SmartPicker picker;
     Hint myhint("  ",false);
 
     while ( !cin.eof() )    // Should there be other conditions? 
@@ -154,7 +155,8 @@ int main(int argc, char **argv)
       {	
 
 	/******* Choose new flashcard and select words ******************/
-        int i = picker.leastPickedIndex(cards);
+	// int i = picker.leastPickedIndex(cards);
+	int i = picker.nextIndex(cards);
 
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];

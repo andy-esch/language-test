@@ -25,13 +25,11 @@ class Flashcard {
 public:
     vector<string> sideB;
     vector<string> sideA;
-    float weight;
-    //    Flashcard(vector<string>,vector<string>);
-    //    Flashcard();
+    double weight;
     void toScreen();
     void clearWS();
     WordData getWordData();
-    void recordPerformance(bool,float);
+    void recordPerformance(bool,double);
     void setWeight(int);
     WordData data;
 private:
