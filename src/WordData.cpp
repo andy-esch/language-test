@@ -32,7 +32,7 @@ double WordData::getPercentCorrect()
 double WordData::getAverageTime()
 {
   if(numAsked==0)
-    return 0.0;
+    return 0;
   else
     return (answeringTime/static_cast<double>(numAsked));
 }

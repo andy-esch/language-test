@@ -161,7 +161,7 @@ int main(int argc, char **argv)
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
 	
-        int numOfTries = 1;
+        int numOfTries = 0;
 	myhint.setKey(sideBword);
 
 	/******* Prompt user for response *****************************/
@@ -169,6 +169,7 @@ int main(int argc, char **argv)
 
         while (!cin.eof() && isWrong)
 	  {
+	    numOfTries++;
             timeStart = time(NULL); //could use more accurate timing mechanism
             getline(cin, response);
             timeEnd = time(NULL);
@@ -196,17 +197,23 @@ int main(int argc, char **argv)
 		    else
 		      cout << whitespace(sideAword.size());
 		  }
-		else if( verbose ) cout << "Right!" << endl;
-		numOfTries++;
+		else if( verbose ) 
+		  {
+		    cout << "Right!" << endl;
+		  }
 	      }
-	  }
+	  }//move onto next word!
+	cards[i].recordPerformance(numOfTries,(timeEnd-timeStart));
 	isWrong = true;
       }
 
 
     /*****      Summary of Results      ******/
     //   testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
-
+    for(int i=0;i<cards.size();i++)
+      {
+	cout << cards[i].data.numCorrect << "  " << cards[i].data.getAverageTime() << "  " << cards[i].data.numAsked << endl;
+      }
 
     /******    Clean up   ********************/
     //    delete[] wordy; // Are there any other clean-up things 

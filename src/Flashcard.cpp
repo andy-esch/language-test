@@ -43,11 +43,14 @@ void Flashcard::clearWS()
 }
 
 
-void Flashcard::recordPerformance(bool correct, double responseTime)
+void Flashcard::recordPerformance(int numOfTries, double responseTime)
 {
   data.numAsked++;
-  data.answeringTime+=responseTime;
-  if(correct) data.numCorrect++;
+  if(numOfTries==1)
+    {
+      data.numCorrect++;
+      data.answeringTime+=responseTime;
+    }
 }
 
 

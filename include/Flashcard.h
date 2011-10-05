@@ -29,7 +29,7 @@ public:
     void toScreen();
     void clearWS();
     WordData getWordData();
-    void recordPerformance(bool,double);
+    void recordPerformance(int,double);
     void setWeight(int);
     WordData data;
 private:
