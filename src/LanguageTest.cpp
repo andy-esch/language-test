@@ -46,8 +46,6 @@ int main(int argc, char **argv)
     time_t timeStart, timeEnd;
     char inFile[60] = "vocab/sample.txt";
     vector<Flashcard> cards;
-    vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
-    unsigned int numFlashcards = 0, lHintNum = 0;
     int c;
     bool verbose = false, isWrong = true;
     bool disableHintMsg = false;
@@ -119,22 +117,20 @@ int main(int argc, char **argv)
 
 
 
-    /*****      Input Dictionary     *****/
-    input(cards,&inFile[0]);
-    cout << "Okay, it's all read in." << endl;
-
-
-
-    /*****  Prepare an array of WordData objects **********/
-    numFlashcards = cards.size();
-    for(int i=0;i<numFlashcards;i++)
-      {
-	cards[i].data=WordData();
-      }
 
 
     
     //****** Language Quiz **********//
+
+    input(cards,&inFile[0]);
+    cout << "Okay, vocab is all read in." << endl;
+
+    /*****  Prepare an array of WordData objects **********/
+    for(int i=0;i<cards.size();i++)
+      {
+	cards[i].data=WordData();
+      }
+
     cout << "Beginning Quiz." << endl;
 
 
@@ -201,10 +197,8 @@ int main(int argc, char **argv)
       }
 
 
-    /*****      Summary of Results      ******/
     testResults(cards,verbose);
 
-    /******    Clean up   ********************/
     //    delete[] wordy; // Are there any other clean-up things 
                     // to do so that we're good programmers?
 
