@@ -155,8 +155,8 @@ int main(int argc, char **argv)
       {	
 
 	/******* Choose new flashcard and select words ******************/
-	// int i = picker.leastPickedIndex(cards);
-	int i = picker.nextIndex(cards);
+	 int i = picker.leastPickedIndex(cards);
+	//int i = picker.nextIndex(cards);
 
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];

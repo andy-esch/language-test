@@ -30,7 +30,7 @@ unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
 
 unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
 {
-  srand ( time(NULL) );
+  srand ( time(0) );
   vector<int> asked;
   for(int i=0;i<cards.size();i++)
     {
@@ -39,10 +39,10 @@ unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
   std::sort(asked.begin(), asked.end());
   int leastPicked = asked[0];
   int count=0;
-  while(asked[count]<=leastPicked){
+  while(count < cards.size() && asked[count]<=leastPicked){
     count++;
   }
-  int indexChoice = rand()%count;
+  int indexChoice = rand() % count;
   if(indexChoice==currentIndex)
     return nextIndex(cards);
   setCurrentIndex(indexChoice);
