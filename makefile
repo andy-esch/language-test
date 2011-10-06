@@ -7,8 +7,8 @@ vpath %.h include
 CXX = g++-mp-4.4
 CXXFLAGS = -I include
 
-OBJECTS = functions.o wordData.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o
-HEADERS = functions.h wordData.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h
+OBJECTS = functions.o wordData.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o wordCompare.o
+HEADERS = functions.h wordData.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h wordCompare.h
 # ****************************************************
 
 mkcln: ltest clean
