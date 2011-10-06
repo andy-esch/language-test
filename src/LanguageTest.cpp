@@ -25,6 +25,7 @@
 #include "listDicts.h"
 #include "testResults.h"
 #include "Hint.h"
+#include "cmdLineInput.h"
 
 using std::cerr;
 using std::cin;
@@ -38,8 +39,6 @@ bool debug = false;
 
 int main(int argc, char **argv)
 {
-
-
     /*****        Initialize Variables        *****/
     srand(time(NULL));
     time_t timeStart, timeEnd;
@@ -47,11 +46,9 @@ int main(int argc, char **argv)
     vector<Flashcard> cards;
     vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
     unsigned int numFlashcards = 0, lHintNum = 0;
-    int c;
     bool verbose = false, isWrong = true;
     bool disableHintMsg = false;
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
-    extern int optopt; // Command line processing variable
 
     //  Below: Rough idea on how to implement choosing whether to be quizzed on one
     //  language or the other, but the data structure prevents easy access since
@@ -71,48 +68,12 @@ int main(int argc, char **argv)
 	//		cout << "answer " << kk << ": " << *answers[kk] << endl;
 	//	}
 
-    /*****     Take optional input from command line     *****/
-//    takeInInput(inFile,&verbose,&debug); -- Suggested input function
-    while ( (c = getopt(argc, argv, ":i:vhdl")) != -1)
-    {
-        switch (c)
-        {
-            case 'i': // Input non-default dictionary
-                strcpy(inFile,argv[optind-1]);
-                break;
-            case ':':
-                if (optopt == 'i')
-                {   // Hmm, this is slightly redundant with what input() does
-                    cerr << "Warning: Option '-i' must have more than one argument." << endl;
-                    cout << "Type a new file name to continue or 'exit' to exit program." << endl;
-                    cin >> inFile;
-                    if ( exitProg(inFile) || cin.eof()) // if 'exit', exit program
-                        exit(0);
-                }
-            case 'v': // Verbose output
-                verbose = true;
-                break;
-            case 'h': // Print usage info then exit
-                cout << help(argv[0]);
-                exit(0);
-            case 'd': // Show debug output info
-                debug = true;
-                break;
-            case 'l': // List available dictionaries
-                strcpy(inFile,listDicts().c_str());
-                break;
-            case '?':
-                std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
-                break;
-            default:
-                std::cerr << "Invalid commandline options." << endl;
-                help(argv[0]);
-                exit(0);
-                break;
-        }
-    }
+    /*****  Take optional input from command line   *****/
+    cmdLineInput(argc,argv,inFile,verbose,debug);
 
-    /*****      Input Dictionary     *****/
+    /*****  Choose Dictionary   *****/
+    
+    /*****  Input Dictionary    *****/
     input(cards,&inFile[0]);
     cout << "Okay, it's all read in." << endl;
 
