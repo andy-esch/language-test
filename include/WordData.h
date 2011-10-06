@@ -1,5 +1,5 @@
 /*
- *  WordData.h
+ *  worddata.h
  *  
  *  Description: class definition of worddata
  *
@@ -15,16 +15,24 @@
 using std::cout;
 using std::endl;
 
-class WordData
+class wordData
 {   // Is there such a thing as 'default class values'? like there are default
     // parameter values for function arguments?  And if so, can they just be
     // defined below, such as float var1 = 3.0?
 public:
-  WordData();
+  wordData();
   unsigned int numAsked;
-  unsigned int numCorrect;
-  float answeringTime;
-  float getPercentCorrect();
-  float getAverageTime();
+  float percentRight;
+  float avgTime;
+  double probability;
+  void updateScore(int, bool, double, int, wordData *);
+  void updateScore(int, int, wordData *, char, unsigned int=0);
+  void populate(int);
+ private:
+  void setProbability(int N);
+  double reweight(int, double, double);
+  double weight(bool, double);
+  double weight(char, int, double);
+  void updateProbs(int, int, double, wordData *);
 };
 #endif // _WORDDATA_H_
