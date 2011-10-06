@@ -18,6 +18,9 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "Flashcard.h"
 
