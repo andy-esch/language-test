@@ -108,9 +108,6 @@ int main(int argc, char **argv)
         }
     }
 
-<<<<<<< HEAD
-    
-    
     //****** Language Quiz **********//
     time_t timeStart, timeEnd;
     bool disableHintMsg = false;
@@ -150,7 +147,7 @@ int main(int argc, char **argv)
             if ( response[0] == '-' )
 	      { 
 		if(response[1]=='s') break;
-		cout << myhint.handle(response[1],false);
+		cout << myhint.handle(response,false);
 	      }
             /* else check response */
 	    else
@@ -181,87 +178,6 @@ int main(int argc, char **argv)
 
     testResults(cards,verbose);
 
-=======
-    /*****      Input Dictionary     *****/
-    input(cards,&inFile[0]);
-    cout << "Okay, it's all read in." << endl;
-
-    /*****  Prepare an array of wordData objects *****/
-    numFlashcards = cards.size();
-    wordData * wordy = new wordData[numFlashcards];
-    for (int i = 0; i < numFlashcards; i++)
-        wordy[i].populate(numFlashcards);
-
-    /***** Prepare variable for formatting purposes *****/
-    unsigned int lengthLongestWord = 0;
-    for (int i = 0; i < numFlashcards; i++)
-    {
-        if (cards[i].sideB[0].size() > lengthLongestWord)
-            lengthLongestWord = cards[i].sideB[0].size();
-    }
-
-    /***** Language Quiz *****/
-    cout << "Beginning Quiz." << endl;
-
-    string response;
-    Hint myhint("  ",false);
-
-    while ( !cin.eof() )    // Should there be other conditions? 
-                            // --Yes - all probabilities can't be zero.
-    {
-        /***** Choose new flashcard and select words *****/
-        int i = weightedIndex(wordy, numFlashcards);
-        string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
-        string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
-        Hint myhint(sideBword, false);
-        int numOfTries = 1;
-        myhint.setKey(sideBword);
-
-        /***** Prompt user for response *****/
-        cout << sideAword << ": ";
-
-        while (!cin.eof() && isWrong)
-        {
-            timeStart = time(NULL); //could use more accurate timing mechanism
-            getline(cin, response);
-            timeEnd = time(NULL);
-            if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
-
-            /** Asked for hint? **/
-            if ( response[0] == '-' )
-                cout << myhint.handle(response,false);
-            else
-            {
-                isWrong = isInvalidAnswer(response,cards[i].sideB);
-
-                if (isWrong)
-                {
-                    if( verbose ) cout << "Wrong!" << endl;
-                    if ( (numOfTries % 5) == 0 && !disableHintMsg )
-                    {
-                        cout << hintOptions(sideAword.size()) << endl;
-                        cout << sideAword << ": ";
-                    }
-                    else
-                        cout << whitespace(sideAword.size());
-                }
-                else if( verbose ) cout << "Right!" << endl;
-                numOfTries++;
-            }
-        }
-        isWrong = true;
-      }
-
-    /*****      Summary of Results      ******/
-    testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
-
-
-    /******    Clean up   ********************/
-    delete[] wordy; // Are there any other clean-up things 
-                    // to do so that we're good programmers?
-
-    /*****      Close program      *****/
->>>>>>> upstream/master
     cout << goodbye() << endl;
 
     //clean up goes here

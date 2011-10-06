@@ -31,32 +31,7 @@ Hint::Hint()
 }
 
 
-<<<<<<< HEAD
-Hint::Hint()
-{
-  key="  ";
-  hintNum=0;
-  verbose=false;
-  hint="  ";
-}
-
-
 void Hint::setKey(string answerKey)
-{
-  key=answerKey;
-  hint="";
-  hintNum=0;
-  for(int i=0;i<key.size();i++)
-    {
-      hint+= " ";
-    }
-}
-
-
-void Hint::addLetter()
-=======
-void Hint::setKey(string answerKey)
->>>>>>> upstream/master
 {
     key = answerKey;
     hint = "";
@@ -66,9 +41,9 @@ void Hint::setKey(string answerKey)
 
 void Hint::addLetter(int numLetters)
 {
-    // Add letter if ' ' is found in substring
-    if (string(key,hintNum,numLetters).find(' ') != string::npos)
-        addLetter(1);
+    // // Add letter if ' ' is found in substring
+    // if (string(key,hintNum,numLetters).find(' ') != string::npos)
+    //     addLetter(1);
     
     if ( hintNum < key.size() )
     {
@@ -155,19 +130,11 @@ string Hint::handle(string hintType, bool verbose)
             out << help();
             break;
     }
-<<<<<<< HEAD
   out << endl;
   return out.str();
-=======
-
-    out << endl;
-    return out.str();
->>>>>>> upstream/master
 }
 
 // skip word should be handled elsewhere...
-// string Hint::skipWord()
-// help()
 // if synonym hint is selected, create new Hint object with new key
 // and perform answer() on it.
 // string Hint::synonym()
