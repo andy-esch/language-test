@@ -19,11 +19,12 @@ using std::endl;
 class WordData
 {
 public:
-    WordData();
     unsigned int numAsked;
     unsigned int numCorrect;
     float answeringTime;
-    double getPercentCorrect();
-    double getAverageTime();
+    float percentRight;
+    WordData();
+    double getPercentCorrect() { return percentRight; };
+    double getAnsweringTime() { return answeringTime; };
 };
 #endif // _WORDDATA_H_

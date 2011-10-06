@@ -116,7 +116,7 @@ int main(int argc, char **argv)
         isWrong = true;
     }
 
-        //testResults(cards,verbose);
+    testResults(cards,verbose);
 
     cout << goodbye() << endl;
 
