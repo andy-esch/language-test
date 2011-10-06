@@ -1,5 +1,5 @@
 /*
- *  wordData.cpp
+ *  WordData.cpp
  *  
  *  Description: functions for the class wordData
  *
@@ -8,141 +8,159 @@
  *
  */
 
-#include "wordData.h"
+#include "WordData.h"
 
 extern bool debug;
 
-wordData::wordData()
+wordData::WordData()
 {
   numAsked=0;
-  percentRight=100.0;
-  avgTime=0.0;
-  probability=1.0;
+  numCorrect=0;
+  answeringTime=0.0;
 }
 
 
-void wordData::setProbability(int N)
+float WordData::getPercentCorrect()
 {
-  probability= 1.0 / static_cast<double> (N);
+  if(numAsked==0)
+    return 0.0;
+  else
+    return 100*(static_cast<double>(numCorrect)/static_cast<double>(numAsked));
 }
 
 
-void wordData::populate(int size)
-{   // Populates wordData object to initialization values
-    numAsked = 0;
-    percentRight = 0.0;
-    avgTime = 0.0;
-    probability = 1.0 / static_cast<double> (size);
+float WordData::getAverageTime()
+{
+  if(numAsked==0)
+    return 0.0;
+  else
+    return (answeringTime/static_cast<double>(numAsked));
 }
 
-double wordData::weight(bool wrong, double diff)
-{   // weight for answering (non-hints)
-    double weight;
 
-    if (wrong)
-    {    // Probability increase with response time for wrong answers
-         // Quick responses are proportional to smaller probability differentials
-      weight = 0.24 * (1.0 - exp(-0.2 * diff));
-    }
-    else // if correct
-    {    // Probability decreases with response times for correct answers
-         // Quick responses are proportional to larger probabilty differentials
-      weight = -0.24 * exp(-0.2 * diff);
-    }
+
+
+
+
+
+
+
+
+
+
+// void wordData::populate(int size)
+// {   // Populates wordData object to initialization values
+//     numAsked = 0;
+//     percentRight = 0.0;
+//     avgTime = 0.0;
+//     probability = 1.0 / static_cast<double> (size);
+// }
+
+// double wordData::weight(bool wrong, double diff)
+// {   // weight for answering (non-hints)
+//     double weight;
+
+//     if (wrong)
+//     {    // Probability increase with response time for wrong answers
+//          // Quick responses are proportional to smaller probability differentials
+//       weight = 0.24 * (1 - exp(-0.2 * diff));
+//     }
+//     else // if correct
+//     {    // Probability decreases with response times for correct answers
+//          // Quick responses are proportional to larger probabilty differentials
+//       weight = -0.24 * exp(-0.2 * diff);
+//     }
     
-    if (debug) cout << "weight = " << weight << endl;
+//     if (debug) cout << "weight = " << weight << endl;
 
-    return weight;
-}
+//     return weight;
+// }
 
-double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
-{   // weight for hints
-    double weight = 0.0;
+// double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
+// {   // weight for hints
+//     double weight = 0.0;
 
-    switch (typeOfHint)
-    {   // Bounds on weight: Let p = currProb, then:
-        //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
-        //  and we have a lot more freedom on the upper bound, even up to 1.0
-        //  safely since p <= 1.0 by definition
-        // All of this is not firmly grounded yet.  The -s case worries me
-        // because I've gotten -0.0, which may be floating point errors.  Not
-        // sure how to handle those delicately :(
-        case 'l':   // get a letter
-            weight = 0.3 * static_cast<double> (numLetReqstd);
-            if (weight >= 1.0 / currProb)  // to ensure that probability constraints aren't broken
-                weight = 1.0 / currProb - 0.1;
-            break;
-        case 'a':   // get answer
-            weight = 0.5;
-            break;
-        case 'n':   // get number of letters
-            weight = 0.05;
-            break;
-        case 's':   // skip a word (this weight sets alpha to 0.0, beta = - weight)
-            weight = - 1.0 / (1.0 - currProb);
-            break;
-        case 'u':
-                // Not yet implemented -- for showing usage of word in question
-            break;
-        case 'y':   // Synonym?
-            weight = 0.025;
-            break;
-        default:
-            weight = 0.0; // no effect, shouldn't be triggered
-            break;
-    }
+//     switch (typeOfHint)
+//     {   // Bounds on weight: I think they're for p = currProb:
+//         //  -1/(1-p) < weight < 1/p  -- so the 's' case is the lower bound
+//         //  and we have a lot more freedom on the upper bound, even up to 1.0
+//         //  safely since p <= 1.0 by definition
+//         case 'l':   // get a letter
+//             weight = 0.3 * static_cast<double> (numLetReqstd);
+//             if (weight >= 1.0 / currProb)  // to ensure that probability constraints aren't broken
+//                 weight = 1.0 / currProb - 0.1;
+//             break;
+//         case 'a':   // get answer
+//             weight = 0.5;
+//             break;
+//         case 'n':   // get number of letters
+//             weight = 0.05;
+//             break;
+//         case 's':   // skip a word (this weight sets alpha to 0.0, beta = - weight)
+//             weight = - 1.0 / (1.0 - currProb);
+//             break;
+//         case 'u':
+//                 // Not yet implemented -- for showing usage of word in question
+//             break;
+//         case 'y':
+//             weight = 0.025;
+//             break;
+//         default:
+//             weight = 0.0; // no effect, shouldn't be triggered
+//             break;
+//     }
 
-    if (debug) cout << "weight = " << weight << endl;
+//     if (debug) cout << "weight = " << weight << endl;
 
-    return weight;
-}
+//     return weight;
+// }
 
-void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
-{   // Updates probabilities
-    double beta = 1.0 - weight * wordInfo[index].probability;
-    double alpha = beta + weight;
+// void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
+// {   // Updates probabilities
+//     double beta = 1.0 - weight * wordInfo[index].probability;
+//     double alpha = beta + weight;
 
-    for (int ii = 0; ii < numOfEntries; ii++)
-    {
-        if ( ii != index )
-            wordInfo[ii].probability *= beta;
-        else
-            wordInfo[ii].probability *= alpha;
-    }   
-}
+//     for (int ii = 0; ii < numOfEntries; ii++)
+//     {
+//         if ( ii != index )
+//             wordInfo[ii].probability *= beta;
+//         else
+//             wordInfo[ii].probability *= alpha;
+//     }   
+// }
 
-void wordData::updateScore(int index, bool wrong, double timeDiff, \
-                           int numOfEntries, wordData * wordInfo)
-{
-    // Update probabilities
-    updateProbs(index, numOfEntries, \
-                wordData::weight(wrong,timeDiff), wordInfo);
+// void wordData::updateScore(int index, bool wrong, double timeDiff, \
+//                            int numOfEntries, wordData * wordInfo)
+// {
+//     // Update probabilities
+//     updateProbs(index, numOfEntries, \
+//                 wordData::weight(wrong,timeDiff), wordInfo);
 
-    // Update number of individual queries of word
-    numAsked++;
+//     // Update number of individual queries of word
+//     numAsked++;
 
-    // Update scoring percentage
-    if (numAsked == 1)
-        (wrong)?(percentRight = 0.0):(percentRight = 1.0);
-    else if (!wrong && numAsked > 1)
-        percentRight = reweight(numAsked,percentRight,1.0);
-    else if (wrong && numAsked > 1)
-        percentRight = reweight(numAsked,percentRight,0.0);
+//     // Update scoring percentage
+//     if (numAsked == 1)
+//         (wrong)?(percentRight = 0.0):(percentRight = 1.0);
+//     else if (!wrong && numAsked > 1)
+//         percentRight = reweight(numAsked,percentRight,1.0);
+//     else if (wrong && numAsked > 1)
+//         percentRight = reweight(numAsked,percentRight,0.0);
 
-    // Update timing information
-    avgTime = reweight(numAsked,avgTime,timeDiff);
-}
+//     // Update timing information
+//     avgTime = reweight(numAsked,avgTime,timeDiff);
+// }
 
-void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
-                           char typeOfHint, unsigned int numLetReqstd)
-{ // This is the hints variant of this function
-    updateProbs(index, numOfEntries, \
-                weight(typeOfHint,numLetReqstd,wordStats[index].probability), \
-                wordStats);
-}
+// void wordData::updateScore(int index, int numOfEntries, wordData * wordStats, \
+//                            char typeOfHint, unsigned int numLetReqstd)
+// { // This is the hints variant of this function
+//     updateProbs(index, numOfEntries, \
+//                 weight(typeOfHint,numLetReqstd,wordStats[index].probability), \
+//                 wordStats);
+// }
 
-double wordData::reweight(int num, double old, double newish)
-{
-    double nd = static_cast<double> (num);
-    return ((nd - 1.0) * old + newish)/nd;
-}
+// double wordData::reweight(int num, double old, double newish)
+// {
+//     double nd = static_cast<double> (num);
+//     return ((nd - 1.0) * old + newish)/nd;
+// }
