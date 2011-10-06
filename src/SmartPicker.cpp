@@ -54,5 +54,5 @@ unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
 
 void SmartPicker::setCurrentIndex(int index)
 {
-  currentIndex=index;
+    currentIndex = index;
 }

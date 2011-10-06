@@ -1,5 +1,5 @@
 /*
- *  readfiles.cpp
+ *  listDicts.cpp
  *  
  *  Description: A function that prints out the available dictionaries.  It is
  *               similar to the ls function in *nix operating systems.
@@ -28,7 +28,7 @@ int getTxtFiles(string dir, vector<string> &files)
 
     while ((dirp = readdir(dp)) != NULL)
     {
-        temp = string(dirp->d_name);
+        temp = string(dirp -> d_name);
         if ( temp.size() > 4 )
             if ( !temp.compare(temp.size() - 3, 3, "txt") ) // Only store .txt files
                 files.push_back(temp);
@@ -51,7 +51,7 @@ string listDicts(void)
     string dir("./vocab/"), dictPick;
     vector<string> files;
     vector<string>::iterator iter;
-    int numOfDicts = 1, dictInt = 0, longestName = 0;
+    unsigned short int numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
     // If directory is not found -- do something different instead?
@@ -74,7 +74,7 @@ string listDicts(void)
         for (iter = files.begin(); iter != files.end(); ++iter)
         {
             int strSize = (*iter).size();
-            cout << '\t' << setw(2) << numOfDicts << ": " << *iter << \
+            cout << '\t' << setw(2) << numOfDicts << ". " << *iter << \
             setw(longestName - (*iter).size() + 9) << numberOfWords(dir+*iter) \
             << " words" << endl;
             numOfDicts++;
@@ -118,6 +118,8 @@ int numberOfWords(string fileName)
         while ( !inFile.eof() )     // Have something to skip empty lines?
         {
             getline(inFile,temp);
+            if (temp == "")
+                continue;
             size++;
             temp.clear();
         }
@@ -126,5 +128,5 @@ int numberOfWords(string fileName)
     else
         cout << "could not open file" << endl;
 
-    return size - 1;
+    return size;
 }
