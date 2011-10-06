@@ -44,7 +44,7 @@ void Hint::addLetter(int numLetters)
     // Add letter if ' ' is found in substring
     if (string(key,hintNum,numLetters).find(' ') != string::npos)
         addLetter(1);
-    
+
     if ( hintNum < key.size() )
     {
         if (hintNum + numLetters > key.size()) // Limit num of letters to key size

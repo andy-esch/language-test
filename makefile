@@ -5,10 +5,10 @@ vpath %.cpp src
 vpath %.h include
 
 CXX = g++-mp-4.4
-CXXFLAGS = -I include -g
+CXXFLAGS = -I include
 
-OBJECTS = functions.o wordData.o Flashcard.o listDicts.o testResults.o Hint.o
-HEADERS = functions.h wordData.h Flashcard.h listDicts.h testResults.h Hint.h
+OBJECTS = functions.o wordData.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o
+HEADERS = functions.h wordData.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h
 # ****************************************************
 
 mkcln: ltest clean
@@ -24,9 +24,3 @@ $(OBJECTS): %.o: %.cpp
 .PHONY: clean
 clean:
 	rm $(OBJECTS) LanguageTest.o
-#ifneq ("$(shell ls | grep '.*\.o')","")
-#	@echo "--->  Cleaning object files \n\t\c"
-#	rm $(shell ls | grep ".*\.o")
-#else
-#	@echo "--->  No object files to remove"
-#endif
