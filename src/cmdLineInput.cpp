@@ -33,6 +33,8 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                     cin >> inFile;
                     if ( exitProg(inFile) || cin.eof()) // if 'exit', exit program
                         exit(0);
+                    cin.clear();
+                    cin.ignore(10,'\n');
                 }
             case 'v': // Verbose output
                 verbose = true;
@@ -47,10 +49,10 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                 strcpy(inFile,listDicts().c_str());
                 break;
             case '?':
-                std::cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
+                cerr << "Option '-" << static_cast<char> (optopt) << "' is not valid." << endl;
                 break;
             default:
-                std::cerr << "Invalid commandline options." << endl;
+                cerr << "Invalid commandline options." << endl;
                 help(argv[0]);
                 exit(0);
                 break;
