@@ -57,6 +57,20 @@ void Hint::addLetter(int numLetters)
 }
 
 
+void Hint::addLetter()
+{
+  if ( hintNum < key.size() )
+    {
+      if (hintNum + numLetters > key.size()) // Limit num of letters to key size
+	numLetters = key.size() - hintNum;
+      hint.replace(hintNum,numLetters,string(key,hintNum,numLetters));
+      hintNum += numLetters;
+    }
+  if (hintNum == key.size())
+    hint += " <-";
+}
+
+
 void Hint::fillLetterPlaces()
 {
     for (int i = hintNum; i < key.size(); i++)
