@@ -18,6 +18,9 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "Flashcard.h"
 
@@ -28,8 +31,9 @@ private:
     unsigned int currentIndex;
     void setCurrentIndex(int);
 public:
-    unsigned int nextIndex(bool sideA, vector<Flashcard>);
-    unsigned int leastPickedIndex(bool sideA, vector<Flashcard>);
+  SmartPicker();
+  unsigned int nextIndex(vector<Flashcard>);
+  unsigned int leastPickedIndex(vector<Flashcard>);
 };
 
 #endif // SMARTPICKER_H

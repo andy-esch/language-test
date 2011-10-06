@@ -13,23 +13,25 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "wordData.h"
+#include "WordData.h"
 
 using std::cout;
 using std::endl;
 using std::string;
+//using std::float;
 using std::vector;
 
 class Flashcard {
 public:
     vector<string> sideB;
     vector<string> sideA;
-//    Flashcard(vector<string>,vector<string>);
-//    Flashcard();
-    string toScreen();
+    double weight;
+    void toScreen();
     void clearWS();
-    wordData getWordData();
+    WordData getWordData();
+    void recordPerformance(int,bool,double);
+    void setWeight(int);
+    WordData data;
 private:
-    wordData stats;
 };
 #endif

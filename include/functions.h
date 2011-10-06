@@ -25,7 +25,7 @@
 #include <vector>
 
 #include "Flashcard.h"
-#include "wordData.h"
+#include "WordData.h"
 
 using std::cin;
 using std::cout;
@@ -48,7 +48,7 @@ int min(int, int);
 string help(char *);
 int randIndex(int);
 double reaction(double, int);
-int weightedIndex(wordData *, int);
+int weightedIndex(WordData *, int);
 string whitespace(int length);
 float howWrongIsIt(string,string);
 string goodbye(void);

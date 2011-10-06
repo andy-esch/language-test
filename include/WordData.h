@@ -12,25 +12,18 @@
 
 #include <cmath>
 #include <iostream>
+
 using std::cout;
 using std::endl;
 
-class wordData
+class WordData
 {
 public:
-    wordData();
+    WordData();
     unsigned int numAsked;
-    float percentRight;
-    float avgTime;
-    double probability;
-    void updateScore(int, bool, double, int, wordData *);
-    void updateScore(int, int, wordData *, char, unsigned int=0);
-    void populate(int);
-private:
-    void setProbability(int);
-    double reweight(int, double, double);
-    double weight(bool, double);
-    double weight(char, int, double);
-    void updateProbs(int, int, double, wordData *);
+    unsigned int numCorrect;
+    float answeringTime;
+    double getPercentCorrect();
+    double getAverageTime();
 };
 #endif // _WORDDATA_H_

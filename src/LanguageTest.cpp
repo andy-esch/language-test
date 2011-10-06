@@ -19,13 +19,15 @@
 #include <iostream>
 #include <vector>
 
-#include "wordData.h"
+#include "WordData.h"
 #include "functions.h"
 #include "Flashcard.h"
 #include "listDicts.h"
 #include "testResults.h"
 #include "Hint.h"
+#include "SmartPicker.h"
 #include "cmdLineInput.h"
+
 
 using std::cerr;
 using std::cin;
@@ -39,96 +41,66 @@ bool debug = false;
 
 int main(int argc, char **argv)
 {
-    /*****        Initialize Variables        *****/
-    srand(time(NULL));
-    time_t timeStart, timeEnd;
-    char inFile[60] = "vocab/test.txt";
-    vector<Flashcard> cards;
-    vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
-    unsigned int numFlashcards = 0, lHintNum = 0;
+    /*****    Initialize Variables    *****/
     bool verbose = false, isWrong = true;
-    bool disableHintMsg = false;
+    srand(time(NULL));
+    char inFile[60] = "vocab/test.txt";
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
-
-    //  Below: Rough idea on how to implement choosing whether to be quizzed on one
-    //  language or the other, but the data structure prevents easy access since
-    //  spen's type is vector<Flashcard>, where Flashcard is composed of two vectors of
-    //  strings.  This would be a lot easier to implement if the synonyms weren't
-    //  a part of the design.
-	//  Update: We could copy the addresses of all the entries of sideA, say,
-	//   into an array, and the addresses of all the sideB into another array
-	//   and have those as question/answer arrays with more flexibility with
-	//   what is currently implemented... hmm...
-	//  The following works roughly as expected, but only copies the first entry
-	//   in the array
-	//	string *answers[numFlashcards];
-	//	for (int kk = 0; kk < numFlashcards; kk++)
-	//	{
-	//		answers[kk] = &(spen[kk].sideB[0]);
-	//		cout << "answer " << kk << ": " << *answers[kk] << endl;
-	//	}
 
     /*****    Take optional input from command line   *****/
     cmdLineInput(argc,argv,inFile,verbose,debug);
 
-    /*****    Choose Dictionary   *****/ // ??
-    
-    /*****    Input Dictionary    *****/
-    input(cards,&inFile[0]);
-    cout << "Okay, it's all read in." << endl;
-
-    /*****  Prepare an array of wordData objects *****/
-    numFlashcards = cards.size();
-    wordData * wordy = new wordData[numFlashcards];
-    for (int i = 0; i < numFlashcards; i++)
-        wordy[i].populate(numFlashcards);
-
-    /*****    Prepare variable for formatting purposes    *****/
-    unsigned int lengthLongestWord = 0;
-    for (int i = 0; i < numFlashcards; i++)
-    {
-        if (cards[i].sideB[0].size() > lengthLongestWord)
-            lengthLongestWord = cards[i].sideB[0].size();
-    }
-
     /*****    Language Quiz    *****/
     cout << "Beginning Quiz." << endl;
 
-    string response;
-    Hint myhint("  ",false);
+    /****    Language Quiz    *****/
+    time_t timeStart, timeEnd;
+    bool disableHintMsg = false;
 
-    while ( !cin.eof() )    // Should there be other conditions? 
-                            // --Yes - all probabilities can't be zero.
-    {
-        /*****    Choose new flashcard and select words    *****/
-        int i = weightedIndex(wordy, numFlashcards);
+    vector<Flashcard> cards;
+    string response;
+    SmartPicker picker;
+    Hint myhint = Hint("  ",verbose);
+
+    input(cards,&inFile[0]);
+
+    cout << "Beginning Quiz." << endl;
+
+    while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
+    {	
+        int i = picker.leastPickedIndex(cards);
+
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
-        Hint myhint(sideBword, false);
-        int numOfTries = 1;
+
         myhint.setKey(sideBword);
 
-        /*****    Prompt user for response    *****/
+        int numOfTries = 0;
+
         cout << sideAword << ": ";
 
         while (!cin.eof() && isWrong)
         {
-            timeStart = time(NULL); //could use more accurate timing mechanism
+            numOfTries++;
+            timeStart = time(NULL); // let's use more accurate timer
             getline(cin, response);
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
-
-            /** Asked for hint? **/
+	    
+            /* options switch */
             if ( response[0] == '-' )
+            {
+                if(response[1]=='s') break;     // Should this be 'continue' instead of 'break'?
                 cout << myhint.handle(response,false);
-            else
+            }
+            else /* no hint, check response */
             {
                 isWrong = isInvalidAnswer(response,cards[i].sideB);
 
                 if (isWrong)
                 {
-                    if( verbose ) cout << "Wrong!" << endl;
-                    if ( (numOfTries % 5) == 0 && !disableHintMsg )
+                    if (verbose) cout << "Wrong!" << endl;
+                    if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;
                         cout << sideAword << ": ";
@@ -137,22 +109,18 @@ int main(int argc, char **argv)
                         cout << whitespace(sideAword.size());
                 }
                 else if( verbose ) cout << "Right!" << endl;
-                numOfTries++;
             }
         }
+        /* move to next word */
+        cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
         isWrong = true;
-      }
+    }
 
-    /*****    Summary of Results    ******/
-    testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
+        //testResults(cards,verbose);
 
-
-    /******    Clean up    *****/
-    delete[] wordy; // Are there any other clean-up things 
-                    // to do so that we're good programmers?
-
-    /*****    Close program    *****/
     cout << goodbye() << endl;
+
+    //clean up goes here
 
     return 0;
 }

@@ -81,18 +81,6 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
     return isWrong;
 }
 
-// Mimics string compare -- returns 1 if there is no match
-bool compareAll(vector<string> & ws, string test)
-{
-    bool isWrong = false;
-    vector<string>::iterator it;
-
-    for (it = ws.begin(); it != ws.end(); it++)
-        if ( test.compare( *it ) )
-            isWrong = true;
-
-    return isWrong;
-}
 
 string hintOptions(int leftmargin)
 {
@@ -109,27 +97,6 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
-string hint(int verbSize, bool knowWordSize, int verboSize, \
-            string hintWord, int lHintNum)
-{
-    stringstream hint;
-    hint << whitespace(verbSize-3) << "-> ";
-    for (int jj = 0; jj < verboSize; jj++)
-    {
-        if (hintWord[jj] == ' ')
-            hint << ' ';
-        else if (jj < lHintNum)
-            hint << hintWord[jj];
-        else if (knowWordSize)
-            hint << '-';
-        else
-            hint << ' ';
-    }
-    if (lHintNum >= verboSize)
-        hint << " <-";
-    hint << endl;
-    return hint.str();
-}
                
                
 void input(vector<Flashcard> & ws, char * inFile)
@@ -223,6 +190,8 @@ void input(vector<Flashcard> & ws, char * inFile)
 
     infile.close();
 }
+
+
 
 void insertWords(string words, Flashcard & tempset, int step)
 {
@@ -337,35 +306,36 @@ double reaction(double time, int numLttrs)
     return reactionTime;
 }
 
-int weightedIndex(wordData * data, int numEntries)
-{
-    static int lastIndex;
-    int currIndex;
-    extern boost::mt19937 gen;
-    double * prob[numEntries];
+// int weightedIndex(wordData * data, int numEntries)
+// {
+//     static int lastIndex;
+//     int currIndex;
+//     extern boost::mt19937 gen;
+//     double * prob[numEntries];
     
-        // Copy probabilities to simple array so partial_sum() can use it.
-        // It's possible that this step isn't necessary but I cannot figure out
-        // a way to use consecutive pointers in the partial_sum() function for
-        // the structure data[ii].probability
-    for (int ii = 0; ii < numEntries; ii++)
-        prob[ii] = &(data[ii].probability);
+//         // Copy probabilities to simple array so partial_sum() can use it.
+//         // It's possible that this step isn't necessary but I cannot figure out
+//         // a way to use consecutive pointers in the partial_sum() function for
+//         // the structure data[ii].probability
+//     for (int ii = 0; ii < numEntries; ii++)
+//         prob[ii] = &(data[ii].probability);
 
-    do
-    {
-        vector<double> cumulative;
-        std::partial_sum(prob[0], prob[0] + numEntries, \
-                         std::back_inserter(cumulative));
-        if (debug) cout << "partial_sum() calculated" << endl;
-        boost::uniform_real<> dist(0.0, cumulative.back());
-        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
-        currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
-    } while (currIndex == lastIndex);
+//     do
+//     {
+//         vector<double> cumulative;
+//         std::partial_sum(prob[0], prob[0] + numEntries, \
+//                          std::back_inserter(cumulative));
+//         if (debug) cout << "partial_sum() calculated" << endl;
+//         boost::uniform_real<> dist(0.0, cumulative.back());
+//         boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
+//         currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
+//     } while (currIndex == lastIndex);
 
-    lastIndex = currIndex;
+//     lastIndex = currIndex;
 
-    return currIndex;
-}
+//     return currIndex;
+// }
+
 
 string whitespace(int length)
 {
@@ -380,7 +350,7 @@ string goodbye(void)
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
                          "Namaste"};
-        // What do you think?  Should those be in a file instead?
+        // What do you think?  Should those be in a file instead? Nice! Yeah, we could generate a goodbye file with loads and loads of languages.  It'd be a nice touch :) Maybe a welcome message at the start too.
 
     return goodbyes[randIndex(9)] + "!";
 }

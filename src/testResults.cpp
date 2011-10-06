@@ -14,7 +14,7 @@
 
 #include "testResults.h"
 #include "Flashcard.h"
-#include "wordData.h"
+#include "WordData.h"
 
 using std::cout;
 using std::endl;
@@ -22,42 +22,47 @@ using std::ios;
 using std::setw;
 using std::vector;
 
-void testResults(vector<Flashcard> & spen, wordData wordy[], \
-                 int numEntries, int lengthLongestWord, bool verbose)
+void testResults(vector<Flashcard> cards, bool verbose)
 {
-    cout << endl;
-    cout << endl;
-    cout << setw(lengthLongestWord+13) << "Summary" << endl;
-    for (int i = 0; i < lengthLongestWord + 9; i++)
-        cout << "=-";
-    cout << endl;
-    cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << setw(13) << "Probab" << endl;
-    cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << setw(13) << "------" << endl;
-    cout.setf(ios::fixed);
-    cout.precision(2);
-    
-    for (int i = 0; i < numEntries; i++)
+  unsigned int lengthLongestWord = 0;
+  for (int i = 0; i < cards.size(); i++)
     {
-        cout << setw(lengthLongestWord) << spen[i].sideB[0];
-        if ( wordy[i].numAsked > 0 )
-        {
-            cout << setw(6) << static_cast<int> (100*wordy[i].percentRight) \
-            << "% (" << wordy[i].numAsked << ")";
-            cout << setw(9) << wordy[i].avgTime;
-        }
-        else
-            cout << setw(6) << "   -" << setw(12) << "   -";
-        
-        cout << setw(15) << wordy[i].probability*100 << "%";
-        
-        if ( verbose )
-        {
-            cout << setw(15) << spen[i].sideA.size() << " word" << ((spen[i].sideA.size()>1)?"s:":":");
-            for (int k = 0; k < spen[i].sideA.size(); k++)
-                cout << setw(15) << spen[i].sideA[k];
-        }
-        cout << endl;
+      if (cards[i].sideB[0].size() > lengthLongestWord)
+	lengthLongestWord = cards[i].sideB[0].size();
     }
-    cout << endl;
-    cout << endl;
+  
+  cout << endl;
+  cout << endl;
+  cout << setw(lengthLongestWord+13) << "Summary" << endl;
+  for (int i = 0; i < lengthLongestWord + 9; i++)
+    cout << "=-";
+  cout << endl;
+  cout << setw(lengthLongestWord) << "Word" << setw(9) << "Score" << setw(13) << "Reaction" << endl;
+  cout << setw(lengthLongestWord) << "----" << setw(9) << "-----" << setw(13) << "--------" << endl;
+  cout.setf(ios::fixed);
+  cout.precision(2);
+  
+  for (int i = 0; i < cards.size(); i++)
+    {
+      cout << setw(lengthLongestWord) << cards[i].sideB[0];
+      if ( cards[i].data.numAsked > 0 )
+        {
+	  cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
+	       << "% (" << cards[i].data.numAsked << ")";
+	  cout << setw(9) << cards[i].data.getAverageTime();
+        }
+      else
+	cout << setw(6) << "   -" << setw(12) << "   -";
+      
+      
+      if ( verbose )
+        {
+	  cout << setw(15) << cards[i].sideA.size() << " word" << ((cards[i].sideA.size()>1)?"s:":":");
+	  for (int k = 0; k < cards[i].sideA.size(); k++)
+	    cout << setw(15) << cards[i].sideA[k];
+        }
+      cout << endl;
+    }
+  cout << endl;
+  cout << endl;
 }

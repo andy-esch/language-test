@@ -10,16 +10,8 @@
 
 #include "Flashcard.h"
 
-// Flashcard::Flashcard(vector<string> A, vector<string> B)
-// {
-//   sideA=A;
-//   sideB=B;
-// }
 
-
-
-
-string Flashcard::toScreen(void)
+void Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
     for (int jj = 0; jj < sideA.size()-1; jj++)
@@ -33,6 +25,23 @@ string Flashcard::toScreen(void)
 	cout << sideB[kk] << ", ";
       }
     cout << sideB[sideB.size()-1] << endl;
+}
+
+
+void Flashcard::recordPerformance(int numOfTries, bool isWrong, double responseTime)
+{
+  data.numAsked++;
+  if(numOfTries==1 && !isWrong)
+    {
+      data.numCorrect++;
+      data.answeringTime+=responseTime;
+    }
+}
+
+
+void Flashcard::setWeight(int N)
+{
+  weight=1.0/static_cast<double>(N);
 }
 
 

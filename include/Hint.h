@@ -41,3 +41,4 @@ private:
     string help();
 };
 #endif
+//could add an int penalty so that each hint results in penalty points.

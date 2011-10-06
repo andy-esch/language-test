@@ -130,14 +130,11 @@ string Hint::handle(string hintType, bool verbose)
             out << help();
             break;
     }
-
-    out << endl;
-    return out.str();
+  out << endl;
+  return out.str();
 }
 
-
-// string Hint::skipWord()
-// help()
+// skip word should be handled elsewhere...
 // if synonym hint is selected, create new Hint object with new key
 // and perform answer() on it.
 // string Hint::synonym()
