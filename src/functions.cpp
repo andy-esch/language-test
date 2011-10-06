@@ -8,6 +8,9 @@
  *
  */
 
+    // Write a function that takes in the cin stream, and sees if it is 'exit'
+    // or quit or eof and does things accordingly
+
 #include "functions.h"
 
 extern bool debug;
@@ -101,7 +104,7 @@ void input(vector<Flashcard> & ws, char * inFile)
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
-    size_t found = string::npos;
+    size_t delimPos = string::npos;
     ifstream infile(inFile,ifstream::in);
     Flashcard tempset;
     int lineNum = 1, delimWidth = 1;
@@ -121,6 +124,8 @@ void input(vector<Flashcard> & ws, char * inFile)
         }
         else
             infile.open(inFile,ifstream::in);
+        cin.clear();
+        cin.ignore(10,'\n');
     }
 
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
@@ -131,13 +136,14 @@ void input(vector<Flashcard> & ws, char * inFile)
         if (temp1 == "")                    // Skip empty lines
             continue;
 
-        for (int ii = 0; ii < 4 && found == string::npos; ii++)
+        // Find the delimiter
+        for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)
         {
-            found = temp1.find(delimiters[ii]);
+            delimPos = temp1.find(delimiters[ii]);
             delimWidth = delimiters[ii].size();
         }
 
-        if (found == string::npos) // If none of the delims are found, go to next word
+        if (delimPos == string::npos) // If no delims found, go to next line
         {
             cout << "Skipping: '" << temp1 << "'" << endl;
             temp1.clear();
@@ -148,8 +154,8 @@ void input(vector<Flashcard> & ws, char * inFile)
 
         try // This my be redundant with previous if statement
         {
-            temp1.erase(0,found + delimWidth);
-            temp2.erase(found,temp2.size() - found);
+            temp1.erase(0,delimPos + delimWidth);
+            temp2.erase(delimPos,temp2.size() - delimPos);
         }
         catch (std::out_of_range &e)
         {
@@ -176,7 +182,7 @@ void input(vector<Flashcard> & ws, char * inFile)
         tempset.clearWS();
         temp1.clear();
         temp2.clear();
-        found = string::npos;
+        delimPos = string::npos;
 
         lineNum++;
     }
@@ -287,7 +293,7 @@ int randIndex(int num)
 double reaction(double time, int numLttrs)
 {
     // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
-    double reactionTime = time - 0.28 * numLttrs;
+    double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
     if (reactionTime < 0.0)
         reactionTime = 0.0;
     if (debug) cout << "reactionTime = " << reactionTime << endl;
@@ -295,6 +301,7 @@ double reaction(double time, int numLttrs)
     return reactionTime;
 }
 
+<<<<<<< HEAD
 // int weightedIndex(WordData * data, int numEntries)
 // {
 //     static int lastIndex;
@@ -323,10 +330,41 @@ double reaction(double time, int numLttrs)
 //     return currIndex;
 // }
 
+=======
+int weightedIndex(wordData * data, int numEntries)
+{
+    static int lastIndex;
+    int currIndex;
+    extern boost::mt19937 gen;
+    double * prob[numEntries];
+    
+        // Copy probabilities to simple array so partial_sum() can use it.
+        // It's possible that this step isn't necessary but I cannot figure out
+        // a way to use consecutive pointers in the partial_sum() function for
+        // the structure data[ii].probability
+    for (int ii = 0; ii < numEntries; ii++)
+        prob[ii] = &(data[ii].probability);
+
+    do
+    {
+        vector<double> cumulative;
+        std::partial_sum(prob[0], prob[0] + numEntries, \
+                         std::back_inserter(cumulative));
+        if (debug) cout << "partial_sum() calculated" << endl;
+        boost::uniform_real<> dist(0.0, cumulative.back());
+        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
+        currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
+    } while (currIndex == lastIndex);
+
+    lastIndex = currIndex;
+
+    return currIndex;
+}
+>>>>>>> upstream/master
 
 string whitespace(int length)
 {
-    string whitespace;
+    string whitespace("");
     for (int k = 0; k < length + 2; k++)
         whitespace += " ";
     return whitespace;
@@ -342,4 +380,12 @@ string goodbye(void)
     return goodbyes[randIndex(9)] + "!";
 }
 
-
+bool exitProg(string test)
+{
+    return (!strcmp(test.c_str(),"exit") || !strcmp(test.c_str(),"quit"));
+        // what are some other things we can put in here?
+        // Also, could we put through the cin.eof() thing here so all the tests
+        // throughout the program have a single function? instead of:
+        // if ( exitProg(test) || cin.eof() )
+        // to: if (exitProg(test,cin)), where the second argument would be some stream, i suppose
+}

@@ -31,7 +31,7 @@ hacer	to make
 encantar	to enchant
 encontrar	to find
 conducir	to lead
-vender to sell
+vender	to sell
 escribir	to write
 salir	to leave
 gustar	to please

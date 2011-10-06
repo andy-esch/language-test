@@ -10,7 +10,8 @@
 
 #include "Flashcard.h"
 
-void Flashcard::toScreen()
+
+void Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
     for (int jj = 0; jj < sideA.size()-1; jj++)
@@ -44,10 +45,8 @@ void Flashcard::setWeight(int N)
 }
 
 
-void Flashcard::clearWS()
+void Flashcard::clearWS(void)
 {
     sideB.clear();
     sideA.clear();
 }
-
-

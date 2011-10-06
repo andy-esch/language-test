@@ -33,6 +33,5 @@ public:
     void setWeight(int);
     WordData data;
 private:
-
 };
 #endif

@@ -16,13 +16,14 @@ using std::cout;
 using std::endl;
 
 class WordData
+
 {
- public:
+public:
   WordData();
   unsigned int numAsked;
   unsigned int numCorrect;
-  double answeringTime;
-  double getPercentCorrect();
-  double getAverageTime();
+  float answeringTime;
+  float getPercentCorrect();
+  float getAverageTime();
 };
 #endif // _WORDDATA_H_

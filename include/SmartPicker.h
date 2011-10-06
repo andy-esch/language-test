@@ -25,7 +25,6 @@
 #include <iostream>
 #include "Flashcard.h"
 #include <ctime>
-#include <time.h>
 
 using std::vector;
 

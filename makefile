@@ -4,8 +4,8 @@
 vpath %.cpp src
 vpath %.h include
 
-CXX = g++ #-mp-4.4
-CXXFLAGS = -I include
+CXX = g++-mp-4.4
+CXXFLAGS = -I include -g
 
 OBJECTS = functions.o WordData.o Flashcard.o listDicts.o testResults.o Hint.o SmartPicker.o
 HEADERS = functions.h WordData.h Flashcard.h listDicts.h testResults.h Hint.h SmartPicker.h
