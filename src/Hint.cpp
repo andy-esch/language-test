@@ -40,15 +40,18 @@ void Hint::setKey(string answerKey)
 }
 
 void Hint::addLetter(int numLetters)
-{// This is moving toward offering multiple letters (hence numLetters)
+{
+    // Add letter if ' ' is found in substring
+    if (string(key,hintNum,numLetters).find(' ') != string::npos)
+        addLetter(1);
+    
     if ( hintNum < key.size() )
     {
-        if (hintNum + numLetters > key.size()) numLetters = key.size() - hintNum;
+        if (hintNum + numLetters > key.size()) // Limit num of letters to key size
+            numLetters = key.size() - hintNum;
         hint.replace(hintNum,numLetters,string(key,hintNum,numLetters));
         hintNum += numLetters;
     }
-    if (key[hintNum] == ' ')
-        addLetter(1);
     if (hintNum == key.size())
         hint += " <-";
 }
@@ -67,7 +70,7 @@ void Hint::fillLetterPlaces()
 
 void Hint::answer(void)
 {
-    hint = key;
+    hint = key + " <-";
 }
 
 
