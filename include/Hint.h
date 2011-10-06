@@ -23,16 +23,16 @@ using std::vector;
 class Hint {
 public:
     string key; 
-    int hintNum;    // Counts the number of hints (i.e., # letters + # answers + ...?)
+    int hintNum;    // keeps track of where in the word the hint is at.
     bool verbose;
-    //int penalty; //each hint method call can increase this.
     string handle(string, bool);
     Hint(string, bool);
     Hint();
     void setKey(string);
 private:
     string hint;
-    void addLetter(int=1);
+    void addLetter(int);
+    void addLetter();
     void fillLetterPlaces();
     void answer(void);
     void disableHints(void);

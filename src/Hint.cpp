@@ -34,21 +34,23 @@ Hint::Hint()
 void Hint::setKey(string answerKey)
 {
     key = answerKey;
+    hintNum = 0;
     hint = "";
     while (hint.size() <= key.size())
         hint += " ";
 }
 
+
 void Hint::addLetter(int numLetters)
 {
     // Add letter if ' ' is found in substring
     if (string(key,hintNum,numLetters).find(' ') != string::npos)
-        addLetter(1);
+        addLetter();
 
     if ( hintNum < key.size() )
     {
         if (hintNum + numLetters > key.size()) // Limit num of letters to key size
-            numLetters = key.size() - hintNum;
+	  numLetters = key.size() - hintNum;
         hint.replace(hintNum,numLetters,string(key,hintNum,numLetters));
         hintNum += numLetters;
     }
@@ -57,14 +59,26 @@ void Hint::addLetter(int numLetters)
 }
 
 
+void Hint::addLetter()
+{
+  if(hintNum<=key.size())
+    {
+      hint.replace(hintNum,1,string(1,key[hintNum]));
+      hintNum++;
+    }
+  if(key[hintNum]==' ')
+    addLetter();
+  if(hintNum==key.size())
+    hint+=" <-";
+}
+
+
 void Hint::fillLetterPlaces()
 {
     for (int i = hintNum; i < key.size(); i++)
     {
-        if(key[i] == ' ')
-            hint.replace(i,1," ");
-
-        hint.replace(i,1,"-");
+        if(key[i] != ' ')
+            hint.replace(i,1,"-");
     }
 }
 
@@ -111,11 +125,11 @@ string Hint::handle(string hintType, bool verbose)
     {
         case 'l':
             if (hintType[2] == '\0')
-                addLetter(1);
+                addLetter();
             else if (atoi(&hintType[2]) < 10 && atoi(&hintType[2]) > 0)
                 addLetter(atoi(&hintType[2]));
             else
-                addLetter(1);
+                addLetter();
             out << "-> " << hint;
             break;
         case 'a':
