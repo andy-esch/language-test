@@ -44,6 +44,7 @@ void input(vector<Flashcard> &, char *);
 void insertWords(string, Flashcard &,int);
 bool isnew(vector<Flashcard> &, string, long unsigned int &);
 string ordinal(int num);
+int min(int, int);
 string help(char *);
 int randIndex(int);
 double reaction(double, int);

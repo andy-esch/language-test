@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     /*****        Initialize Variables        *****/
     srand(time(NULL));
     time_t timeStart, timeEnd;
-    char inFile[60] = "vocab/sample.txt";
+    char inFile[60] = "vocab/test.txt";
     vector<Flashcard> cards;
     vector<Flashcard>::iterator spenit;  // Look into this as helping the q/a pointers
     unsigned int numFlashcards = 0, lHintNum = 0;
@@ -68,12 +68,12 @@ int main(int argc, char **argv)
 	//		cout << "answer " << kk << ": " << *answers[kk] << endl;
 	//	}
 
-    /*****  Take optional input from command line   *****/
+    /*****    Take optional input from command line   *****/
     cmdLineInput(argc,argv,inFile,verbose,debug);
 
-    /*****  Choose Dictionary   *****/
+    /*****    Choose Dictionary   *****/ // ??
     
-    /*****  Input Dictionary    *****/
+    /*****    Input Dictionary    *****/
     input(cards,&inFile[0]);
     cout << "Okay, it's all read in." << endl;
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < numFlashcards; i++)
         wordy[i].populate(numFlashcards);
 
-    /***** Prepare variable for formatting purposes *****/
+    /*****    Prepare variable for formatting purposes    *****/
     unsigned int lengthLongestWord = 0;
     for (int i = 0; i < numFlashcards; i++)
     {
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
             lengthLongestWord = cards[i].sideB[0].size();
     }
 
-    /***** Language Quiz *****/
+    /*****    Language Quiz    *****/
     cout << "Beginning Quiz." << endl;
 
     string response;
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
     {
-        /***** Choose new flashcard and select words *****/
+        /*****    Choose new flashcard and select words    *****/
         int i = weightedIndex(wordy, numFlashcards);
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
         int numOfTries = 1;
         myhint.setKey(sideBword);
 
-        /***** Prompt user for response *****/
+        /*****    Prompt user for response    *****/
         cout << sideAword << ": ";
 
         while (!cin.eof() && isWrong)
@@ -143,15 +143,15 @@ int main(int argc, char **argv)
         isWrong = true;
       }
 
-    /*****      Summary of Results      ******/
+    /*****    Summary of Results    ******/
     testResults(cards,wordy,numFlashcards,lengthLongestWord,verbose);
 
 
-    /******    Clean up   ********************/
+    /******    Clean up    *****/
     delete[] wordy; // Are there any other clean-up things 
                     // to do so that we're good programmers?
 
-    /*****      Close program      *****/
+    /*****    Close program    *****/
     cout << goodbye() << endl;
 
     return 0;
