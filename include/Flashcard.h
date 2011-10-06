@@ -24,9 +24,9 @@ class Flashcard {
 public:
     vector<string> sideB;
     vector<string> sideA;
-    //    Flashcard(vector<string>,vector<string>);
-    //    Flashcard();
-    void toScreen();
+//    Flashcard(vector<string>,vector<string>);
+//    Flashcard();
+    string toScreen();
     void clearWS();
     wordData getWordData();
 private:

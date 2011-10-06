@@ -21,24 +21,23 @@ using std::vector;
 
 
 class Hint {
-
 public:
-  string key;
-  int hintNum;
-  bool verbose;
-  //int penalty; //each hint method call can increase this.
-  string handle(char,bool);
-  Hint(string,bool);
-  Hint();
-  void setKey(string);
+    string key; 
+    int hintNum;    // Counts the number of hints (i.e., # letters + # answers + ...?)
+    bool verbose;
+    //int penalty; //each hint method call can increase this.
+    string handle(string, bool);
+    Hint(string, bool);
+    Hint();
+    void setKey(string);
 private:
-  string hint;
-  void addLetter();
-  void fillLetterPlaces();
-  void answer();
-  void disableHints();
-  string example();
-  string synonym();
-  string help();
+    string hint;
+    void addLetter(int=1);
+    void fillLetterPlaces();
+    void answer(void);
+    void disableHints(void);
+    string example();
+    string synonym();
+    string help();
 };
 #endif

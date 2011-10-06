@@ -72,6 +72,7 @@ int main(int argc, char **argv)
 	//	}
 
     /*****     Take optional input from command line     *****/
+//    takeInInput(inFile,&verbose,&debug); -- Suggested input function
     while ( (c = getopt(argc, argv, ":i:vhdl")) != -1)
     {
         switch (c)
@@ -115,13 +116,13 @@ int main(int argc, char **argv)
     input(cards,&inFile[0]);
     cout << "Okay, it's all read in." << endl;
 
-    /*****  Prepare an array of wordData objects **********/
+    /*****  Prepare an array of wordData objects *****/
     numFlashcards = cards.size();
     wordData * wordy = new wordData[numFlashcards];
     for (int i = 0; i < numFlashcards; i++)
         wordy[i].populate(numFlashcards);
 
-    /******* Prepare variable for formatting purposes **********/
+    /***** Prepare variable for formatting purposes *****/
     unsigned int lengthLongestWord = 0;
     for (int i = 0; i < numFlashcards; i++)
     {
@@ -129,7 +130,7 @@ int main(int argc, char **argv)
             lengthLongestWord = cards[i].sideB[0].size();
     }
 
-    //****** Language Quiz **********//
+    /***** Language Quiz *****/
     cout << "Beginning Quiz." << endl;
 
     string response;
@@ -137,9 +138,8 @@ int main(int argc, char **argv)
 
     while ( !cin.eof() )    // Should there be other conditions? 
                             // --Yes - all probabilities can't be zero.
-    {	
-
-        /******* Choose new flashcard and select words ******************/
+    {
+        /***** Choose new flashcard and select words *****/
         int i = weightedIndex(wordy, numFlashcards);
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
         int numOfTries = 1;
         myhint.setKey(sideBword);
 
-        /******* Prompt user for response *****************************/
+        /***** Prompt user for response *****/
         cout << sideAword << ": ";
 
         while (!cin.eof() && isWrong)
@@ -156,10 +156,10 @@ int main(int argc, char **argv)
             getline(cin, response);
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
-	    
+
             /** Asked for hint? **/
             if ( response[0] == '-' )
-                cout << myhint.handle(response[1],false);
+                cout << myhint.handle(response,false);
             else
             {
                 isWrong = isInvalidAnswer(response,cards[i].sideB);

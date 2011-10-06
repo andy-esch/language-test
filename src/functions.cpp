@@ -380,9 +380,9 @@ string goodbye(void)
     return goodbyes[randIndex(9)] + "!";
 }
 
-bool exitProg(char * test)
+bool exitProg(string test)
 {
-    return (!strcmp(test,"exit") || !strcmp(test,"quit"));
+    return (!strcmp(test.c_str(),"exit") || !strcmp(test.c_str(),"quit"));
         // what are some other things we can put in here?
         // Also, could we put through the cin.eof() thing here so all the tests
         // throughout the program have a single function? instead of:

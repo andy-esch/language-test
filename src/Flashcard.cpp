@@ -19,7 +19,7 @@
 
 
 
-string Flashcard::toScreen()
+string Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
     for (int jj = 0; jj < sideA.size()-1; jj++)
@@ -36,7 +36,7 @@ string Flashcard::toScreen()
 }
 
 
-void Flashcard::clearWS()
+void Flashcard::clearWS(void)
 {
     sideB.clear();
     sideA.clear();
