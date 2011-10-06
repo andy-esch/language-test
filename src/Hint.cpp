@@ -17,7 +17,7 @@ Hint::Hint(string answerKey, bool selectVerbose)
     hintNum = 0;
     verbose = selectVerbose;
     hint = "";
-    while (hint.size() < key.size())
+    while (hint.size() <= key.size())
         hint += " ";
 }
 
@@ -27,7 +27,7 @@ Hint::Hint()
     key = " ";
     hintNum = 0;
     verbose = false;
-    hint = "  ";
+    hint = " ";
 }
 
 
@@ -35,15 +35,16 @@ void Hint::setKey(string answerKey)
 {
     key = answerKey;
     hint = "";
-    for(int i = 0; i < key.size(); i++)
-      hint += " ";
+    while (hint.size() <= key.size())
+        hint += " ";
 }
 
 void Hint::addLetter(int numLetters)
-{
-    if ( hintNum <= key.size() )
+{// This is moving toward offering multiple letters (hence numLetters)
+    if ( hintNum < key.size() )
     {
-        hint.replace(hintNum,1,string(1,key[hintNum]));
+        if (hintNum + numLetters > key.size()) numLetters = key.size() - hintNum;
+        hint.replace(hintNum,numLetters,string(key,hintNum,numLetters));
         hintNum += numLetters;
     }
     if (key[hintNum] == ' ')
