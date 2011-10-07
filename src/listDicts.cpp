@@ -84,8 +84,7 @@ string listDicts(void)
         cin >> dictPick;
         dictInt = atoi(&dictPick[0]);
         
-        if ( cin.eof() || dictInt <= 0 || dictInt > files.size() \
-            || dictPick == "exit" || dictPick == "quit")
+        if ( exitProg(dictPick,cin.eof()) || dictInt <= 0 || dictInt > files.size() )
             exit(0);
         else
             dictPick = dir + files[dictInt - 1];
@@ -97,7 +96,7 @@ string listDicts(void)
         cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;        
         cin >> dictPick;
 
-        if ( cin.eof() || dictPick == "exit" )
+        if ( exitProg(dictPick,cin.eof()) )
             exit(0);
     }
 

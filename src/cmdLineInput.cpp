@@ -31,7 +31,7 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                     cerr << "Warning: Option '-i' must have more than one argument." << endl;
                     cout << "Type a new file name to continue or 'exit' to exit program." << endl;
                     cin >> inFile;
-                    if ( exitProg(inFile) || cin.eof()) // if 'exit', exit program
+                    if ( exitProg(inFile,cin.eof()) ) // if 'exit', exit program
                         exit(0);
                     cin.clear();
                     cin.ignore(10,'\n');
