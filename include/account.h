@@ -1,23 +1,33 @@
 /*
- *  account.h
+ *  Account.h
  *  
  *  Description:
  *
  *
- *  Created by Peter Eschbacher on 9/29/11.
+ *  Created by Añdy Eschbacher on 9/29/11.
  *
  */
 
+#include <iostream>
 #include <string>
+#include <vector>
 
-class summary {
-    string dictionary;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
+
+class Account {
+    string name;
+    vector<string> flashcardTests;
     float score;
     string datePassed;
     int numOfTimesAttempted;
 public:
-    void output(string, float, string, int);
-    void accountExporter(string);
-    void accountLoader();
-    
+    void exportAccount(string);
+    void loadAccount();
+    string getName(void);
+    void establishAccount();
+    string whoAreYou();
 };

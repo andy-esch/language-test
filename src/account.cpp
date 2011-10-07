@@ -1,15 +1,38 @@
 /*
- *  account.cpp
+ *  Account.cpp
  *  
  *  Description:
  *
  *
- *  Created by Peter Eschbacher on 9/29/11.
+ *  Created by Añdy Eschbacher on 9/29/11.
  *
  */
 
 #include "account.h"
 
-void accountExporter(string name);
+void Account::exportAccount(string name)
+{
+}
+void Account::loadAccount(void)
+{
+}
 
-void output();
+string Account::getName()
+{
+    return name;
+}
+
+void Account::establishAccount()
+{
+    string youAre;
+    youAre = whoAreYou();
+}
+
+string Account::whoAreYou()
+{
+    string acctName;
+    cout << "What is your account name?" << endl;
+    getline(cin,acctName);
+
+    return acctName;
+}
