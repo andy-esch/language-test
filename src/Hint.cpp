@@ -43,15 +43,16 @@ void Hint::setKey(string answerKey)
 
 void Hint::addLetter(int numLetters)
 {
+        // Doesn't add letters if more than one ' ' is found
     // Add letter if ' ' is found in substring
     if (string(key,hintNum,numLetters).find(' ') != string::npos)
-        addLetter();
+        numLetters++;
 
     if ( hintNum < key.size() )
     {
         if (hintNum + numLetters > key.size()) // Limit num of letters to key size
-	  numLetters = key.size() - hintNum;
-        hint.replace(hintNum,numLetters,string(key,hintNum,numLetters));
+            numLetters = key.size() - hintNum;
+        hint.replace(hintNum, numLetters, string(key,hintNum,numLetters));
         hintNum += numLetters;
     }
     if (hintNum == key.size())
@@ -61,15 +62,15 @@ void Hint::addLetter(int numLetters)
 
 void Hint::addLetter()
 {
-  if(hintNum<=key.size())
+    if ( hintNum <= key.size() )
     {
-      hint.replace(hintNum,1,string(1,key[hintNum]));
-      hintNum++;
+        hint.replace(hintNum,1,string(1,key[hintNum]));
+        hintNum++;
     }
-  if(key[hintNum]==' ')
-    addLetter();
-  if(hintNum==key.size())
-    hint+=" <-";
+    if (key[hintNum]==' ')
+        addLetter();
+    if (hintNum==key.size())
+        hint+=" <-";
 }
 
 
@@ -125,11 +126,11 @@ string Hint::handle(string hintType, bool verbose)
     {
         case 'l':
             if (hintType[2] == '\0')
-                addLetter();
+                addLetter(1);
             else if (atoi(&hintType[2]) < 10 && atoi(&hintType[2]) > 0)
                 addLetter(atoi(&hintType[2]));
             else
-                addLetter();
+                addLetter(1);
             out << "-> " << hint;
             break;
         case 'a':
