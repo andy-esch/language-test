@@ -12,28 +12,33 @@
 #define _SMARTPICKER_H_
 
 #include <iostream>
-#include <numeric>
-#include <sstream>
-#include <typeinfo>
 #include <vector>
 #include <string>
 #include <ctime>
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "Flashcard.h"
 
 using std::vector;
+using std::cout;
 
 class SmartPicker {
-private:
-    unsigned int currentIndex;
+protected:
+    int currentIndex;
     void setCurrentIndex(int);
 public:
-  SmartPicker();
-  unsigned int nextIndex(vector<Flashcard>);
-  unsigned int leastPickedIndex(vector<Flashcard>);
+    SmartPicker(void);
+    int nextIndex(int);
+};
+
+class LeastPicked: public SmartPicker {
+public:
+    int leastPickedIndex(vector<Flashcard> &);
+};
+
+class WeightedIndex: public SmartPicker {
+public:
+    void print() { cout << "hi"; }
 };
 
 #endif // SMARTPICKER_H

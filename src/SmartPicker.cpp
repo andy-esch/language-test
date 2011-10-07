@@ -10,49 +10,48 @@
 
 #include "SmartPicker.h"
 
+void SmartPicker::setCurrentIndex(int index)
+{
+    currentIndex = index;
+}
+
 SmartPicker::SmartPicker()
 {
   currentIndex=0;
 }
 
-
-
-unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
+int SmartPicker::nextIndex(int cardsSize)
 {
-  return (currentIndex++ % cards.size());
+    currentIndex++;
+    return (currentIndex % cardsSize);
 }
-
-
 
 unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
 {
-  srand ( time(0) );
-  vector<int> leastAskedIndices;
-  int currentLowest=cards[0].data.numAsked;
-  int numasked;
+    srand ( time(0) );
+    vector<Flashcard>::iterator it;    
+    vector<int> leastAskedIndices;
+    int currentLowest=cards[0].data.numAsked;
+    int numasked;
 
-  for(int i=1;i<cards.size();i++)
+    for (it = cards.begin(); it != cards.end(); it++)
     {
-      numasked=cards[i].data.numAsked;
-      if(numasked<currentLowest)
-	currentLowest=numasked;
+        numasked = it->data.numAsked;
+        if (numasked < currentLowest)
+            currentLowest=numasked;
     }
 
-  for(int i=0;i<cards.size();i++)
-    {
-      if(cards[i].data.numAsked==currentLowest)
-	leastAskedIndices.push_back(i);
-    }
+    for (int ii=0;ii<cards.size();ii++)
+        if (it->data.numAsked == currentLowest)
+            leastAskedIndices.push_back(ii);
 
-  int indexChoice = leastAskedIndices[rand() % leastAskedIndices.size()];
+    int indexChoice = leastAskedIndices[rand() % leastAskedIndices.size()];
   
-  if(indexChoice==currentIndex)
-    setCurrentIndex((indexChoice+1) % leastAskedIndices.size());
-  else  setCurrentIndex(indexChoice);
-  return currentIndex;  
+    if (indexChoice == currentIndex)
+        setCurrentIndex((indexChoice+1) % leastAskedIndices.size());
+    else
+        setCurrentIndex(indexChoice);
+
+    return currentIndex;  
 }
 
-void SmartPicker::setCurrentIndex(int index)
-{
-    currentIndex = index;
-}
