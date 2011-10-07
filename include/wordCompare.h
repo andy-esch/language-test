@@ -14,7 +14,7 @@
 #include "functions.h"
 
 string correctness(string, string);
-string levRater(int);
+string levRater(unsigned int);
 unsigned int levenshtein(string, string);
 float wordCompare(string, string);
 string unique(string);
