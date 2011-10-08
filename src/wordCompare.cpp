@@ -19,16 +19,16 @@ string correctness(string answer, string key)
     return response.str();
 }
 
-string levRater(int value)
+string levRater(unsigned int value)
 {
     string howGood;
     if (value == 1)
         howGood = "very close!";
-    if (value == 2)
+    else if (value == 2)
         howGood = "a little off!";
-    if (value == 3)
+    else if (value == 3)
         howGood = "off by a few letters!";
-    if (value >= 4 && value < 8)
+    else if (value >= 4 && value < 8)
         howGood = "not so great!";
     else
         howGood = "terrible, honestly.";

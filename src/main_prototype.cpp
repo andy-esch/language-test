@@ -6,25 +6,33 @@
  *      other things we are listing in our ToDo list.
  *
  *
- *  Created by Peter Eschbacher on 9/23/11.
+ *  Created by Añdy Eschbacher on 9/23/11.
  *
  */
+
 #include <iostream>
 #include <cstdlib>
 #include <string>
+
+#include "functions.h"
+#include "account.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
 
-int whatDoYouWantToDo();
+bool debug;
 
 int main(int argc, char **argv)
 {
+    Account acct1;
+    /** Find out if new or existing user -- load past info accordingly **/
+    acct1.establishAccount();
+    
     int toDoOption = whatDoYouWantToDo();
 
-    do
+    while (!cin.eof())
     {
         switch (toDoOption)
         {
@@ -59,33 +67,7 @@ int main(int argc, char **argv)
     
         whatDoYouWantToDo();
 
-    } while (!cin.eof());
+    }
 
     return 0;
-}
-
-int whatDoYouWantToDo()
-{
-    string options[] = {"flash cards", "conjugations", "fill-in-the-blank", \
-                        "multiple choice", "account summary", "exit program"};
-    string languages[] = {"spanish/english", "french/english", "robot/english"};
-    
-    int toDoOption, lang;
-
-    cout << "What do you want to do?" << endl;
-    cout << "Here are your options: " << endl;
-    for (int ii = 1; ii <= 6; ii++)
-        cout << '\t' << ii << ": " << options[ii - 1] << endl;
-
-    cin >> toDoOption;
-
-    if (toDoOption != 6)
-    {
-        cout << "Which language do you want to work on?" << endl;
-        for (int ii = 1; ii <= 3; ii++)
-            cout << '\t' << ii << ": " << languages[ii - 1] << endl;
-        cin >> lang;
-    }
-    
-    return toDoOption;
 }

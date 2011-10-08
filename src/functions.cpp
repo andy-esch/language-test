@@ -8,9 +8,6 @@
  *
  */
 
-    // Write a function that takes in the cin stream, and sees if it is 'exit'
-    // or quit or eof and does things accordingly
-
 #include "functions.h"
 
 extern bool debug;
@@ -19,9 +16,11 @@ extern bool debug;
 //  This is only a prototype
 bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
 {
+    int numUnanswered = 0; // Delete this later, for use as proto type only
     bool passVar = ((numOfHints < (numEntries / 30)) && \
-                   (totalAvgTime < 2.0) && \
-                   (totalAvgPercent > 0.9));
+                    (totalAvgTime < 2.0) && \
+                    (totalAvgPercent > 0.9) && \
+                    (numUnanswered == 0));
     return passVar;
 }
 
@@ -42,25 +41,26 @@ float howWrongIsIt(string test, string compare)
     return 0.0;
 }
 
+// Let's rewrite this as a pass by reference function instead so we don't have
+// to pass all this info across memory, etc.
 vector<string> stripParentheses(vector<string> words)
 { 
-  vector<string> strippedWords = words;
-  string paren (" (");
-  size_t it;
+    vector<string> strippedWords = words;
+    string paren(" (");
+    size_t it;
 
-  for (int i=0;i<words.size();i++)
-     {
-       it=strippedWords[i].find(paren);
-       if(it!=string::npos)
-	 {
-	 strippedWords[i].erase(strippedWords[i].begin() 
-			     + strippedWords[i].find(paren), 
-		   strippedWords[i].end());
-	 }
+    for (int i = 0; i < words.size(); i++)
+    {
+       it = strippedWords[i].find(paren);
+       if (it != string::npos)
+       {
+         strippedWords[i].erase(strippedWords[i].begin() + strippedWords[i].find(paren), \
+                                strippedWords[i].end());
+       }
     }
-  return strippedWords;
-}
 
+    return strippedWords;
+}
 
 // Mimics string compare -- returns 1 if there is no match
 // I don't like to do all this extra work for each case, but for now it works.
@@ -74,7 +74,7 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
         if ( !answer.compare(*it) )
             isWrong = false;
 
-    for (it = strippedws.begin(); it !=strippedws.end(); it++)
+    for (it = strippedws.begin(); it != strippedws.end(); it++)
         if ( !answer.compare(*it) )
             isWrong = false;
 
@@ -97,8 +97,6 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
-               
-               
 void input(vector<Flashcard> & ws, char * inFile)
 {
     // Do some error-checking to make sure there are the proper number of
@@ -117,7 +115,7 @@ void input(vector<Flashcard> & ws, char * inFile)
         cout << "Enter another filename (or 'exit' to exit): ";
         cin >> inFile;
 
-        if (cin.eof() || !strcmp(inFile,"exit") || !strcmp(inFile,"'exit'"))
+        if (exitProg(inFile,cin.eof()))
         {
             cout << endl;
             exit(0);
@@ -133,8 +131,7 @@ void input(vector<Flashcard> & ws, char * inFile)
     {
         getline(infile, temp1);             // Read in line from file
 
-        if (temp1 == "")                    // Skip empty lines
-            continue;
+        if (temp1 == "") continue;          // Skip empty lines
 
         // Find the delimiter
         for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)
@@ -350,17 +347,42 @@ string goodbye(void)
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
                          "Namaste"};
-        // What do you think?  Should those be in a file instead? Nice! Yeah, we could generate a goodbye file with loads and loads of languages.  It'd be a nice touch :) Maybe a welcome message at the start too.
 
     return goodbyes[randIndex(9)] + "!";
 }
 
-bool exitProg(string test)
+bool exitProg(char * test, bool cinEof)
 {
-    return (!strcmp(test.c_str(),"exit") || !strcmp(test.c_str(),"quit"));
-        // what are some other things we can put in here?
-        // Also, could we put through the cin.eof() thing here so all the tests
-        // throughout the program have a single function? instead of:
-        // if ( exitProg(test) || cin.eof() )
-        // to: if (exitProg(test,cin)), where the second argument would be some stream, i suppose
+    bool exiting = (!strcmp(test,"exit") || \
+                    !strcmp(test,"'exit'") || \
+                    !strcmp(test,"quit") || \
+                    !strcmp(test,"'quit'") || \
+                    cinEof);
+    return exiting;
+}
+
+int whatDoYouWantToDo(void)
+{
+    string options[] = {"flash cards", "conjugations", "fill-in-the-blank", \
+        "multiple choice", "account summary", "exit program"};
+    string languages[] = {"spanish/english", "french/english", "robot/english"};
+    
+    int toDoOption, lang;
+    
+    cout << "What do you want to do?" << endl;
+    cout << "Here are your options: " << endl;
+    for (int ii = 1; ii <= 6; ii++)
+        cout << '\t' << ii << ": " << options[ii - 1] << endl;
+    
+    cin >> toDoOption;
+    
+    if (toDoOption != 6)
+    {
+        cout << "Which language do you want to work on?" << endl;
+        for (int ii = 1; ii <= 3; ii++)
+            cout << '\t' << ii << ": " << languages[ii - 1] << endl;
+        cin >> lang;
+    }
+    
+    return toDoOption;
 }

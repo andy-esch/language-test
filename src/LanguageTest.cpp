@@ -27,6 +27,7 @@
 #include "Hint.h"
 #include "SmartPicker.h"
 #include "cmdLineInput.h"
+#include "wordCompare.h"
 
 
 using std::cerr;
@@ -50,10 +51,8 @@ int main(int argc, char **argv)
     /*****    Take optional input from command line   *****/
     cmdLineInput(argc,argv,inFile,verbose,debug);
 
-    /*****    Language Quiz    *****/
-    cout << "Beginning Quiz." << endl;
-
     /****    Language Quiz    *****/
+    cout << "Beginning Quiz." << endl;
     time_t timeStart, timeEnd;
     bool disableHintMsg = false;
 
@@ -99,7 +98,7 @@ int main(int argc, char **argv)
 
                 if (isWrong)
                 {
-                    if (verbose) cout << "Wrong!" << endl;
+                    if (verbose) cout << correctness(response,cards[i].sideB[0]) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;
@@ -111,7 +110,7 @@ int main(int argc, char **argv)
                 else if( verbose ) cout << "Right!" << endl;
             }
         }
-        /* move to next word */
+        /* finish this card */
         cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
         isWrong = true;
     }
