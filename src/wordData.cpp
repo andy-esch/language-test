@@ -83,7 +83,8 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
 {   // Updates probabilities
 
     double alpha = 1.0 + weight * (1.0 - wordInfo[index].probability);
-    double gamma = 1.0;
+    // double alpha = fma(weight,fdim(1.0,wordInfo[index].probability),1.0); 
+    double gamma = 1.05;
     double probNumAskedIs0 = 0.0;
     int numOfNumAskedIs0 = 0;
 
@@ -98,17 +99,21 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
 
     cout << "probNumAskedIs0 = " << probNumAskedIs0 << endl;
     cout << "numOfNumAskedIs0 = " << numOfNumAskedIs0 << endl;
-
-    double beta = (1.0 - gamma * probNumAskedIs0 - alpha * wordInfo[index].probability) / (1.0 - probNumAskedIs0 - wordInfo[index].probability);
+    // fma(x,y,z) = x*y + z correctly rounded -- since probs need to be sum(probs) = 1.0, be careful on rounding errors
+    // Should we worry about rounding errors in division?  How big of an issue is this?
+    double beta = (fma(alpha,wordInfo[index].probability,fma(gamma/weight,probNumAskedIs0,0.0)) / (alpha - probNumAskedIs0);
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if ( ii != index && wordInfo[ii].numAsked != 0)
-            wordInfo[ii].probability *= beta;
+            //wordInfo[ii].probability *= beta;
+            wordInfo[ii].probability = fma(wordInfo[ii].probability,beta,0.0);
         else if ( ii != index && wordInfo[ii].numAsked == 0)
-            wordInfo[ii].probability *= gamma;
+            wordInfo[ii].probability = fma(wordInfo[ii].probability,gamma,0.0);
+            //wordInfo[ii].probability *= gamma;
         else if ( ii == index )
-            wordInfo[ii].probability *= alpha;
+            wordInfo[ii].probability = fma(wordInfo[ii].probability,alpha,0.0);
+            //wordInfo[ii].probability *= alpha;
     }
     cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
 }
