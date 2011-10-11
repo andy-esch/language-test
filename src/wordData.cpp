@@ -84,10 +84,10 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
     // Kick in the pJ updating after a certain number of questions have been asked?
     //double alpha = 1.0 + weight * (1.0 - wordInfo[index].probability);
 
-    double probUnasked = 0.0, p1 = wordInfo[index].probability;
+    double probUnasked = 0.0, pStar = wordInfo[index].probability;
     int numOfNumAskedIs0 = 0;
-    double alpha = fdim(1.0,p1), gamma = 0.015, beta;
-    static int numEntries = 1;
+    double alpha = fdim(1.0,pStar), beta;
+    double gamma = 0.0001;
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
@@ -103,36 +103,32 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
 
     // fma(x,y,z) = x*y + z correctly rounded -- since probs need to be sum(probs) = 1.0, be careful on rounding errors
     // Should we worry about rounding errors in division?  How big of an issue is this?
-    // beta = 1.0 - (w * alpha * p1 + gamma * pJ)/(alpha - pJ)
 
-    // Divide by zero guard
-    if (numEntries == 1)
+    // Divide-by-zero guard
+    if (alpha - probUnasked < 0.01)
     {
-        beta = p1;
-        numEntries++;
+        cout << "alpha - probUnasked = " << alpha - probUnasked << endl;
+        beta = pStar;
+        gamma = 0.0;
     }
     else
-        beta = (alpha * p1 + gamma * probUnasked / weight) / (alpha - probUnasked);
+        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - probUnasked);
 
     cout.precision(10);
     cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
     cout << "(alpha,beta,gamma) = (" << alpha << ", " << beta << ", " << gamma << ")" << endl;
     cout << "w * (alpha * p1 - beta * pI) + gamma * pJ = " << \
-    weight * (alpha * p1 - beta * fdim(1.0, p1 + probUnasked)) + gamma * probUnasked << endl;
+    weight * (alpha * pStar - beta * fdim(1.0, pStar + probUnasked)) + gamma * probUnasked << endl;
     cout.precision(6);
-
-    alpha = 1.0 + weight * alpha;
-    gamma += 1.0;
-    beta = 1.0 - weight * beta;
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if ( ii == index )
-            wordInfo[ii].probability = fma(wordInfo[ii].probability,alpha,0.0);
+            wordInfo[ii].probability *= fma(weight,alpha,1.0);
         else if ( wordInfo[ii].numAsked != 0 )
-            wordInfo[ii].probability = fma(wordInfo[ii].probability,beta,0.0);
+            wordInfo[ii].probability *= fma(weight,beta,1.0);
         else
-            wordInfo[ii].probability = fma(wordInfo[ii].probability,gamma,0.0);
+            wordInfo[ii].probability *= fma(gamma,1.0,1.0);
     }
 }
 
