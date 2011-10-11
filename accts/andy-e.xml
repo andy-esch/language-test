@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LangTest>
+    <person>
+        <first_name>Andy</first_name>
+        <last_name>Eschbacher</last_name>
+    </person>
+    <tests>
+        <flashcard>
+            <name>verbs.txt</name>
+            <type>verbs</name>
+            <score>97</score>
+        </flashcard>
+        <flashcard>
+            <name>adjectives.txt</name>
+            <type>adjectives</type>
+            <score>93</score>
+        </flashcard>
+    </tests>
+
+
+</LangTest>
