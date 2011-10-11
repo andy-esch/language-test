@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     bool verbose = false, isWrong = true;
     srand(time(NULL));
     char inFile[60] = "vocab/test.txt";
+
     gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 
     /*****    Take optional input from command line   *****/
