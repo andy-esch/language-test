@@ -303,6 +303,7 @@ double reaction(double time, int numLttrs)
     return reactionTime;
 }
 
+
 // int weightedIndex(wordData * data, int numEntries)
 // {
 //     static int lastIndex;
@@ -322,7 +323,6 @@ double reaction(double time, int numLttrs)
 //         vector<double> cumulative;
 //         std::partial_sum(prob[0], prob[0] + numEntries, \
 //                          std::back_inserter(cumulative));
-//         if (debug) cout << "partial_sum() calculated" << endl;
 //         boost::uniform_real<> dist(0.0, cumulative.back());
 //         boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
 //         currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();

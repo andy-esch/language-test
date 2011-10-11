@@ -49,7 +49,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
             << "% (" << cards[i].data.numAsked << ")";
-            cout << setw(9) << cards[i].data.getAnsweringTime();
+            cout << setw(9) << cards[i].data.getAverageCorrectAnswerTime();
         }
         else
             cout << setw(6) << "   -" << setw(12) << "   -";

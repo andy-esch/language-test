@@ -17,15 +17,14 @@ WordData::WordData()
     numAsked = 0;
     numCorrect = 0;
     answeringTime = 0.0;
-//    probability = 1.0;        // This has to be set according to the number of cards, so individually we don't know what it would be without cards.size()
 }
 
-double getPercentCorrect(){
-  return 100.00*numCorrect/static_cast<double>numAsked;
+double WordData::getPercentCorrect(){
+  return 100.00*(static_cast<double>(numCorrect)/static_cast<double>(numAsked));
 }
 
-double getAverageCorrectAnswerTime(){
-  return static_cast<double>answeringTime/static_cast<double>numCorrect;
+double WordData::getAverageCorrectAnswerTime(){
+  return static_cast<double>(answeringTime)/static_cast<double>(numCorrect);
 }
 
 
