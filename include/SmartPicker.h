@@ -34,6 +34,7 @@ public:
   SmartPicker();
   unsigned int nextIndex(vector<Flashcard>);
   unsigned int leastPickedIndex(vector<Flashcard>);
+  unsigned int leastCorrectIndex(vector<Flashcard>);
 };
 
 #endif // SMARTPICKER_H

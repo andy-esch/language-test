@@ -52,6 +52,40 @@ unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
   return currentIndex;  
 }
 
+
+
+unsigned int SmartPicker::leastCorrectIndex(vector<Flashcard> cards)
+{
+  srand ( time(0) );
+  vector<int> leastCorrectIndices;
+  int currentLowest=cards[0].data.numCorrect;
+  int numcorrect;
+
+  for(int i=1;i<cards.size();i++)
+    {
+      numcorrect=cards[i].data.numCorrect;
+      if(numcorrect<currentLowest)
+	currentLowest=numcorrect;
+    }
+
+  for(int i=0;i<cards.size();i++)
+    {
+      if(cards[i].data.numCorrect==currentLowest)
+	leastCorrectIndices.push_back(i);
+    }
+
+  int indexChoice = leastCorrectIndices[rand() % leastCorrectIndices.size()];
+  
+  if(indexChoice==currentIndex)
+    setCurrentIndex((indexChoice+1) % leastCorrectIndices.size());
+  else  setCurrentIndex(indexChoice);
+  return currentIndex;  
+}
+
+
+
+
+
 void SmartPicker::setCurrentIndex(int index)
 {
     currentIndex = index;
