@@ -351,7 +351,7 @@ string goodbye(void)
     return goodbyes[randIndex(9)] + "!";
 }
 
-bool exitProg(char * test, bool cinEof)
+bool exitProg(const char * test, bool cinEof)
 {
     bool exiting = (!strcmp(test,"exit") || \
                     !strcmp(test,"'exit'") || \
