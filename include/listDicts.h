@@ -19,6 +19,8 @@
 #include <fstream>
 #include <iomanip>
 
+#include "functions.h"
+
 using std::string;
 using std::vector;
 using std::cin;

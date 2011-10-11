@@ -25,11 +25,11 @@ LanguageTest.o: LanguageTest.cpp
 $(OBJECTS): %.o: %.cpp
 	$(CXX) -I include -c $< -o $@
 
-proto: main_prototype.o $(PROTO_OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o proto
+#proto: main_prototype.o $(PROTO_OBJECTS)
+#	$(CXX) $(CXXFLAGS) $^ -o proto
 
-$(PROTO_OBJECTS): %.o: %.cpp
-	$(CXX) -I include -c $< -o $@
+#$(PROTO_OBJECTS): %.o: %.cpp
+#	$(CXX) -I include -c $< -o $@
 
 .PHONY: clean
 clean:
