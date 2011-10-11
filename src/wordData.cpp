@@ -79,15 +79,49 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
     return weight;
 }
 
+void wordData::updateProbs_alt(int index, int numOfEntries, double weight, wordData * wordInfo)
+{   // Updates probabilities
+    
+    double pStar = wordInfo[index].probability;
+    double alpha = fdim(1.0,pStar), beta = pStar;
+    double gamma = 0.001, probUnasked = 0.0;
+    static int guard = 1;
+
+    for (int ii = 0; ii < numOfEntries; ii++)
+    {
+        if (wordInfo[ii].numAsked == 0 && ii != index)
+            probUnasked += wordInfo[ii].probability;
+    }
+
+    if (guard < numOfEntries / 2)
+    {
+        beta = pStar;
+        guard++;
+    }
+    else
+        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - proUnasked);
+    
+    cout.precision(10);
+    cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
+    cout << "(alpha,beta) = (" << fma(weight,alpha,1.0) << ", " << fma(-weight,beta,1.0) << ", " << fma(gamma,1.0,1.0) << ")" << endl;
+    cout.precision(6);
+    
+    for (int ii = 0; ii < numOfEntries; ii++)
+    {
+        if ( ii == index )
+            wordInfo[ii].probability *= fma(weight,alpha,1.0);
+        else ( 
+            wordInfo[ii].probability *= fma(-weight,beta,1.0);
+    }
+}
+
 void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
 {   // Updates probabilities
-    // Kick in the pJ updating after a certain number of questions have been asked?
-    //double alpha = 1.0 + weight * (1.0 - wordInfo[index].probability);
 
     double probUnasked = 0.0, pStar = wordInfo[index].probability;
     int numOfNumAskedIs0 = 0;
     double alpha = fdim(1.0,pStar), beta;
-    double gamma = 0.0001;
+    double gamma = 0.0000;
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
@@ -98,6 +132,8 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
         }
     }
 
+    probUnasked = 0.0;
+    
     cout << "probNumAskedIs0 = " << probUnasked << endl;
     cout << "numOfNumAskedIs0 = " << numOfNumAskedIs0 << endl;
 
@@ -126,7 +162,7 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
         if ( ii == index )
             wordInfo[ii].probability *= fma(weight,alpha,1.0);
         else if ( wordInfo[ii].numAsked != 0 )
-            wordInfo[ii].probability *= fma(weight,beta,1.0);
+            wordInfo[ii].probability *= fma(-weight,beta,1.0);
         else
             wordInfo[ii].probability *= fma(gamma,1.0,1.0);
     }
@@ -139,7 +175,7 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
     numAsked++;
 
     // Update probabilities
-    updateProbs(index, numOfEntries, \
+    updateProbs_alt(index, numOfEntries, \
                 wordData::weight(wrong,timeDiff), wordInfo);
 
     // Update scoring percentage

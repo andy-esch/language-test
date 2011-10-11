@@ -32,6 +32,7 @@ private:
     double weight(bool, double);
     double weight(char, int, double);
     void updateProbs(int, int, double, wordData *);
+    void updateProbs_alt(int, int, double, wordData *);
     double sumProbs(wordData *,int);
 };
 #endif // _WORDDATA_H_
