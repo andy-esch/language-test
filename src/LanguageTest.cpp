@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
     vector<Flashcard> cards;
     string response;
-    SmartPicker picker;
+    LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
 
     input(cards,&inFile[0]);

@@ -12,11 +12,24 @@
 
 extern bool debug;
 
+unsigned int findSmallest(const vector<Flashcard> &deck)
+{
+    unsigned int currentLowest = deck[0].data.numCorrect, temp;
+
+    for (int ii = 1; ii < deck.size(); ii++)
+    {
+        temp = deck[ii].data.numCorrect;
+        if (temp < currentLowest)
+            currentLowest = temp;
+    }
+    return currentLowest;
+}
+
 //  To be used to verify if a given test has been passed
 //  This is only a prototype
 bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
 {
-    int numUnanswered = 0; // Delete this later, for use as proto type only
+    int numUnanswered = 0; // Delete this later, for use as prototype only
     bool passVar = ((numOfHints < (numEntries / 30)) && \
                     (totalAvgTime < 2.0) && \
                     (totalAvgPercent > 0.9) && \
@@ -68,7 +81,7 @@ bool isInvalidAnswer(string answer, vector<string> & ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
-    vector<string>::iterator it;
+    vector<string>::iterator it = ws.begin();
 
     for (it = ws.begin(); it != ws.end(); it++)
         if ( !answer.compare(*it) )
@@ -303,37 +316,6 @@ double reaction(double time, int numLttrs)
     return reactionTime;
 }
 
-// int weightedIndex(wordData * data, int numEntries)
-// {
-//     static int lastIndex;
-//     int currIndex;
-//     extern boost::mt19937 gen;
-//     double * prob[numEntries];
-    
-//         // Copy probabilities to simple array so partial_sum() can use it.
-//         // It's possible that this step isn't necessary but I cannot figure out
-//         // a way to use consecutive pointers in the partial_sum() function for
-//         // the structure data[ii].probability
-//     for (int ii = 0; ii < numEntries; ii++)
-//         prob[ii] = &(data[ii].probability);
-
-//     do
-//     {
-//         vector<double> cumulative;
-//         std::partial_sum(prob[0], prob[0] + numEntries, \
-//                          std::back_inserter(cumulative));
-//         if (debug) cout << "partial_sum() calculated" << endl;
-//         boost::uniform_real<> dist(0.0, cumulative.back());
-//         boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
-//         currIndex = std::lower_bound(cumulative.begin(), cumulative.end(), prob()) - cumulative.begin();
-//     } while (currIndex == lastIndex);
-
-//     lastIndex = currIndex;
-
-//     return currIndex;
-// }
-
-
 string whitespace(int length)
 {
     string whitespace("");
@@ -351,7 +333,7 @@ string goodbye(void)
     return goodbyes[randIndex(9)] + "!";
 }
 
-bool exitProg(char * test, bool cinEof)
+bool exitProg(const char * test, bool cinEof)
 {
     bool exiting = (!strcmp(test,"exit") || \
                     !strcmp(test,"'exit'") || \
@@ -373,9 +355,9 @@ int whatDoYouWantToDo(void)
     cout << "Here are your options: " << endl;
     for (int ii = 1; ii <= 6; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
-    
+
     cin >> toDoOption;
-    
+
     if (toDoOption != 6)
     {
         cout << "Which language do you want to work on?" << endl;
@@ -383,6 +365,6 @@ int whatDoYouWantToDo(void)
             cout << '\t' << ii << ": " << languages[ii - 1] << endl;
         cin >> lang;
     }
-    
+
     return toDoOption;
 }

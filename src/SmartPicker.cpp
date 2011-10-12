@@ -10,39 +10,56 @@
 
 #include "SmartPicker.h"
 
+/**    SmartPicker members    **/
 void SmartPicker::setCurrentIndex(int index)
 {
     currentIndex = index;
 }
 
-SmartPicker::SmartPicker()
+SmartPicker::SmartPicker(void)
 {
-  currentIndex=0;
+    currentIndex = 0;
 }
 
-int SmartPicker::nextIndex(int cardsSize)
+unsigned int SmartPicker::nextIndex(int cardsSize)
 {
-    currentIndex++;
-    return (currentIndex % cardsSize);
+    return (currentIndex++ % cardsSize); // What's the order of operations here?
+                                         // Should currentIndex be increment before the mod is taken?
 }
 
-unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
+/**    LeastCorrect members    **/
+unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 {
-    srand ( time(0) );
-    vector<Flashcard>::iterator it;    
-    vector<int> leastAskedIndices;
-    int currentLowest=cards[0].data.numAsked;
-    int numasked;
+    srand(time(0));
+    vector<int> leastCorrectIndices;
+    unsigned int currentLowest = findSmallest(cards);
 
-    for (it = cards.begin(); it != cards.end(); it++)
+    for (int i = 0; i < cards.size(); i++)
     {
-        numasked = it->data.numAsked;
-        if (numasked < currentLowest)
-            currentLowest=numasked;
+        if (cards[i].data.numCorrect == currentLowest)
+            leastCorrectIndices.push_back(i);
     }
+    
+    int indexChoice = leastCorrectIndices[rand() % leastCorrectIndices.size()];
 
-    for (int ii=0;ii<cards.size();ii++)
-        if (it->data.numAsked == currentLowest)
+    if (indexChoice == currentIndex)
+        setCurrentIndex((indexChoice+1) % leastCorrectIndices.size());
+    else
+        setCurrentIndex(indexChoice);
+
+    return currentIndex;  
+}
+
+/**    LeastPicked members    **/
+unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
+{
+    srand(time(0));
+    vector<Flashcard>::iterator it;    
+    vector<unsigned int> leastAskedIndices;
+    unsigned int currentLowest = findSmallest(cards);
+
+    for (int ii = 0; ii < cards.size(); ii++)
+        if ( it->data.numAsked == currentLowest )
             leastAskedIndices.push_back(ii);
 
     int indexChoice = leastAskedIndices[rand() % leastAskedIndices.size()];
@@ -55,3 +72,15 @@ unsigned int SmartPicker::leastPickedIndex(vector<Flashcard> cards)
     return currentIndex;  
 }
 
+/**    WeightedIndex members    **/
+
+// Default Constructor
+WeightedIndex::WeightedIndex(void)
+{
+    /* not sure what to put here yet */
+}
+
+void WeightedIndex::print(void)
+{
+    cout << "hi" << std::endl;
+}
