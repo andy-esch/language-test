@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {	
-        int i = picker.leastAskedIndex(cards);
+        int i = picker.leastPickedIndex(cards);
 
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
