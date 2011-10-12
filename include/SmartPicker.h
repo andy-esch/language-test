@@ -42,12 +42,13 @@ public:
     unsigned int leastCorrectIndex(const vector<Flashcard> &);
 };
 
-class WeightedIndex: public SmartPicker {
+class Adaptive: public SmartPicker {
 private:
-    double probability;
+    vector<double> probability;
 public:
-    WeightedIndex();
+    Adaptive();
     void print();
+    
 };
 
 #endif // SMARTPICKER_H

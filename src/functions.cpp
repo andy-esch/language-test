@@ -346,7 +346,7 @@ bool exitProg(const char * test, bool cinEof)
 int whatDoYouWantToDo(void)
 {
     string options[] = {"flash cards", "conjugations", "fill-in-the-blank", \
-        "multiple choice", "account summary", "exit program"};
+                        "multiple choice", "account summary", "exit program"};
     string languages[] = {"spanish/english", "french/english", "robot/english"};
     
     int toDoOption, lang;
@@ -367,4 +367,12 @@ int whatDoYouWantToDo(void)
     }
 
     return toDoOption;
+}
+
+double inverse(int num)
+{
+    if (num != 0)
+        return (1.0 / static_cast<double> (num));
+    else
+        return 0; // return a nan() value?
 }

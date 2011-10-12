@@ -53,6 +53,7 @@ float howWrongIsIt(string,string);
 string goodbye(void);
 bool exitProg(const char*,bool=0);
 int whatDoYouWantToDo(void);
+double inverse(int);
 
 // obsolete
 bool isnew(vector<Flashcard> &, string, long unsigned int &);
