@@ -1,7 +1,7 @@
 /*
  *  worddata.h
  *  
- *  Description: class definition of worddata
+ *  Description: class definition of WordData
  *
  *
  *  Created by Añdy Eschbacher on 9/11/11.

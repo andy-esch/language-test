@@ -24,6 +24,7 @@ class Account {
     float score;
     string datePassed;
     int numOfTimesAttempted;
+    void importViaXml(void);    // Reminder
 public:
     void exportAccount(string);
     void loadAccount();
