@@ -17,6 +17,7 @@
  *
  */
 #include "listDicts.h"
+#include "functions.h"
 
 int getTxtFiles(string dir, vector<string> &files)
 {

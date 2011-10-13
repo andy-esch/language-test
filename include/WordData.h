@@ -13,18 +13,14 @@
 #include <cmath>
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
 class WordData
 {
 public:
     unsigned int numAsked;
     unsigned int numCorrect;
-    float answeringTime;
-    float percentRight;
+    double answeringTime;
     WordData();
-    double getPercentCorrect() { return percentRight; };
-    double getAnsweringTime() { return answeringTime; };
+    double getPercentCorrect();
+    double getAverageCorrectAnswerTime();
 };
 #endif // _WORDDATA_H_

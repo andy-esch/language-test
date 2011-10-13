@@ -15,10 +15,22 @@ extern bool debug;
 WordData::WordData()
 {
     numAsked = 0;
-    percentRight = 100.0;
+    numCorrect = 0;
     answeringTime = 0.0;
-//    probability = 1.0;        // This has to be set according to the number of cards, so individually we don't know what it would be without cards.size()
 }
+
+double WordData::getPercentCorrect(){
+  return 100.00*(static_cast<double>(numCorrect)/static_cast<double>(numAsked));
+}
+
+double WordData::getAverageCorrectAnswerTime(){
+  return static_cast<double>(answeringTime)/static_cast<double>(numCorrect);
+}
+
+
+
+
+
 
 //void WordData::setProbability(int N)
 //{
