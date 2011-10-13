@@ -11,9 +11,6 @@
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
 #include <algorithm>
 #include <cstring>
 #include <fstream>
@@ -21,7 +18,8 @@
 #include <numeric>
 #include <sstream>
 #include <string>
-#include <typeinfo>
+#include <stdexcept>    // out_of_range(), exception()
+#include <typeinfo>     // name(), what()
 #include <vector>
 
 #include "Flashcard.h"

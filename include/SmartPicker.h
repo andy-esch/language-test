@@ -11,11 +11,16 @@
 #ifndef _SMARTPICKER_H_
 #define _SMARTPICKER_H_
 
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_real.hpp>
+#include <boost/random/variate_generator.hpp>
 #include <iostream>
 #include <vector>
-#include <string>
-#include <ctime>
+#include <string>   // string members, objects
+#include <cmath>    // fma(), fdim(), exp()
+#include <ctime>    // time()
 #include <cstdlib>
+#include <climits> // UINT_MAX
 
 #include "Flashcard.h"
 #include "functions.h"
@@ -45,10 +50,12 @@ public:
 class Adaptive: public SmartPicker {
 private:
     vector<double> probability;
+    void updateProbs(int,double);
+    double weight(bool,double);
 public:
-    Adaptive();
-    void print();
-    
+    Adaptive(int);
+    ~Adaptive();
+    unsigned int adaptiveIndex(const vector<Flashcard> &, unsigned int, bool, float);
 };
 
 #endif // SMARTPICKER_H
