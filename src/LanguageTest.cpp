@@ -10,9 +10,6 @@
  *
  */
 
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
 #include <cstdlib>
 #include <string>
 #include <ctime>
@@ -37,7 +34,6 @@ using std::endl;
 using std::string;
 using std::vector;
 
-boost::mt19937 gen;
 bool debug = false;
 
 int main(int argc, char **argv)
@@ -46,7 +42,6 @@ int main(int argc, char **argv)
     bool verbose = false, isWrong = true;
     srand(time(NULL));
     char inFile[60] = "vocab/test.txt";
-    gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 
     /*****    Take optional input from command line   *****/
     cmdLineInput(argc,argv,inFile,verbose,debug);
