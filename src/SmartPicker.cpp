@@ -1,8 +1,10 @@
 /*
  *  SmartPicker.cpp
  *  
- *  Description:
- *
+ *  Description: Algorithms for flashcard selection.
+ *      Adaptive: probability of card selection based on past performance
+ *      through use of boost random library.  Algorithm inspired by
+ *      http://www.boost.org/doc/libs/1_47_0/doc/html/boost_random/tutorial.html
  *
  *  Created by KEPS on 4/10/11.
  *
