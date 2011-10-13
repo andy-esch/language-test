@@ -12,8 +12,7 @@
 #define _SMARTPICKER_H_
 
 #include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
+#include <boost/random/discrete_distribution.hpp>
 #include <iostream>
 #include <vector>
 #include <string>   // string members, objects
@@ -50,6 +49,7 @@ public:
 class Adaptive: public SmartPicker {
 private:
     vector<double> probability;
+    boost::mt19937 gen;
     void updateProbs(int,double);
     double weight(bool,double);
 public:

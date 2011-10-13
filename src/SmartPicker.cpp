@@ -79,8 +79,10 @@ unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 Adaptive::Adaptive(int numEntries)
 {
     probability.assign(numEntries,inverse(numEntries));
+    gen.seed(static_cast<unsigned int>(std::time(0))); // initialize random seed
 }
 
+// Desctructor
 Adaptive::~Adaptive(void)
 {
     probability.clear();
@@ -91,7 +93,7 @@ double Adaptive::weight(bool wrong, double diff)
     double weight = 0.0;
 
     if (wrong)
-        weight = 0.24 * (1 - exp(-0.2 * diff));
+        weight = 0.24 * (1.0 - exp(-0.2 * diff));
     else // if correct
         weight = -0.24 * exp(-0.2 * diff);
 
@@ -121,18 +123,11 @@ unsigned int Adaptive::adaptiveIndex(const vector<Flashcard> & cards, \
 
     static unsigned int lastIndex = UINT_MAX;
     unsigned int currentIndex;
-    extern boost::mt19937 gen;
+    boost::random::discrete_distribution<> dist(probability);
 
     do
     {
-        vector<double> cumulative;
-        std::partial_sum(probability.begin(), probability.end(), \
-                         std::back_inserter(cumulative));
-        boost::uniform_real<> dist(0.0, cumulative.back());
-        boost::variate_generator<boost::mt19937&, boost::uniform_real<> > prob(gen, dist);
-        currentIndex = std::lower_bound(cumulative.begin(), \
-                                     cumulative.end(), \
-                                     prob()) - cumulative.begin();
+        currentIndex = dist(gen);
     } while (currentIndex == lastIndex);
 
     lastIndex = currentIndex;
