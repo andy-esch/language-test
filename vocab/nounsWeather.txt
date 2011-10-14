@@ -1,0 +1,9 @@
+el viento	wind
+la nube	cloud
+el cielo	sky
+el sol	sun
+la lluvia	rain
+la tormenta	storm,bad weather
+el rayo	lightning (bolt)
+la nieve	snow
+el hielo	ice
