@@ -79,44 +79,6 @@ double wordData::weight(char typeOfHint, int numLetReqstd, double currProb)
     return weight;
 }
 
-void wordData::updateProbs_alt(int index, int numOfEntries, double weight, wordData * wordInfo)
-{   // Updates probabilities
-    
-    double pStar = wordInfo[index].probability;
-    double alpha = fdim(1.0,pStar), beta = pStar;
-    double gamma = 0.001, probUnasked = 0.0;
-    static int guard = 1;
-
-    for (int ii = 0; ii < numOfEntries; ii++)
-    {
-        if (wordInfo[ii].numAsked == 0 && ii != index)
-            probUnasked += wordInfo[ii].probability;
-    }
-
-    if (guard < numOfEntries / 2)
-    {
-        beta = pStar;
-        guard++;
-    }
-    else
-        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - probUnasked);
-    
-    cout.precision(10);
-    cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
-    cout << "(alpha,beta) = (" << fma(weight,alpha,1.0) << ", " << fma(-weight,beta,1.0) << ", " << fma(gamma,1.0,1.0) << ")" << endl;
-    cout.precision(6);
-    
-    for (int ii = 0; ii < numOfEntries; ii++)
-    {
-        if ( ii == index )
-            wordInfo[ii].probability *= fma(weight,alpha,1.0);
-        else if (wordInfo[ii].numAsked > 0 || (guard < numOfEntries / 2))
-            wordInfo[ii].probability *= fma(-weight,beta,1.0);
-        else
-            wordInfo[ii].probability *= fma(gamma,1.0,1.0);
-    }
-}
-
 void wordData::updateProbs(int index, int numOfEntries, double weight, wordData * wordInfo)
 {   // Updates probabilities
 
@@ -125,7 +87,6 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
     double alpha = fdim(1.0,pStar), beta;
     double gamma = 0.01, gamWeight = 1.0;
 
-    // Find pJ
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if (wordInfo[ii].numAsked == 0 && ii != index)
@@ -134,12 +95,6 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
             numOfNumAskedIs0++;
         }
     }
-    
-    cout << "probNumAskedIs0 = " << probUnasked << endl;
-    cout << "numOfNumAskedIs0 = " << numOfNumAskedIs0 << endl;
-
-    // fma(x,y,z) = x*y + z correctly rounded -- since probs need to be sum(probs) = 1.0, be careful on rounding errors
-    // Should we worry about rounding errors in division?  How big of an issue is this?
 
     // Divide-by-zero guard
     if (numOfNumAskedIs0 < (numOfEntries - 2))
@@ -155,12 +110,15 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
         gamma = beta;
     }
 
-    cout.precision(10);
-    cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
-    cout << "(alpha,beta,gamma) = (" << alpha << ", " << beta << ", " << gamma << ")" << endl;
-    cout << "alpha * p1 - beta * pI + gamma * pJ / w = " << \
-    alpha * pStar - beta * fdim(1.0, pStar + probUnasked) + gamma * probUnasked / weight << endl;
-    cout.precision(6);
+    if (debug)
+    {
+        cout.precision(10);
+        cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
+        cout << "(alpha,beta,gamma) = (" << alpha << ", " << beta << ", " << gamma << ")" << endl;
+        cout << "alpha * p1 - beta * pI + gamma * pJ / w = " << \
+        alpha * pStar - beta * fdim(1.0, pStar + probUnasked) + gamma * probUnasked / weight << endl;
+        cout.precision(6);
+    }
 
     for (int ii = 0; ii < numOfEntries; ii++)
     {
