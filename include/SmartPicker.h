@@ -34,6 +34,7 @@ class SmartPicker {
 protected:
     unsigned int currentIndex;
     void setCurrentIndex(int);
+    unsigned int findSmallest(const vector<Flashcard> &);
 public:
     SmartPicker(void);
     unsigned int nextIndex(int);    // Pass something like cards.size() as the argument?

@@ -22,7 +22,6 @@
 #include <typeinfo>     // name(), what()
 #include <vector>
 
-#include "Flashcard.h"
 #include "WordData.h"
 
 using std::cin;
@@ -33,14 +32,11 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-unsigned int findSmallest(const vector<Flashcard> &);
 bool pass(int, int, float, float);
 bool compareAll(vector<string> &, string);
-bool isInvalidAnswer(string, vector<string> &);
+bool isInvalidAnswer(string, vector<string>);
 string hintOptions(int);
 string hint(int, bool, int, string, int);
-void input(vector<Flashcard> &, char *);
-void insertWords(string, Flashcard &,int);
 string ordinal(int num);
 int min(int, int);
 string help(char *);
@@ -52,8 +48,4 @@ string goodbye(void);
 bool exitProg(const char*,bool=0);
 int whatDoYouWantToDo(void);
 double inverse(int);
-
-// obsolete
-bool isnew(vector<Flashcard> &, string, long unsigned int &);
-
-#endif // FUNCTIONS_H
+#endif  // FUNCTIONS_H

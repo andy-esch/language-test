@@ -56,8 +56,10 @@ int main(int argc, char **argv)
     //LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
 
-    input(cards,inFile);
     Adaptive picker(cards.size());
+    Flashcard temp;// uh, now we have to reference input like below... we need to change this
+    temp.input(cards,inFile);
+
     cout << "Beginning Quiz." << endl;
 
     // Should this while loop be shifted to its own file flcard_quiz.cpp?
@@ -67,8 +69,8 @@ int main(int argc, char **argv)
         //int i = picker.leastPickedIndex(cards);
         unsigned int i = picker.adaptiveIndex(cards);
 
-        string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
-        string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
+        string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));
+        string sideAword = cards[i].getWord('A',randIndex(cards[i].size('A')));
 
         myhint.setKey(sideBword);
 
@@ -92,12 +94,12 @@ int main(int argc, char **argv)
             }
             else /* no hint, check response */
             {
-                isWrong = isInvalidAnswer(response,cards[i].sideB);
+                isWrong = isInvalidAnswer(response,cards[i].getSideB());
                 picker.setLevDistance(response,sideBword);
 
                 if (isWrong)
                 {
-                    if (verbose) cout << correctness(response,cards[i].sideB[0]) << endl;
+                    if (verbose) cout << correctness(response,cards[i].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;

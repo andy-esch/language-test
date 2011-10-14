@@ -26,8 +26,8 @@ void testResults(vector<Flashcard> cards, bool verbose)
 {
     unsigned int lengthLongestWord = 0;
     for (int i = 0; i < cards.size(); i++)
-        if (cards[i].sideB[0].size() > lengthLongestWord)
-            lengthLongestWord = cards[i].sideB[0].size();
+        if (cards[i].size('B',0) > lengthLongestWord)
+            lengthLongestWord = cards[i].size('B',0);
   
     cout << endl;
     cout << endl;
@@ -44,7 +44,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
   
     for (int i = 0; i < cards.size(); i++)
     {
-        cout << setw(lengthLongestWord) << cards[i].sideB[0];
+        cout << setw(lengthLongestWord) << cards[i].getWord('B',0);
         if ( cards[i].data.numAsked > 0 )
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
@@ -57,9 +57,9 @@ void testResults(vector<Flashcard> cards, bool verbose)
       
         if ( verbose )
         {
-            cout << setw(15) << cards[i].sideA.size() << " word" << ((cards[i].sideA.size()>1)?"s:":":");
-            for (int k = 0; k < cards[i].sideA.size(); k++)
-                cout << setw(15) << cards[i].sideA[k];
+            cout << setw(15) << cards[i].size('A') << " word" << ((cards[i].size('A')>1)?"s:":":");
+            for (int k = 0; k < cards[i].size('A'); k++)
+                cout << setw(15) << cards[i].getWord('A',k);
         }
         cout << endl;
     }

@@ -18,6 +18,19 @@ void SmartPicker::setCurrentIndex(int index)
     currentIndex = index;
 }
 
+unsigned int SmartPicker::findSmallest(const vector<Flashcard> & deck)
+{
+    unsigned int currentLowest = deck[0].data.numCorrect, temp;
+    
+    for (int ii = 1; ii < deck.size(); ii++)
+    {
+        temp = deck[ii].data.numCorrect;
+        if (temp < currentLowest)
+            currentLowest = temp;
+    }
+    return currentLowest;
+}
+
 // Default constructor
 SmartPicker::SmartPicker(void)
 {
@@ -143,7 +156,7 @@ string Adaptive::probabilitySummary(const vector<Flashcard> & cards)
     ps << "Summary:\n";
     for (int ii = 0; ii < cards.size(); ii++)
     {
-        ps << cards[ii].sideB[0] << '\t' << static_cast<int> (100 * probability[ii]) << endl;
+        ps << cards[ii].getWord('B',0) << '\t' << static_cast<int> (100 * probability[ii]) << endl;
     }
 
     return ps.str();
