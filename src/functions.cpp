@@ -64,7 +64,8 @@ vector<string> stripParentheses(vector<string> words)
 
 // Mimics string compare -- returns 1 if there is no match
 // I don't like to do all this extra work for each case, but for now it works.
-bool isInvalidAnswer(string answer, vector<string> & ws)
+// Should we make this a member of the class Flashcard?
+bool isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
@@ -97,161 +98,25 @@ string hintOptions(int leftmargin)
     return hint.str();
 }
 
-void input(vector<Flashcard> & ws, char * inFile)
-{
-    // Do some error-checking to make sure there are the proper number of
-    //   columns, proper encoding(? not binary), etc.
-    string temp1, temp2;
-    size_t delimPos = string::npos;
-    ifstream infile(inFile,ifstream::in);
-    Flashcard tempset;
-    int lineNum = 1, delimWidth = 1;
-    string delimiters[] = {"\t","    ","   ","  "};
-
-    while ( !infile.is_open() )
-    {
-        if (debug) cout << "in input()" << endl;
-        cout << "File '" << inFile << "' does not exist as specified." << endl;
-        cout << "Enter another filename (or 'exit' to exit): ";
-        cin >> inFile;
-
-        if (exitProg(inFile,cin.eof()))
-        {
-            cout << endl;
-            exit(0);
-        }
-        else
-            infile.open(inFile,ifstream::in);
-        cin.clear();
-        cin.ignore(10,'\n');
-    }
-
-    cout << "Inputting vocabulary from '" << inFile << "'" << endl;
-    while ( !infile.eof() )
-    {
-        getline(infile, temp1);             // Read in line from file
-
-        if (temp1 == "") continue;          // Skip empty lines
-
-        // Find the delimiter
-        for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)
-        {
-            delimPos = temp1.find(delimiters[ii]);
-            delimWidth = delimiters[ii].size();
-        }
-
-        if (delimPos == string::npos) // If no delims found, go to next line
-        {
-            cout << "Skipping: '" << temp1 << "'" << endl;
-            temp1.clear();
-            continue;
-        }
-
-        temp2 = temp1;                      // Make a copy of the line read in
-
-        try // This my be redundant with previous if statement
-        {
-            temp1.erase(0,delimPos + delimWidth);
-            temp2.erase(delimPos,temp2.size() - delimPos);
-        }
-        catch (std::out_of_range &e)
-        {
-            std::cerr << "Caught: '" << e.what() << "' on line " << lineNum << endl;
-            std::cerr << "Type: " << typeid(e).name() << endl;
-            std::cerr << "Not inputting '" << temp1 << "'" << endl;
-            continue;
-        }
-        catch ( std::exception &e )
-        {
-            std::cerr << "Caught: " << e.what() << endl;
-            std::cerr << "Type: " << typeid(e).name() << endl;
-            continue;
-        }
-
-        // Insert words into tempset
-        insertWords(temp1, tempset, 1);
-        insertWords(temp2, tempset, 2);
-
-        // Put tempset into Flashcard vector
-        ws.push_back(tempset);
-
-        // Clear variables for next time through
-        tempset.clearWS();
-        temp1.clear();
-        temp2.clear();
-        delimPos = string::npos;
-
-        lineNum++;
-    }
-    cout << endl;
-
-    infile.close();
-}
-
-
-
-void insertWords(string words, Flashcard & tempset, int step)
-{
-    size_t found;
-    if (debug) cout << "words are: '" << words << "'" << endl;
-
-    while ( words.find(",") != string::npos )   // while comma is found
-    {
-        found = words.rfind(",");
-        string tempWord = words.substr(found+1);
-        if (debug) cout << "New word: " << tempWord << endl;
-        switch (step)
-        {
-            case 1:
-                if (debug) cout << "case : " << step << endl;
-                tempset.sideA.push_back(tempWord);
-                break;
-            case 2:
-                if (debug) cout << "case : " << step << endl;
-                tempset.sideB.push_back(tempWord);
-                break;
-            default:
-                break; // What should we do for this case?
-        }
-        words.erase(found);
-    }
-
-    if (debug) cout << "New word: " << words << endl;
-
-    switch (step)   // Otherwise catch non-comma case
-    {
-        case 1:
-            if (debug) cout << "case : " << step << endl;
-            tempset.sideA.push_back(words);
-            break;
-        case 2:
-            if (debug) cout << "case : " << step << endl;
-            tempset.sideB.push_back(words);
-            break;
-        default:
-            break;  // What should we do for this case?
-    }
-}
-
 // isnew() is obsolete
-bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
-{   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
-    // Also sets the value where a non-new word occurs
-    bool isNew = true;
-
-    if (ws.size() == 0)
-        isNew = true;
-    else
-        for (int i = 0; i < ws.size(); i++)
-            if ( !test.compare(ws[i].sideB[0]) )
-            {
-                isNew = false;
-                index = i;
-                break;
-            }
-
-    return isNew;
-}
+//bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
+//{   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
+//    // Also sets the value where a non-new word occurs
+//    bool isNew = true;
+//
+//    if (ws.size() == 0)
+//        isNew = true;
+//    else
+//        for (int i = 0; i < ws.size(); i++)
+//            if ( !test.compare(ws[i].sideB[0]) )
+//            {
+//                isNew = false;
+//                index = i;
+//                break;
+//            }
+//
+//    return isNew;
+//}
 
 
 string ordinal(int num)
@@ -354,4 +219,12 @@ int whatDoYouWantToDo(void)
     }
     
     return toDoOption;
+}
+
+double inverse(int num)
+{
+    if (num != 0)
+        return (1.0 / static_cast<double> (num));
+    else
+        return 0; // return a nan() value?
 }

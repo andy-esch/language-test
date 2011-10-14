@@ -11,9 +11,6 @@
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
 #include <algorithm>
 #include <cstring>
 #include <fstream>
@@ -24,7 +21,6 @@
 #include <typeinfo>
 #include <vector>
 
-#include "Flashcard.h"
 #include "WordData.h"
 
 using std::cin;
@@ -37,12 +33,9 @@ using std::vector;
 
 bool pass(int, int, float, float);
 bool compareAll(vector<string> &, string);
-bool isInvalidAnswer(string, vector<string> &);
+bool isInvalidAnswer(string, vector<string>);
 string hintOptions(int);
 string hint(int, bool, int, string, int);
-void input(vector<Flashcard> &, char *);
-void insertWords(string, Flashcard &,int);
-bool isnew(vector<Flashcard> &, string, long unsigned int &);
 string ordinal(int num);
 int min(int, int);
 string help(char *);
@@ -54,4 +47,5 @@ float howWrongIsIt(string,string);
 string goodbye(void);
 bool exitProg(const char*,bool=0);
 int whatDoYouWantToDo(void);
+double inverse(int);
 #endif

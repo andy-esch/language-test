@@ -62,7 +62,8 @@ int main(int argc, char **argv)
     SmartPicker picker;
     Hint myhint = Hint("  ",verbose);
 
-    input(cards,&inFile[0]);
+    Flashcard temp;// uh, now we have to reference input like below... we need to change this
+    temp.input(cards,inFile);
 
     cout << "Beginning Quiz." << endl;
 
@@ -70,8 +71,8 @@ int main(int argc, char **argv)
     {	
         int i = picker.leastPickedIndex(cards);
 
-        string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
-        string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
+        string sideBword = cards[i].getSideB(randIndex(cards[i].size('A')));
+        string sideAword = cards[i].getSideA(randIndex(cards[i].size('B')));
 
         myhint.setKey(sideBword);
 
@@ -95,11 +96,11 @@ int main(int argc, char **argv)
             }
             else /* no hint, check response */
             {
-                isWrong = isInvalidAnswer(response,cards[i].sideB);
+                isWrong = isInvalidAnswer(response,cards[i].getSideB());
 
                 if (isWrong)
                 {
-                    if (verbose) cout << correctness(response,cards[i].sideB[0]) << endl;
+                    if (verbose) cout << correctness(response,cards[i].getSideB(0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;

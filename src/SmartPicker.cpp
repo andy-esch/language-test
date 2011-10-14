@@ -15,8 +15,6 @@ SmartPicker::SmartPicker()
   currentIndex=0;
 }
 
-
-
 unsigned int SmartPicker::nextIndex(vector<Flashcard> cards)
 {
   return (currentIndex++ % cards.size());
