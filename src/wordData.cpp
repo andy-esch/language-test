@@ -99,7 +99,7 @@ void wordData::updateProbs_alt(int index, int numOfEntries, double weight, wordD
         guard++;
     }
     else
-        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - proUnasked);
+        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - probUnasked);
     
     cout.precision(10);
     cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
@@ -110,8 +110,10 @@ void wordData::updateProbs_alt(int index, int numOfEntries, double weight, wordD
     {
         if ( ii == index )
             wordInfo[ii].probability *= fma(weight,alpha,1.0);
-        else ( 
+        else if (wordInfo[ii].numAsked > 0 || (guard < numOfEntries / 2))
             wordInfo[ii].probability *= fma(-weight,beta,1.0);
+        else
+            wordInfo[ii].probability *= fma(gamma,1.0,1.0);
     }
 }
 
@@ -121,8 +123,9 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
     double probUnasked = 0.0, pStar = wordInfo[index].probability;
     int numOfNumAskedIs0 = 0;
     double alpha = fdim(1.0,pStar), beta;
-    double gamma = 0.0000;
+    double gamma = 0.01, gamWeight = 1.0;
 
+    // Find pJ
     for (int ii = 0; ii < numOfEntries; ii++)
     {
         if (wordInfo[ii].numAsked == 0 && ii != index)
@@ -131,8 +134,6 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
             numOfNumAskedIs0++;
         }
     }
-
-    probUnasked = 0.0;
     
     cout << "probNumAskedIs0 = " << probUnasked << endl;
     cout << "numOfNumAskedIs0 = " << numOfNumAskedIs0 << endl;
@@ -141,20 +142,24 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
     // Should we worry about rounding errors in division?  How big of an issue is this?
 
     // Divide-by-zero guard
-    if (alpha - probUnasked < 0.01)
+    if (numOfNumAskedIs0 < (numOfEntries - 2))
     {
-        cout << "alpha - probUnasked = " << alpha - probUnasked << endl;
-        beta = pStar;
-        gamma = 0.0;
+        gamma = 0.01;
+        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - probUnasked);
+        gamWeight = 1.0;
     }
     else
-        beta = (gamma * probUnasked / weight + pStar * alpha) / (alpha - probUnasked);
+    {
+        beta = pStar;
+        gamWeight = -weight;
+        gamma = beta;
+    }
 
     cout.precision(10);
     cout << "total probability sum = " << sumProbs(wordInfo,numOfEntries) << endl;
     cout << "(alpha,beta,gamma) = (" << alpha << ", " << beta << ", " << gamma << ")" << endl;
-    cout << "w * (alpha * p1 - beta * pI) + gamma * pJ = " << \
-    weight * (alpha * pStar - beta * fdim(1.0, pStar + probUnasked)) + gamma * probUnasked << endl;
+    cout << "alpha * p1 - beta * pI + gamma * pJ / w = " << \
+    alpha * pStar - beta * fdim(1.0, pStar + probUnasked) + gamma * probUnasked / weight << endl;
     cout.precision(6);
 
     for (int ii = 0; ii < numOfEntries; ii++)
@@ -164,7 +169,7 @@ void wordData::updateProbs(int index, int numOfEntries, double weight, wordData 
         else if ( wordInfo[ii].numAsked != 0 )
             wordInfo[ii].probability *= fma(-weight,beta,1.0);
         else
-            wordInfo[ii].probability *= fma(gamma,1.0,1.0);
+            wordInfo[ii].probability *= fma(gamWeight,gamma,1.0);
     }
 }
 
@@ -175,7 +180,7 @@ void wordData::updateScore(int index, bool wrong, double timeDiff, \
     numAsked++;
 
     // Update probabilities
-    updateProbs_alt(index, numOfEntries, \
+    updateProbs(index, numOfEntries, \
                 wordData::weight(wrong,timeDiff), wordInfo);
 
     // Update scoring percentage
