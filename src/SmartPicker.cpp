@@ -115,7 +115,54 @@ double Adaptive::weight(bool wrong, double diff)
     return weight;
 }
 
-void Adaptive::updateProbs(int index, bool isWrong, double ansTime)
+void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
+                                   const vector<Flashcard> & cards)
+{   // Updates probabilities
+    double wgt = weight(isWrong,ansTime);
+    double probUnasked = 0.0;
+    double pStar = probability[index];
+    int numOfNumAskedIs0 = 0;
+    double alpha = fdim(1.0,pStar), beta;
+    double gamma = 0.01, gamWeight = 1.0;
+    vector<double>::iterator it, itIndex = (probability.begin() + index);
+    
+    if (debug) cout << "stage 1" << endl;
+    for (int ii = 0; ii < probability.size(); ii++)
+    {
+        if (cards[ii].data.numAsked == 0 && ii != index)
+        {
+            probUnasked += probability[ii];
+            numOfNumAskedIs0++;
+        }
+    }
+    if (debug) cout << "stage 2" << endl;
+        // Divide-by-zero guard
+    if (numOfNumAskedIs0 < (probability.size() - 2))
+    {
+        gamma = 0.01;
+        beta = (gamma * probUnasked / wgt + pStar * alpha) / (alpha - probUnasked);
+        gamWeight = 1.0;
+    }
+    else
+    {
+        beta = pStar;
+        gamWeight = -wgt;
+        gamma = beta;
+    }
+    if (debug) cout << "stage 3" << endl;
+    for (int ii = 0; ii < probability.size(); ii++)
+    {
+        if ( ii == index )
+            probability[ii] *= fma(wgt,alpha,1.0);
+        else if ( cards[ii].data.numAsked != 0 )
+            probability[ii] *= fma(-wgt,beta,1.0);
+        else
+            probability[ii] *= fma(gamWeight,gamma,1.0);
+    }
+    if (debug) cout << "stage 4" << endl;
+}
+
+void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
 {
     double wgt = weight(isWrong,ansTime);
     double pStar = probability[index];
@@ -150,7 +197,7 @@ unsigned int Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
     return currentIndex;
 }
 
-string Adaptive::probabilitySummary(const vector<Flashcard> & cards)
+string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 {
     stringstream ps;
     ps << "Summary:\n";
@@ -162,7 +209,7 @@ string Adaptive::probabilitySummary(const vector<Flashcard> & cards)
     return ps.str();
 }
 
-void setLevDistance(string str1, string str2)
+void Adaptive::setLevDistance(string str1, string str2)
 {
     unsigned int temp1 = levenshtein(str1,str2);
 

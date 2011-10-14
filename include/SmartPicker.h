@@ -26,6 +26,8 @@
 #include "functions.h"
 #include "wordCompare.h"
 
+extern bool debug;
+
 using std::vector;
 using std::string;
 using std::cout;
@@ -60,8 +62,9 @@ public:
     Adaptive(int);
     ~Adaptive();
     unsigned int adaptiveIndex(const vector<Flashcard> &);
-    void updateProbs(int,bool,double);
-    string probabilitySummary(const vector<Flashcard> &);
+    void updateProbsAdvanced(int,bool,double, const vector<Flashcard> &);
+    void updateProbsBasic(int,bool,double);
+    string probabilitySummary(vector<Flashcard> &);
     void setLevDistance(string,string);
 };
 

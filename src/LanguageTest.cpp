@@ -26,7 +26,6 @@
 #include "cmdLineInput.h"
 #include "wordCompare.h"
 
-
 using std::cerr;
 using std::cin;
 using std::cout;
@@ -53,12 +52,12 @@ int main(int argc, char **argv)
 
     vector<Flashcard> cards;
     string response;
-    //LeastPicked picker;
+    LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
 
-    Adaptive picker(cards.size());
+//    Adaptive picker(cards.size());
     Flashcard temp;// uh, now we have to reference input like below... we need to change this
-    temp.input(cards,inFile);
+    temp.input(cards,inFile);   // wonky
 
     cout << "Beginning Quiz." << endl;
 
@@ -66,8 +65,8 @@ int main(int argc, char **argv)
     /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {	
-        //int i = picker.leastPickedIndex(cards);
-        unsigned int i = picker.adaptiveIndex(cards);
+        unsigned int i = picker.leastPickedIndex(cards);
+            //unsigned int i = picker.adaptiveIndex(cards);
 
         string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));
         string sideAword = cards[i].getWord('A',randIndex(cards[i].size('A')));
@@ -95,7 +94,7 @@ int main(int argc, char **argv)
             else /* no hint, check response */
             {
                 isWrong = isInvalidAnswer(response,cards[i].getSideB());
-                picker.setLevDistance(response,sideBword);
+//                picker.setLevDistance(response,sideBword);
 
                 if (isWrong)
                 {
@@ -113,14 +112,15 @@ int main(int argc, char **argv)
         }
         /* finish this card */
         cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
-        picker.updateProbs(i,isWrong,static_cast<double> (timeEnd-timeStart));
+//        picker.updateProbsBasic(i,isWrong,static_cast<double> (timeEnd-timeStart));
+        if (debug) cout << "updatedProbsAdvanced " << endl;
         isWrong = true;
     }
 
     /**    Ask if s/he wants test results    **/
     testResults(cards,verbose);
     
-    cout << picker.probabilitySummary(cards) << endl;
+//    cout << picker.probabilitySummary(cards) << endl;
 
     cout << goodbye() << endl;
 

@@ -4,7 +4,6 @@
 vpath %.cpp src
 vpath %.h include
 
-
 CXX = g++
 CXXFLAGS = -I include
 
