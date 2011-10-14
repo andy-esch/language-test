@@ -95,15 +95,16 @@ double Adaptive::weight(bool wrong, double diff)
     double weight = 0.0;
 
     if (wrong)
-        weight = 0.24 * (1.0 - exp(-0.2 * diff));
+        weight = 0.24 * (1.0 - exp(-0.2 * (diff + levDistance)));
     else // if correct
         weight = -0.24 * exp(-0.2 * diff);
 
     return weight;
 }
 
-void Adaptive::updateProbs(int index, double weight)
+void Adaptive::updateProbs(int index, bool isWrong, double ansTime)
 {
+    double wgt = weight(isWrong,ansTime);
     double pStar = probability[index];
     double alpha = fdim(1.0,pStar), beta = pStar;
     vector<double>::iterator it, itIndex = (probability.begin() + index);
@@ -111,17 +112,16 @@ void Adaptive::updateProbs(int index, double weight)
     for (it = probability.begin(); it != probability.end(); it++)
     {
         if ( it == itIndex )
-            *it *= fma(weight,alpha,1.0);
+            *it *= fma(wgt,alpha,1.0);
         else
-            *it *= fma(-weight,beta,1.0);
+            *it *= fma(-wgt,beta,1.0);
     }
 }
 
-unsigned int Adaptive::adaptiveIndex(const vector<Flashcard> & cards, \
-                                     unsigned int index, bool isWrong, float ansTime)
+unsigned int Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
 {
     // ansTime is a float and weight is a double -- does the precision difference matter?
-    updateProbs(index, weight(isWrong,ansTime));
+//    updateProbs(index, weight(isWrong,ansTime));
 
     static unsigned int lastIndex = UINT_MAX;
     unsigned int currentIndex;
@@ -135,4 +135,23 @@ unsigned int Adaptive::adaptiveIndex(const vector<Flashcard> & cards, \
     lastIndex = currentIndex;
 
     return currentIndex;
+}
+
+string Adaptive::probabilitySummary(const vector<Flashcard> & cards)
+{
+    stringstream ps;
+    ps << "Summary:\n";
+    for (int ii = 0; ii < cards.size(); ii++)
+    {
+        ps << cards[ii].sideB[0] << '\t' << static_cast<int> (100 * probability[ii]) << endl;
+    }
+
+    return ps.str();
+}
+
+void setLevDistance(string str1, string str2)
+{
+    unsigned int temp1 = levenshtein(str1,str2);
+
+    levDistance = static_cast<double> (temp1);
 }

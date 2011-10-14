@@ -53,16 +53,19 @@ int main(int argc, char **argv)
 
     vector<Flashcard> cards;
     string response;
-    LeastPicked picker;
+    //LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
 
-    input(cards,&inFile[0]);
-
+    input(cards,inFile);
+    Adaptive picker(cards.size());
     cout << "Beginning Quiz." << endl;
 
+    // Should this while loop be shifted to its own file flcard_quiz.cpp?
+    /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {	
-        int i = picker.leastPickedIndex(cards);
+        //int i = picker.leastPickedIndex(cards);
+        unsigned int i = picker.adaptiveIndex(cards);
 
         string sideBword = cards[i].sideB[randIndex(cards[i].sideB.size())];
         string sideAword = cards[i].sideA[randIndex(cards[i].sideA.size())];
@@ -90,6 +93,7 @@ int main(int argc, char **argv)
             else /* no hint, check response */
             {
                 isWrong = isInvalidAnswer(response,cards[i].sideB);
+                picker.setLevDistance(response,sideBword);
 
                 if (isWrong)
                 {
@@ -107,10 +111,14 @@ int main(int argc, char **argv)
         }
         /* finish this card */
         cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
+        picker.updateProbs(i,isWrong,static_cast<double> (timeEnd-timeStart));
         isWrong = true;
     }
 
+    /**    Ask if s/he wants test results    **/
     testResults(cards,verbose);
+    
+    cout << picker.probabilitySummary(cards) << endl;
 
     cout << goodbye() << endl;
 

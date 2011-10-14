@@ -11,10 +11,11 @@
 #ifndef _SMARTPICKER_H_
 #define _SMARTPICKER_H_
 
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/discrete_distribution.hpp>
+#include <boost/random/mersenne_twister.hpp>        // mt19937
+#include <boost/random/discrete_distribution.hpp>   //discrete_distribution()
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include <string>   // string members, objects
 #include <cmath>    // fma(), fdim(), exp()
 #include <ctime>    // time()
@@ -23,8 +24,10 @@
 
 #include "Flashcard.h"
 #include "functions.h"
+#include "wordCompare.h"
 
 using std::vector;
+using std::string;
 using std::cout;
 
 class SmartPicker {
@@ -50,12 +53,15 @@ class Adaptive: public SmartPicker {
 private:
     vector<double> probability;
     boost::mt19937 gen;
-    void updateProbs(int,double);
+    double levDistance;
     double weight(bool,double);
 public:
     Adaptive(int);
     ~Adaptive();
-    unsigned int adaptiveIndex(const vector<Flashcard> &, unsigned int, bool, float);
+    unsigned int adaptiveIndex(const vector<Flashcard> &);
+    void updateProbs(int,bool,double);
+    string probabilitySummary(const vector<Flashcard> &);
+    void setLevDistance(string,string);
 };
 
 #endif // SMARTPICKER_H
