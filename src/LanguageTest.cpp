@@ -71,8 +71,8 @@ int main(int argc, char **argv)
     {	
         int i = picker.leastPickedIndex(cards);
 
-        string sideBword = cards[i].getSideB(randIndex(cards[i].size('A')));
-        string sideAword = cards[i].getSideA(randIndex(cards[i].size('B')));
+        string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));
+        string sideAword = cards[i].getWord('A',randIndex(cards[i].size('A')));
 
         myhint.setKey(sideBword);
 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 
                 if (isWrong)
                 {
-                    if (verbose) cout << correctness(response,cards[i].getSideB(0)) << endl;
+                    if (verbose) cout << correctness(response,cards[i].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;

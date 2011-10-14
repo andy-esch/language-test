@@ -42,9 +42,12 @@ vector<string> Flashcard::getSideA(void)
     return sideA;
 }
 
-string Flashcard::getSideA(int i)
+string Flashcard::getWord(char side, int i)
 {
-    return sideA[i];
+    if (side == 'A')
+        return sideA[i];
+    else
+        return sideB[i];
 }
 
 vector<string> Flashcard::getSideB(void)
@@ -52,22 +55,17 @@ vector<string> Flashcard::getSideB(void)
     return sideB;
 }
 
-string Flashcard::getSideB(int i)
+int Flashcard::size(char side)
 {
-    return sideB[i];
-}
-
-int Flashcard::size(char x)
-{
-    if (x == 'A')
+    if (side == 'A')
         return sideA.size();
     else
         return sideB.size();
 }
 
-int Flashcard::size(char x, int ind)
+int Flashcard::size(char side, int ind)
 {
-    if (x == 'A')
+    if (side == 'A')
         return sideA[ind].size();
     else
         return sideB[ind].size();

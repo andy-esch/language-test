@@ -44,7 +44,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
   
     for (int i = 0; i < cards.size(); i++)
     {
-        cout << setw(lengthLongestWord) << cards[i].getSideB(0);
+        cout << setw(lengthLongestWord) << cards[i].getWord('B',0);
         if ( cards[i].data.numAsked > 0 )
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
@@ -59,7 +59,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
         {
             cout << setw(15) << cards[i].size('A') << " word" << ((cards[i].size('A')>1)?"s:":":");
             for (int k = 0; k < cards[i].size('A'); k++)
-                cout << setw(15) << cards[i].getSideA(k);
+                cout << setw(15) << cards[i].getWord('A',k);
         }
         cout << endl;
     }

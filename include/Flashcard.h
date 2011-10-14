@@ -36,21 +36,21 @@ class Flashcard {
 private:
     vector<string> sideB;
     vector<string> sideA;
+    void insertWords(string, Flashcard &, int);
 public:
-    double weight;
+    WordData data;
+    double weight;      // What is this used for?
+    /* public member functions */
     void toScreen();
-    void clearWS();
+    void clearWS();         // Clear wordset (used in input())
     WordData getWordData();
     void recordPerformance(int,bool,double);
     void setWeight(int);
-    string getSideA(int);
-    vector<string> getSideA();
-    string getSideB(int);
+    string getWord(char,int);
+    vector<string> getSideA();  
     vector<string> getSideB();
-    WordData data;
-    int size(char);
-    int size(char,int);
+    int size(char);         // size of card side
+    int size(char,int);     // size of individual word
     void input(vector<Flashcard> &, char *);
-    void insertWords(string, Flashcard &, int);
 };
 #endif // FLASHCARD_H
