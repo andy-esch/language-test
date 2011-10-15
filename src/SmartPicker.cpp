@@ -70,22 +70,21 @@ unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 {
     srand(time(0));
-    vector<Flashcard>::iterator it;    
     vector<unsigned int> leastAskedIndices;
     unsigned int currentLowest = findSmallest(cards);
 
     for (int ii = 0; ii < cards.size(); ii++)
-        if ( it->data.numAsked == currentLowest )
+        if ( cards[ii].data.numAsked == currentLowest )
             leastAskedIndices.push_back(ii);
 
     int indexChoice = leastAskedIndices[rand() % leastAskedIndices.size()];
-  
+
     if (indexChoice == currentIndex)
         setCurrentIndex((indexChoice+1) % leastAskedIndices.size());
     else
         setCurrentIndex(indexChoice);
 
-    return currentIndex;  
+    return currentIndex;
 }
 
 /**    Adaptive members    **/

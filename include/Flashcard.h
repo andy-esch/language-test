@@ -17,7 +17,7 @@
 #include <typeinfo>
 #include <stdexcept>    // catch,try, ...
 #include <fstream>
-#include <cstdlib> // exit()
+#include <cstdlib>      // exit()
 
 #include "WordData.h"
 #include "functions.h"
@@ -26,7 +26,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
-//using std::float;
 using std::vector;
 using std::ifstream;
 

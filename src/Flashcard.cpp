@@ -76,7 +76,6 @@ void Flashcard::setWeight(int N)
     weight = inverse(N);
 }
 
-
 void Flashcard::clearWS(void)
 {
     sideB.clear();
