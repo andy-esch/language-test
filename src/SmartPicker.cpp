@@ -44,19 +44,28 @@ unsigned int SmartPicker::nextIndex(int cardsSize)
 }
 
 /**    LeastCorrect members    **/
-unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
+// Experimenting with not generating leastCorrectIndices anew each time
+unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards, \
+                                             int lastIndex)
 {
     srand(time(0));
-    vector<int> leastCorrectIndices;
+    list<int> leastCorrectIndices;
     unsigned int currentLowest = findSmallest(cards);
 
-    for (int i = 0; i < cards.size(); i++)
-    {
-        if (cards[i].data.numCorrect == currentLowest)
-            leastCorrectIndices.push_back(i);
-    }
+// write some WordData member functions to get various variables, which will be
+// set to private
+    if (cards[lastIndex].data.numCorrect > currentLowest)
+        leastCorrectIndices.remove(lastIndex);
+
+    if ( leastCorrectIndices.empty() )
+        for (int i = 0; i < cards.size(); i++)
+        {
+            if (cards[i].data.numCorrect == currentLowest)
+                leastCorrectIndices.push_back(i);
+        }
     
-    int indexChoice = leastCorrectIndices[rand() % leastCorrectIndices.size()];
+    list<int>::iterator it = leastCorrectIndices.begin();
+    int indexChoice = *(it + (rand() % leastCorrectIndices.size()));
 
     if (indexChoice == currentIndex)
         setCurrentIndex((indexChoice+1) % leastCorrectIndices.size());
@@ -67,7 +76,8 @@ unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 }
 
 /**    LeastPicked members    **/
-unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
+unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards, \
+                                           int lastIndex)
 {
     srand(time(0));
     vector<unsigned int> leastAskedIndices;
@@ -122,7 +132,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     double pStar = probability[index];
     int numOfNumAskedIs0 = 0;
     double alpha = fdim(1.0,pStar), beta;
-    double gamma = 0.01, gamWeight = 1.0;
+    double gamma = 0.01, gamWeight = 1.0;   // Experiment with different gammas
     vector<double>::iterator it, itIndex = (probability.begin() + index);
     
     if (debug) cout << "stage 1" << endl;

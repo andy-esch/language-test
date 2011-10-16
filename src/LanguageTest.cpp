@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     vector<Flashcard> cards;
     string response;
-    LeastPicked picker;
+    LeastCorrect picker;
     Hint myhint = Hint("  ",verbose);
 
 //    Adaptive picker(cards.size());
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {	
-        unsigned int i = picker.leastPickedIndex(cards);
+        unsigned int i = picker.leastCorrectIndex(cards);
             //unsigned int i = picker.adaptiveIndex(cards);
 
         string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));

@@ -15,6 +15,7 @@
 #include <boost/random/discrete_distribution.hpp>   //discrete_distribution()
 #include <iostream>
 #include <vector>
+#include <list>
 #include <sstream>
 #include <string>   // string members, objects
 #include <cmath>    // fma(), fdim(), exp()
@@ -28,6 +29,7 @@
 
 extern bool debug;
 
+using std::list;
 using std::vector;
 using std::string;
 using std::cout;
@@ -42,14 +44,16 @@ public:
     unsigned int nextIndex(int);    // Pass something like cards.size() as the argument?
 };
 
-class LeastPicked: public SmartPicker {
-public:
-    unsigned int leastPickedIndex(const vector<Flashcard> &);
-};
-
 class LeastCorrect: public SmartPicker {
 public:
-    unsigned int leastCorrectIndex(const vector<Flashcard> &);
+    unsigned int leastCorrectIndex(const vector<Flashcard> &, int);
+};
+
+class LeastPicked: public SmartPicker {
+private:
+//    list<int> leastPickedIndices;
+public:
+    unsigned int leastPickedIndex(const vector<Flashcard> &, int);
 };
 
 class Adaptive: public SmartPicker {
