@@ -44,6 +44,11 @@ unsigned int SmartPicker::nextIndex(int cardsSize)
                                          // Should currentIndex be increment before the mod is taken?
 }
 
+unsigned short int SmartPicker::getCurrentIndex(void)
+{
+    return currentIndex;
+}
+
 /**    LeastCorrect members    **/
 LeastCorrect::LeastCorrect(void)
 {
@@ -51,30 +56,32 @@ LeastCorrect::LeastCorrect(void)
 }
 
 // Experimenting with not generating leastCorrectIndices anew each time
-unsigned short int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards, \
-                                                   unsigned short int lastIndex)
+void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 {
-    if (cards[lastIndex].data.numCorrect > currLowest && lastIndex != USHRT_MAX)
-        leastCorrectIndices.remove(lastIndex);
+    static unsigned short int lastIndex = USHRT_MAX;
+
+    if (lastIndex != USHRT_MAX)
+        if (cards[lastIndex].data.numCorrect > currLowest)
+            leastCorrectIndices.remove(lastIndex);
 
     if (leastCorrectIndices.empty() )
         repopulateIndices(cards);
 
     list<int>::iterator it = leastCorrectIndices.begin();
-    for (int randnum = randIndex(leastCorrectIndices.size()); randnum > 0; randnum--)
+    for (int jj = randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
     if (*it == currentIndex)
         setCurrentIndex((*it + 1) % leastCorrectIndices.size());
     else
         setCurrentIndex(*it);
-
-    return *it;
+    lastIndex = *it;
 }
 
 void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
 {
     currLowest = findSmallest(cards);
+    cout << "repopulating leastCorrectIndices" << endl;
     for (int i = 0; i < cards.size(); i++)
     {
         if (cards[i].data.numCorrect == currLowest)
@@ -82,17 +89,21 @@ void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
     }
 }
 
-void LeastCorrect::printIndices(const vector<Flashcard> & cards)
+void LeastCorrect::printIndices(void)
 {
-    list<int>::iterator it;
-    for (it = leastCorrectIndices.begin(); it != leastCorrectIndices.end(); it++ )
-    {
-        cout << *it << ", ";
-    }
+    list<int>::iterator it = leastCorrectIndices.begin();
+    cout << *it;
+    for (it++; it != leastCorrectIndices.end(); it++ )
+        cout << ", " << *it;
     cout << endl;
 }
 
 /**    LeastPicked members    **/
+LeastPicked::LeastPicked()
+{
+    currLowest = 0;
+}
+
 unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards, \
                                            unsigned short int lastIndex)
 {

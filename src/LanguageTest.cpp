@@ -52,28 +52,27 @@ int main(int argc, char **argv)
     cout << "Beginning Quiz." << endl;
     time_t timeStart, timeEnd;
     bool disableHintMsg = false;
+    unsigned short int ii;
 
     vector<Flashcard> cards;
     string response;
     LeastCorrect picker;
     Hint myhint = Hint("  ",verbose);
 
-//    Adaptive picker(cards.size());
-    Flashcard temp;// uh, now we have to reference input like below... we need to change this
-    temp.input(cards,inFile);   // wonky
+    cards[0].input(cards,inFile);   // wonky -- input() should be a friend
+                                    // instead of a Flashcard member function?
 
     cout << "Beginning Quiz." << endl;
-    unsigned short int i = USHRT_MAX;
 
     // Should this while loop be shifted to its own file flcard_quiz.cpp?
     /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {
-        i = picker.leastCorrectIndex(cards,i);
-        //unsigned int i = picker.adaptiveIndex(cards);
+        picker.leastCorrectIndex(cards);    // generate new index
+        ii = picker.getCurrentIndex();      // retrieve index
 
-        string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));
-        string sideAword = cards[i].getWord('A',randIndex(cards[i].size('A')));
+        string sideBword = cards[ii].getWord('B',randIndex(cards[ii].size('B')));
+        string sideAword = cards[ii].getWord('A',randIndex(cards[ii].size('A')));
 
         myhint.setKey(sideBword);
 
@@ -89,20 +88,17 @@ int main(int argc, char **argv)
             timeEnd = time(NULL);
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
 	    
-            /* options switch */
+            /* options processing */
             if ( response[0] == '-' )
             {
-                if(response[1]=='s') break;     // Should this be 'continue' instead of 'break'?
+                if(response[1]=='s') break;
                 cout << myhint.handle(response,false);
             }
             else /* no hint, check response */
             {
-                isWrong = isInvalidAnswer(response,cards[i].getSideB());
-//                picker.setLevDistance(response,sideBword);
-
-                if (isWrong)
+                if (isWrong = isInvalidAnswer(response,cards[ii].getSideB()))
                 {
-                    if (verbose) cout << correctness(response,cards[i].getWord('B',0)) << endl;
+                    if (verbose) cout << correctness(response,cards[ii].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << hintOptions(sideAword.size()) << endl;
@@ -115,11 +111,9 @@ int main(int argc, char **argv)
             }
         }
         /* finish this card */
-        cards[i].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
-//        picker.updateProbsBasic(i,isWrong,static_cast<double> (timeEnd-timeStart));
-        if (debug) cout << "updatedProbsAdvanced " << endl;
+        cards[ii].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
         isWrong = true;
-        picker.printIndices(cards);
+        picker.printIndices();
     }
 
     /**    Ask if s/he wants test results    **/

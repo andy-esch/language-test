@@ -21,7 +21,7 @@
 #include <cmath>    // fma(), fdim(), exp()
 #include <ctime>    // time()
 #include <cstdlib>  // exit()
-#include <climits> // UINT_MAX
+#include <climits>  //   USHRT_MAX
 
 #include "Flashcard.h"
 #include "functions.h"
@@ -36,12 +36,13 @@ using std::cout;
 
 class SmartPicker {
 protected:
-    unsigned int currentIndex;
+    unsigned short int currentIndex;
     void setCurrentIndex(int);  // need a getCurrentIndex() in public?
     unsigned int findSmallest(const vector<Flashcard> &);
 public:
     SmartPicker(void);
     unsigned int nextIndex(int);    // Pass something like cards.size() as the argument?
+    unsigned short int getCurrentIndex();
 };
 
 class LeastCorrect: public SmartPicker {
@@ -51,15 +52,16 @@ private:
     void repopulateIndices(const vector<Flashcard> &);
 public:
     LeastCorrect();
-    unsigned short int leastCorrectIndex(const vector<Flashcard> &, \
-                                   unsigned short int);
-    void printIndices(const vector<Flashcard> &);
+    void leastCorrectIndex(const vector<Flashcard> &);
+    void printIndices();
 };
 
 class LeastPicked: public SmartPicker {
 private:
     list<int> leastPickedIndices;
+    unsigned short int currLowest;
 public:
+    LeastPicked();
     unsigned int leastPickedIndex(const vector<Flashcard> &, \
                                   unsigned short int);
 };
