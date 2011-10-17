@@ -1,0 +1,24 @@
+el puño    fist
+el mano	hand
+el pelo,el cabello	hair
+el estómago	stomach
+la rodilla	knee
+el brazo	arm
+la cabeza	head
+la nariz (de una persona),el hocico (de un animal)	nose
+la cara, el rostro	face (male), face (female)
+el pie	foot
+el ojo	eye
+la boca	mouth
+la oreja	ear
+la barbilla	chin
+la mejilla	cheek
+el cuerpo	body
+el pecho	chest
+la espalda	back
+el hombro	shoulder
+la cadera	hip
+la pierna (de una persona o de ropa),la pata (de un animal o de muebles)	leg
+el tobillo	ankle
+el dedo	toe,finger
+la columna vertebral	spine,spinal column

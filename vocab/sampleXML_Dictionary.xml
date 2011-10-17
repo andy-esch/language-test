@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Dictionary>
+	<WordSet>
+		<WordLang1 remark="de una persona">
+			la nariz
+		</WordLang1>
+		<WordLang1 remark="de un animal">
+			el hocico
+		</WordLang1>
+        <WordLang2>
+            nose
+        </WordLang2>
+	</WordSet>
+
+</Dictionary>
