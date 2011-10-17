@@ -13,27 +13,27 @@
 void Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
-    for (int jj = 0; jj < sideA.size()-1; jj++)
-      {
-	cout << sideA[jj] << ", ";
-      }
+
+    for (int jj = 0; jj < sideA.size() - 1; jj++)
+        cout << sideA[jj] << ", ";
+
     cout << sideA[sideA.size()-1] << endl;
     cout << "sideB: " << endl;
-    for (int kk = 0; kk < sideB.size()-1; kk++)
-      {
-	cout << sideB[kk] << ", ";
-      }
-    cout << sideB[sideB.size()-1] << endl;
+
+    for (int kk = 0; kk < sideB.size() - 1; kk++)
+        cout << sideB[kk] << ", ";
+
+    cout << sideB[sideB.size() - 1] << endl;
 }
 
 
 void Flashcard::recordPerformance(int numOfTries, bool isWrong, double responseTime)
 {
-    data.numAsked++;
-    if (numOfTries==1 && !isWrong)
+    data.incrNumAsked();
+    if (numOfTries == 1 && !isWrong)
     {
-      data.numCorrect++;
-      data.answeringTime+=responseTime;
+        data.incrNumCorrect();
+        data.answeringTime += responseTime;
     }
 }
 
@@ -89,7 +89,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
     string temp1, temp2;
     size_t delimPos = string::npos;
     ifstream infile(inFile,ifstream::in);   // open file if possible
-    Flashcard tempset;
+    Flashcard tempSet;
     unsigned short int lineNum = 1, delimWidth = 1;
     string delimiters[] = {"\t","    ","   ","  "};
     
@@ -117,7 +117,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
         
         if (temp1 == "") continue;          // Skip empty lines
         
-            // Find the delimiter
+        // Find the delimiter
         for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)
         {
             delimPos = temp1.find(delimiters[ii]);
@@ -133,7 +133,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
         
         temp2 = temp1;                      // Make a copy of the line read in
         
-        try // This my be redundant with previous if statement
+        try // This may be redundant with previous if statement
         {
             temp1.erase(0,delimPos + delimWidth);
             temp2.erase(delimPos,temp2.size() - delimPos);
@@ -152,15 +152,15 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
             continue;
         }
         
-            // Insert words into tempset
-        insertWords(temp1, tempset, 1);
-        insertWords(temp2, tempset, 2);
+        // Insert words into tempset
+        insertWords(temp1, tempSet, 1);
+        insertWords(temp2, tempSet, 2);
         
-            // Put tempset into Flashcard vector
-        ws.push_back(tempset);
+        // Put tempset into Flashcard vector
+        ws.push_back(tempSet);
         
-            // Clear variables for next time through
-        tempset.clearWS();
+        // Clear variables for next time through
+        tempSet.clearWS();
         temp1.clear();
         temp2.clear();
         delimPos = string::npos;

@@ -1,6 +1,6 @@
 /*
  *  SmartPicker.cpp
- *  
+ *
  *  Description: Algorithms for flashcard selection.
  *      Adaptive: probability of card selection based on past performance
  *      through use of boost random library.  Algorithm inspired by
@@ -21,13 +21,14 @@ void SmartPicker::setCurrentIndex(int index)
 unsigned int SmartPicker::findSmallest(const vector<Flashcard> & deck)
 {
     unsigned int currentLowest = deck[0].data.numCorrect, temp;
-    
+
     for (int ii = 1; ii < deck.size(); ii++)
     {
         temp = deck[ii].data.numCorrect;
         if (temp < currentLowest)
             currentLowest = temp;
     }
+
     return currentLowest;
 }
 
@@ -44,40 +45,56 @@ unsigned int SmartPicker::nextIndex(int cardsSize)
 }
 
 /**    LeastCorrect members    **/
-// Experimenting with not generating leastCorrectIndices anew each time
-unsigned int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards, \
-                                             int lastIndex)
+LeastCorrect::LeastCorrect(void)
 {
-    srand(time(0));
-    list<int> leastCorrectIndices;
-    unsigned int currentLowest = findSmallest(cards);
+    currLowest = 0;
+}
 
-// write some WordData member functions to get various variables, which will be
-// set to private
-    if (cards[lastIndex].data.numCorrect > currentLowest)
+// Experimenting with not generating leastCorrectIndices anew each time
+unsigned short int LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards, \
+                                                   unsigned short int lastIndex)
+{
+    if (cards[lastIndex].data.numCorrect > currLowest && lastIndex != USHRT_MAX)
         leastCorrectIndices.remove(lastIndex);
 
-    if ( leastCorrectIndices.empty() )
-        for (int i = 0; i < cards.size(); i++)
-        {
-            if (cards[i].data.numCorrect == currentLowest)
-                leastCorrectIndices.push_back(i);
-        }
-    
+    if (leastCorrectIndices.empty() )
+        repopulateIndices(cards);
+
     list<int>::iterator it = leastCorrectIndices.begin();
-    int indexChoice = *(it + (rand() % leastCorrectIndices.size()));
+    for (int randnum = randIndex(leastCorrectIndices.size()); randnum > 0; randnum--)
+        it++;
 
-    if (indexChoice == currentIndex)
-        setCurrentIndex((indexChoice+1) % leastCorrectIndices.size());
+    if (*it == currentIndex)
+        setCurrentIndex((*it + 1) % leastCorrectIndices.size());
     else
-        setCurrentIndex(indexChoice);
+        setCurrentIndex(*it);
 
-    return currentIndex;  
+    return *it;
+}
+
+void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
+{
+    currLowest = findSmallest(cards);
+    for (int i = 0; i < cards.size(); i++)
+    {
+        if (cards[i].data.numCorrect == currLowest)
+            leastCorrectIndices.push_back(i);
+    }
+}
+
+void LeastCorrect::printIndices(const vector<Flashcard> & cards)
+{
+    list<int>::iterator it;
+    for (it = leastCorrectIndices.begin(); it != leastCorrectIndices.end(); it++ )
+    {
+        cout << *it << ", ";
+    }
+    cout << endl;
 }
 
 /**    LeastPicked members    **/
 unsigned int LeastPicked::leastPickedIndex(const vector<Flashcard> & cards, \
-                                           int lastIndex)
+                                           unsigned short int lastIndex)
 {
     srand(time(0));
     vector<unsigned int> leastAskedIndices;
@@ -134,8 +151,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     double alpha = fdim(1.0,pStar), beta;
     double gamma = 0.01, gamWeight = 1.0;   // Experiment with different gammas
     vector<double>::iterator it, itIndex = (probability.begin() + index);
-    
-    if (debug) cout << "stage 1" << endl;
+
     for (int ii = 0; ii < probability.size(); ii++)
     {
         if (cards[ii].data.numAsked == 0 && ii != index)
@@ -144,7 +160,6 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
             numOfNumAskedIs0++;
         }
     }
-    if (debug) cout << "stage 2" << endl;
         // Divide-by-zero guard
     if (numOfNumAskedIs0 < (probability.size() - 2))
     {
@@ -158,7 +173,6 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
         gamWeight = -wgt;
         gamma = beta;
     }
-    if (debug) cout << "stage 3" << endl;
     for (int ii = 0; ii < probability.size(); ii++)
     {
         if ( ii == index )
@@ -168,7 +182,6 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
         else
             probability[ii] *= fma(gamWeight,gamma,1.0);
     }
-    if (debug) cout << "stage 4" << endl;
 }
 
 void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)

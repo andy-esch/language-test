@@ -38,7 +38,8 @@ void Account::establishAccount()
     {
         getline(cin,youAre);
         string ynstr;
-        cout << "You set your account name to '" << youAre << "'. Do you want to keep that? (yes or no)" << endl;
+        cout << "You set your account name to '" << youAre \
+             << "'. Do you want to keep that? (yes or no)" << endl;
         cin >> ynstr;
         if (ynstr == "yes" && doesAcctExist(youAre))
             yn = true;

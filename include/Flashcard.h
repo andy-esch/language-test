@@ -35,9 +35,10 @@ class Flashcard {
 private:
     vector<string> sideB;
     vector<string> sideA;
+//    vector<string> remark;        should these contain the parentheticals? -- put in "" for non-remarks?
     void insertWords(string, Flashcard &, int);
 public:
-    WordData data;
+    WordData data;  // make private?
     double weight;      // What is this used for?
     /* public member functions */
     void toScreen();

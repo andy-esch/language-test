@@ -22,5 +22,8 @@ public:
     WordData();
     double getPercentCorrect();
     double getAverageCorrectAnswerTime();
+    unsigned int getNumAsked();
+    void incrNumAsked();
+    void incrNumCorrect();
 };
 #endif // _WORDDATA_H_

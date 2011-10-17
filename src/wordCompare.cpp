@@ -69,7 +69,7 @@ unsigned int levenshtein(string str1, string str2)
 float wordCompare(string known, string test)
 {
     char currLetter = known[0];
-    
+
     for (int ii = 0; ii < known.size(); ++ii)
     {
         if ( test.find(currLetter) == string::npos )

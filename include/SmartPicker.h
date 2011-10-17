@@ -1,6 +1,6 @@
 /*
  *  SmartPicker.h
- *  
+ *
  *  Description:
  *
  *
@@ -16,11 +16,11 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <sstream>
+#include <sstream>  // stringstream type
 #include <string>   // string members, objects
 #include <cmath>    // fma(), fdim(), exp()
 #include <ctime>    // time()
-#include <cstdlib>
+#include <cstdlib>  // exit()
 #include <climits> // UINT_MAX
 
 #include "Flashcard.h"
@@ -37,7 +37,7 @@ using std::cout;
 class SmartPicker {
 protected:
     unsigned int currentIndex;
-    void setCurrentIndex(int);
+    void setCurrentIndex(int);  // need a getCurrentIndex() in public?
     unsigned int findSmallest(const vector<Flashcard> &);
 public:
     SmartPicker(void);
@@ -45,15 +45,23 @@ public:
 };
 
 class LeastCorrect: public SmartPicker {
+private:
+    list<int> leastCorrectIndices;
+    unsigned short int currLowest;
+    void repopulateIndices(const vector<Flashcard> &);
 public:
-    unsigned int leastCorrectIndex(const vector<Flashcard> &, int);
+    LeastCorrect();
+    unsigned short int leastCorrectIndex(const vector<Flashcard> &, \
+                                   unsigned short int);
+    void printIndices(const vector<Flashcard> &);
 };
 
 class LeastPicked: public SmartPicker {
 private:
-//    list<int> leastPickedIndices;
+    list<int> leastPickedIndices;
 public:
-    unsigned int leastPickedIndex(const vector<Flashcard> &, int);
+    unsigned int leastPickedIndex(const vector<Flashcard> &, \
+                                  unsigned short int);
 };
 
 class Adaptive: public SmartPicker {

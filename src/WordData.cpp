@@ -9,62 +9,42 @@
  */
 
 #include "WordData.h"
+#include "functions.h"
 
 extern bool debug;
 
-WordData::WordData()
+WordData::WordData(void)
 {
     numAsked = 0;
     numCorrect = 0;
     answeringTime = 0.0;
 }
 
-double WordData::getPercentCorrect(){
-  return 100.00*(static_cast<double>(numCorrect)/static_cast<double>(numAsked));
+double WordData::getPercentCorrect(void)
+{
+    return 100.0 * static_cast<double>(numCorrect) * inverse(numAsked);
 }
 
-double WordData::getAverageCorrectAnswerTime(){
-  return static_cast<double>(answeringTime)/static_cast<double>(numCorrect);
+double WordData::getAverageCorrectAnswerTime(void)
+{
+    return static_cast<double>(answeringTime) * inverse(numCorrect);
 }
 
+unsigned int WordData::getNumAsked(void)
+{
+    return numAsked;
+}
 
+void WordData::incrNumAsked(void)
+{
+    numAsked++;
+}
 
+void WordData::incrNumCorrect(void)
+{
+    numCorrect++;
+}
 
-
-
-//void WordData::setProbability(int N)
-//{
-//    probability= 1.0 / static_cast<double> (N);
-//}
-
-//void WordData::populate(int size)
-//{   // Populates WordData object to initialization values
-//    numAsked = 0;
-//    percentRight = 0.0;
-//    avgTime = 0.0;
-//    probability = 1.0 / static_cast<double> (size);
-//}
-
-//double WordData::weight(bool wrong, double diff)
-//{   // weight for answering (non-hints)
-//    double weight;
-//
-//    if (wrong)
-//    {    // Probability increase with response time for wrong answers
-//         // Quick responses are proportional to smaller probability differentials
-//      weight = 0.24 * (1.0 - exp(-0.2 * diff));
-//    }
-//    else // if correct
-//    {    // Probability decreases with response times for correct answers
-//         // Quick responses are proportional to larger probabilty differentials
-//      weight = -0.24 * exp(-0.2 * diff);
-//    }
-//    
-//    if (debug) cout << "weight = " << weight << endl;
-//
-//    return weight;
-//}
-//
 //double WordData::weight(char typeOfHint, int numLetReqstd, double currProb)
 //{   // weight for hints
 //    double weight = 0.0;
@@ -105,42 +85,6 @@ double WordData::getAverageCorrectAnswerTime(){
 //    if (debug) cout << "weight = " << weight << endl;
 //
 //    return weight;
-//}
-
-//void WordData::updateProbs(int index, int numOfEntries, double weight, WordData * wordInfo)
-//{   // Updates probabilities
-//    double beta = 1.0 - weight * wordInfo[index].probability;
-//    double alpha = beta + weight;
-//
-//    for (int ii = 0; ii < numOfEntries; ii++)
-//    {
-//        if ( ii != index )
-//            wordInfo[ii].probability *= beta;
-//        else
-//            wordInfo[ii].probability *= alpha;
-//    }
-//}
-
-//void WordData::updateScore(int index, bool wrong, double timeDiff, \
-//                           int numOfEntries, WordData * wordInfo)
-//{
-//    // Update probabilities
-//    updateProbs(index, numOfEntries, \
-//                WordData::weight(wrong,timeDiff), wordInfo);
-//
-//    // Update number of individual queries of word
-//    numAsked++;
-//
-//    // Update scoring percentage
-//    if (numAsked == 1)
-//        (wrong)?(percentRight = 0.0):(percentRight = 1.0);
-//    else if (!wrong && numAsked > 1)
-//        percentRight = reweight(numAsked,percentRight,1.0);
-//    else if (wrong && numAsked > 1)
-//        percentRight = reweight(numAsked,percentRight,0.0);
-//
-//    // Update timing information
-//    avgTime = reweight(numAsked,avgTime,timeDiff);
 //}
 
 //void WordData::updateScore(int index, int numOfEntries, WordData * wordStats, \

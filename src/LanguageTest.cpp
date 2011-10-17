@@ -15,6 +15,7 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <climits>
 
 #include "WordData.h"
 #include "functions.h"
@@ -25,6 +26,7 @@
 #include "SmartPicker.h"
 #include "cmdLineInput.h"
 #include "wordCompare.h"
+#include "Account.h"
 
 using std::cerr;
 using std::cin;
@@ -41,6 +43,7 @@ int main(int argc, char **argv)
     bool verbose = false, isWrong = true;
     srand(time(NULL));
     char inFile[60] = "vocab/test.txt";
+    Account acct;
 
     /*****    Take optional input from command line   *****/
     cmdLineInput(argc,argv,inFile,verbose,debug);
@@ -60,13 +63,14 @@ int main(int argc, char **argv)
     temp.input(cards,inFile);   // wonky
 
     cout << "Beginning Quiz." << endl;
+    unsigned short int i = USHRT_MAX;
 
     // Should this while loop be shifted to its own file flcard_quiz.cpp?
     /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
-    {	
-        unsigned int i = picker.leastCorrectIndex(cards);
-            //unsigned int i = picker.adaptiveIndex(cards);
+    {
+        i = picker.leastCorrectIndex(cards,i);
+        //unsigned int i = picker.adaptiveIndex(cards);
 
         string sideBword = cards[i].getWord('B',randIndex(cards[i].size('B')));
         string sideAword = cards[i].getWord('A',randIndex(cards[i].size('A')));
@@ -115,6 +119,7 @@ int main(int argc, char **argv)
 //        picker.updateProbsBasic(i,isWrong,static_cast<double> (timeEnd-timeStart));
         if (debug) cout << "updatedProbsAdvanced " << endl;
         isWrong = true;
+        picker.printIndices(cards);
     }
 
     /**    Ask if s/he wants test results    **/
@@ -122,7 +127,7 @@ int main(int argc, char **argv)
     
 //    cout << picker.probabilitySummary(cards) << endl;
 
-    cout << goodbye() << endl;
+    cout << goodbye(acct.getName()) << endl;
 
     //clean up goes here
 

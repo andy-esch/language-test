@@ -41,42 +41,38 @@ float howWrongIsIt(string test, string compare)
     return 0.0;
 }
 
-// Let's rewrite this as a pass by reference function instead so we don't have
-// to pass all this info across memory, etc.
-vector<string> stripParentheses(vector<string> words)
+vector<string> stripParentheses(vector<string> & words)
 { 
     vector<string> strippedWords = words;
-    string paren(" (");
-    size_t it;
 
     for (int i = 0; i < words.size(); i++)
-    {
-       it = strippedWords[i].find(paren);
-       if (it != string::npos)
-       {
-         strippedWords[i].erase(strippedWords[i].begin() + strippedWords[i].find(paren), \
-                                strippedWords[i].end());
-       }
-    }
+        strippedWords[i] = stripParentheses(strippedWords[i]);
 
     return strippedWords;
 }
 
-// Mimics string compare -- returns 1 if there is no match
+string stripParentheses(string original)
+{
+    string strippedWord = original;
+    string paren(" (");
+
+    if (strippedWord.find(paren) != string::npos)
+        strippedWord.erase(strippedWord.begin() + strippedWord.find(paren), \
+                           strippedWord.end());
+    return strippedWord;
+}
+
+// Mimics string compare -- returns 'true' if there is no match
 // I don't like to do all this extra work for each case, but for now it works.
 // Should we make this a member of the class Flashcard?
 bool isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
-    vector<string>::iterator it = ws.begin();
+    vector<string>::iterator it, it2;
 
-    for (it = ws.begin(); it != ws.end(); it++)
-        if ( !answer.compare(*it) )
-            isWrong = false;
-
-    for (it = strippedws.begin(); it != strippedws.end(); it++)
-        if ( !answer.compare(*it) )
+    for (int ii = 0; ii < ws.size(); ii++)
+        if ( !answer.compare(ws[ii]) || !answer.compare(strippedws[ii]) )
             isWrong = false;
 
     return isWrong;
@@ -176,13 +172,13 @@ string whitespace(int length)
     return whitespace;
 }
 
-string goodbye(void)
+string goodbye(string name)
 {
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
                          "Namaste"};
 
-    return goodbyes[randIndex(9)] + "!";
+    return goodbyes[randIndex(9)] + (name==""?"":", "+name) + "!";
 }
 
 bool exitProg(const char * test, bool cinEof)

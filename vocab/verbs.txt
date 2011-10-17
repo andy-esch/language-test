@@ -37,3 +37,5 @@ salir	to leave
 gustar	to please
 decir	to tell
 poder	can,may
+buscar	search for,seek
+
