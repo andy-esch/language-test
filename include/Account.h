@@ -25,10 +25,13 @@ class Account {
     string datePassed;
     int numOfTimesAttempted;
     void importViaXml(void);    // Reminder
+    void setName(string);
 public:
+    Account();
     void exportAccount(string);
     void loadAccount();
-    string getName(void);
+    string getName();
     void establishAccount();
+    bool doesAcctExist(string);
     string whoAreYou();
 };
