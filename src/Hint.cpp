@@ -8,7 +8,6 @@
  *
  */
 
-#include "functions.h"
 #include "Hint.h"
 
 Hint::Hint(string answerKey, bool selectVerbose)
@@ -43,10 +42,8 @@ void Hint::setKey(string answerKey)
 
 void Hint::addLetter(int numLetters)
 {
-        // Doesn't add letters if more than one ' ' is found
-    // Add letter if ' ' is found in substring
-    if (string(key,hintNum,numLetters).find(' ') != string::npos)
-        numLetters++;
+    // Add letters if any ' ' are found in substring
+    numLetters += numOfSpaces(string(key,hintNum,numLetters+1)); // a little buggy
 
     if ( hintNum < key.size() )
     {
@@ -59,6 +56,16 @@ void Hint::addLetter(int numLetters)
         hint += " <-";
 }
 
+int Hint::numOfSpaces(string str)
+{
+    int num = 0;
+    for (int ii = 0; ii < str.size(); ii++)
+    {
+        if (str[ii] == ' ')
+            num++;
+    }
+    return num;
+}
 
 void Hint::addLetter()
 {

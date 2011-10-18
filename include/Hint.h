@@ -14,6 +14,8 @@
 #include <iostream>
 #include <vector>
 
+#include "functions.h"
+
 using std::cout;
 using std::endl;
 using std::string;
@@ -33,6 +35,7 @@ private:
     string hint;
     void addLetter(int);
     void addLetter();
+    int numOfSpaces(string);
     void fillLetterPlaces();
     void answer(void);
     void disableHints(void);

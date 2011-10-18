@@ -89,10 +89,12 @@ int main(int argc, char **argv)
             {
                 if(response[1]=='s') break;
                 cout << myhint.handle(response,false);
+                cout << whitespace(sideAword.size());
             }
             else /* no hint, check response */
             {
-                if (isWrong = isInvalidAnswer(response,cards[ii].getSideB()))
+                isWrong = isInvalidAnswer(response,cards[ii].getSideB());
+                if (isWrong)
                 {
                     if (verbose) cout << correctness(response,cards[ii].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
@@ -109,7 +111,6 @@ int main(int argc, char **argv)
         /* finish this card */
         cards[ii].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
         isWrong = true;
-        picker.printIndices();
     }
 
     /**    Ask if s/he wants test results    **/
