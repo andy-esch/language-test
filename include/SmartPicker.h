@@ -37,34 +37,48 @@ using std::cout;
 class SmartPicker {
 protected:
     unsigned short int currentIndex;
-    void setCurrentIndex(int);  // need a getCurrentIndex() in public?
-    unsigned int findSmallest(const vector<Flashcard> &);
+    void setCurrentIndex(int=0);
 public:
     SmartPicker(void);
-    unsigned int nextIndex(int);    // Pass something like cards.size() as the argument?
+    unsigned short int nextIndex(int);
     unsigned short int getCurrentIndex();
 };
 
+/* Should all classes start with a limited set of the vocab and only expand the
+ * list if a certain performance level is reached?  For instance, start out with
+ * a set of 10, and if, say, all the words have an 70% correctness, add a few
+ * more words...
+ */
+
 class LeastCorrect: public SmartPicker {
 private:
-    list<int> leastCorrectIndices;
+    list<unsigned short int> leastCorrectIndices;
     unsigned short int currLowest;
     void repopulateIndices(const vector<Flashcard> &);
+    void leastCorrectIndex(const vector<Flashcard> &);
+    unsigned short int findSmallest(const vector<Flashcard> &);
 public:
     LeastCorrect();
-    void leastCorrectIndex(const vector<Flashcard> &);
+    unsigned short int getNextIndex(const vector<Flashcard> &);
     void printIndices();
 };
 
+
+
 class LeastPicked: public SmartPicker {
 private:
-    list<int> leastPickedIndices;
+    list<unsigned short int> leastPickedIndices;
     unsigned short int currLowest;
+    void leastPickedIndex(const vector<Flashcard> &);
+    void repopulateIndices(const vector<Flashcard> &);
+    unsigned short int findSmallest(const vector<Flashcard> &);
 public:
     LeastPicked();
-    unsigned int leastPickedIndex(const vector<Flashcard> &, \
-                                  unsigned short int);
+    unsigned short int getNextIndex(const vector<Flashcard> &);
+    void printIndices();
 };
+
+
 
 class Adaptive: public SmartPicker {
 private:
@@ -75,7 +89,7 @@ private:
 public:
     Adaptive(int);
     ~Adaptive();
-    unsigned int adaptiveIndex(const vector<Flashcard> &);
+    unsigned short int adaptiveIndex(const vector<Flashcard> &);
     void updateProbsAdvanced(int,bool,double, const vector<Flashcard> &);
     void updateProbsBasic(int,bool,double);
     string probabilitySummary(vector<Flashcard> &);

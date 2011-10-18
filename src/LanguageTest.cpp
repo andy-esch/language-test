@@ -17,15 +17,12 @@
 #include <vector>
 #include <climits>
 
-#include "WordData.h"
 #include "functions.h"
 #include "Flashcard.h"
-#include "listDicts.h"
 #include "testResults.h"
 #include "Hint.h"
 #include "SmartPicker.h"
 #include "cmdLineInput.h"
-#include "wordCompare.h"
 #include "Account.h"
 
 using std::cerr;
@@ -56,7 +53,7 @@ int main(int argc, char **argv)
 
     vector<Flashcard> cards;
     string response;
-    LeastCorrect picker;
+    LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
 
     cards[0].input(cards,inFile);   // wonky -- input() should be a friend
@@ -68,8 +65,7 @@ int main(int argc, char **argv)
     /**    Flashcard Quiz    **/
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {
-        picker.leastCorrectIndex(cards);    // generate new index
-        ii = picker.getCurrentIndex();      // retrieve index
+        ii = picker.getNextIndex(cards);      // retrieve new index
 
         string sideBword = cards[ii].getWord('B',randIndex(cards[ii].size('B')));
         string sideAword = cards[ii].getWord('A',randIndex(cards[ii].size('A')));
