@@ -22,7 +22,7 @@ ltest: LanguageTest.o $(OBJECTS)
 LanguageTest.o: LanguageTest.cpp
 
 $(OBJECTS): %.o: %.cpp
-	$(CXX) -I include -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 #proto: main_prototype.o $(PROTO_OBJECTS)
 #	$(CXX) $(CXXFLAGS) $^ -o proto

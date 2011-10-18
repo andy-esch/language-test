@@ -38,7 +38,7 @@ private:
 //    vector<string> remark;        should these contain the parentheticals? -- put in "" for non-remarks?
     void insertWords(string, Flashcard &, int);
 public:
-    WordData data;  // make private?
+    WordData data;
     double weight;      // What is this used for?
     /* public member functions */
     void toScreen();
@@ -46,11 +46,11 @@ public:
     WordData getWordData();
     void recordPerformance(int,bool,double);
     void setWeight(int);
-    string getWord(char,int);
+    string getWord(char,int) const;
     vector<string> getSideA();  
     vector<string> getSideB();
-    int size(char);         // size of card side
-    int size(char,int);     // size of individual word
+    int size(char);             // size of card side
+    int size(char,int);         // size of individual word
     void input(vector<Flashcard> &, char *);
 };
 #endif // FLASHCARD_H

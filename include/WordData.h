@@ -7,23 +7,28 @@
  *  Created by Añdy Eschbacher on 9/11/11.
  *
  */
-#ifndef _WORDDATA_H_
-#define _WORDDATA_H_
+#ifndef WORDDATA_H
+#define WORDDATA_H
 
 #include <cmath>
 #include <iostream>
 
+#include "functions.h"
+
 class WordData
 {
-public:
-    unsigned int numAsked;
-    unsigned int numCorrect;
+private:
+    unsigned short int numAsked;
+    unsigned short int numCorrect;
     double answeringTime;
+public:
     WordData();
-    double getPercentCorrect();
-    double getAverageCorrectAnswerTime();
-    unsigned int getNumAsked();
+    double getPercentCorrect() const;
+    double getAverageCorrectAnswerTime() const;
+    unsigned short int getNumCorrect() const;
+    unsigned short int getNumAsked() const;
     void incrNumAsked();
     void incrNumCorrect();
+    void incrAnsTime(double);
 };
-#endif // _WORDDATA_H_
+#endif // WORDDATA_H

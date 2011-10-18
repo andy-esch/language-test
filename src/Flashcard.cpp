@@ -33,7 +33,7 @@ void Flashcard::recordPerformance(int numOfTries, bool isWrong, double responseT
     if (numOfTries == 1 && !isWrong)
     {
         data.incrNumCorrect();
-        data.answeringTime += responseTime;
+        data.incrAnsTime(responseTime);
     }
 }
 
@@ -42,7 +42,7 @@ vector<string> Flashcard::getSideA(void)
     return sideA;
 }
 
-string Flashcard::getWord(char side, int i)
+string Flashcard::getWord(char side, int i) const
 {
     if (side == 'A')
         return sideA[i];

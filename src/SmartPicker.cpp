@@ -31,9 +31,9 @@ unsigned short int SmartPicker::getCurrentIndex(void)
     return currentIndex;
 }
 
-unsigned short int SmartPicker::nextIndex(int cardsSize)
+unsigned short int SmartPicker::getNextIndex(int cardsSize)
 {
-    currentIndex = (++currentIndex) % cardsSize;
+    setCurrentIndex((++currentIndex) % cardsSize);
     return currentIndex;
 }
 
@@ -45,9 +45,9 @@ LeastCorrect::LeastCorrect(void)
 
 unsigned short int LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 {
-    // generate new index
+    // generate and set new index
     leastCorrectIndex(cards);
-    
+
     return currentIndex;
 }
 
@@ -56,13 +56,13 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
     static unsigned short int lastIndex = USHRT_MAX;
 
     if (lastIndex != USHRT_MAX)
-        if (cards[lastIndex].data.numCorrect > currLowest)
+        if (cards[lastIndex].data.getNumCorrect() > currLowest)
             leastCorrectIndices.remove(lastIndex);
 
     if (leastCorrectIndices.empty() )
         repopulateIndices(cards);
 
-    list<unsigned short int>::iterator it = leastCorrectIndices.begin();
+    std::list<unsigned short int>::iterator it = leastCorrectIndices.begin();
     for (int jj = randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
@@ -76,17 +76,16 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
 {
     currLowest = findSmallest(cards);
-    cout << "repopulating leastCorrectIndices" << endl;
     for (int i = 0; i < cards.size(); i++)
     {
-        if (cards[i].data.numCorrect == currLowest)
+        if (cards[i].data.getNumCorrect() == currLowest)
             leastCorrectIndices.push_back(i);
     }
 }
 
 void LeastCorrect::printIndices(void)
 {
-    list<unsigned short int>::iterator it = leastCorrectIndices.begin();
+    std::list<unsigned short int>::iterator it = leastCorrectIndices.begin();
     cout << *it;
     for (it++; it != leastCorrectIndices.end(); it++ )
         cout << ", " << *it;
@@ -97,11 +96,11 @@ void LeastCorrect::printIndices(void)
 // function?
 unsigned short int LeastCorrect::findSmallest(const vector<Flashcard> & deck)
 {
-    unsigned short int currentLowest = deck[0].data.numCorrect, temp;
+    unsigned short int currentLowest = deck[0].data.getNumCorrect(), temp;
     
     for (int ii = 1; ii < deck.size(); ii++)
     {
-        temp = deck[ii].data.numCorrect;
+        temp = deck[ii].data.getNumCorrect();
         if (temp < currentLowest)
             currentLowest = temp;
     }
@@ -117,7 +116,7 @@ LeastPicked::LeastPicked()
 
 unsigned short int LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
-        // generate new index
+    // generate new index
     leastPickedIndex(cards);
     
     return currentIndex;
@@ -128,18 +127,16 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
     static unsigned short int lastIndex = USHRT_MAX;
 
     if (lastIndex != USHRT_MAX)
-        if (cards[lastIndex].data.numAsked > currLowest)
+        if (cards[lastIndex].data.getNumAsked() > currLowest)
             leastPickedIndices.remove(lastIndex);
 
     if (leastPickedIndices.empty() )
         repopulateIndices(cards);
-    cout << "leastPickedIndices.size() = " << leastPickedIndices.size() << endl;
 
-    list<unsigned short int>::iterator it = leastPickedIndices.begin();
+    std::list<unsigned short int>::iterator it = leastPickedIndices.begin();
     for (int jj = randIndex(leastPickedIndices.size()); jj > 0; jj--)
         it++;
 
-    cout << "*it = " << *it << endl;
     if (*it == currentIndex)
         setCurrentIndex((*it + 1) % leastPickedIndices.size());
     else
@@ -151,14 +148,11 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 void LeastPicked::repopulateIndices(const vector<Flashcard> & cards)
 {
     currLowest = findSmallest(cards);
-    cout << "repopulating leastPickedIndices" << endl;
-    cout << "currLowest = " << currLowest << endl;
     for (int i = 0; i < cards.size(); i++)
     {
-        if (cards[i].data.numAsked == currLowest)
+        if (cards[i].data.getNumAsked() == currLowest)
             leastPickedIndices.push_back(i);
     }
-    cout << "repopulated!" << endl;
 }
 
 void LeastPicked::printIndices(void)
@@ -174,16 +168,21 @@ void LeastPicked::printIndices(void)
 // function?
 unsigned short int LeastPicked::findSmallest(const vector<Flashcard> & deck)
 {
-    unsigned short int currentLowest = deck[0].data.numAsked, temp;
+    unsigned short int currentLowest = deck[0].data.getNumAsked(), temp;
     
     for (int ii = 1; ii < deck.size(); ii++)
     {
-        temp = deck[ii].data.numAsked;
+        temp = deck[ii].data.getNumAsked();
         if (temp < currentLowest)
-            currentLowest = temp;
+            setCurrentLowest(temp);
     }
-    
+
     return currentLowest;
+}
+
+void LeastPicked::setCurrentLowest(unsigned short int newCurrLow)
+{
+    currLowest = newCurrLow;
 }
 
 /**    Adaptive members    **/
@@ -226,7 +225,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
 
     for (int ii = 0; ii < probability.size(); ii++)
     {
-        if (cards[ii].data.numAsked == 0 && ii != index)
+        if (cards[ii].data.getNumAsked() == 0 && ii != index)
         {
             probUnasked += probability[ii];
             numOfNumAskedIs0++;
@@ -250,7 +249,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     {
         if ( ii == index )
             probability[ii] *= fma(wgt,alpha,1.0);
-        else if ( cards[ii].data.numAsked != 0 )
+        else if ( cards[ii].data.getNumAsked() != 0 )
             probability[ii] *= fma(-wgt,beta,1.0);
         else
             probability[ii] *= fma(gamWeight,gamma,1.0);
@@ -284,7 +283,7 @@ unsigned short int Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
 
     do
     {
-        currentIndex = dist(gen);
+        setCurrentIndex(dist(gen));
     } while (currentIndex == lastIndex);
 
     lastIndex = currentIndex;

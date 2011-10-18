@@ -27,8 +27,6 @@
 #include "functions.h"
 #include "wordCompare.h"
 
-extern bool debug;
-
 using std::list;
 using std::vector;
 using std::string;
@@ -40,7 +38,7 @@ protected:
     void setCurrentIndex(int=0);
 public:
     SmartPicker(void);
-    unsigned short int nextIndex(int);
+    unsigned short int getNextIndex(int);
     unsigned short int getCurrentIndex();
 };
 
@@ -69,6 +67,7 @@ class LeastPicked: public SmartPicker {
 private:
     list<unsigned short int> leastPickedIndices;
     unsigned short int currLowest;
+    void setCurrentLowest(unsigned short int);
     void leastPickedIndex(const vector<Flashcard> &);
     void repopulateIndices(const vector<Flashcard> &);
     unsigned short int findSmallest(const vector<Flashcard> &);

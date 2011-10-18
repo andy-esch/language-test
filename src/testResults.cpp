@@ -47,10 +47,10 @@ void testResults(vector<Flashcard> cards, bool verbose)
     for (int i = 0; i < cards.size(); i++)
     {
         cout << setw(lengthLongestWord) << stripParentheses(cards[i].getWord('B',0));
-        if ( cards[i].data.numAsked > 0 )
+        if ( cards[i].data.getNumAsked() > 0 )
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
-            << "% (" << cards[i].data.numAsked << ")";
+            << "% (" << cards[i].data.getNumAsked() << ")";
             cout << setw(9) << cards[i].data.getAverageCorrectAnswerTime();
         }
         else

@@ -9,9 +9,6 @@
  */
 
 #include "WordData.h"
-#include "functions.h"
-
-extern bool debug;
 
 WordData::WordData(void)
 {
@@ -20,19 +17,24 @@ WordData::WordData(void)
     answeringTime = 0.0;
 }
 
-double WordData::getPercentCorrect(void)
+double WordData::getPercentCorrect(void) const
 {
     return 100.0 * static_cast<double>(numCorrect) * inverse(numAsked);
 }
 
-double WordData::getAverageCorrectAnswerTime(void)
+double WordData::getAverageCorrectAnswerTime(void) const
 {
     return static_cast<double>(answeringTime) * inverse(numCorrect);
 }
 
-unsigned int WordData::getNumAsked(void)
+unsigned short int WordData::getNumAsked(void) const
 {
     return numAsked;
+}
+
+unsigned short int WordData::getNumCorrect(void) const
+{
+    return numCorrect;
 }
 
 void WordData::incrNumAsked(void)
@@ -45,6 +47,10 @@ void WordData::incrNumCorrect(void)
     numCorrect++;
 }
 
+void WordData::incrAnsTime(double incr)
+{
+    answeringTime += incr;
+}
 //double WordData::weight(char typeOfHint, int numLetReqstd, double currProb)
 //{   // weight for hints
 //    double weight = 0.0;
