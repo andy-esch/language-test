@@ -43,7 +43,7 @@ void Hint::setKey(string answerKey)
 void Hint::addLetter(int numLetters)
 {
     // Add letters if any ' ' are found in substring
-    numLetters += numOfSpaces(string(key,hintNum,string::npos),numLetters); // a little buggy
+    numLetters += numOfSpaces(string(key,hintNum,string::npos),numLetters);
 
     if ( hintNum < key.size() )
     {
@@ -56,11 +56,12 @@ void Hint::addLetter(int numLetters)
         hint += " <-";
 }
 
+
 int Hint::numOfSpaces(string str,int numLetters)
 {
     int isLetter = 0;
     int search = numLetters;
-    for (int ii = 0; ii < search; ii++)
+    for (int ii = 0; ii < search && search <= str.size(); ii++)
     {
         if (str[ii] != ' ')
             isLetter++;
@@ -69,6 +70,7 @@ int Hint::numOfSpaces(string str,int numLetters)
     }
     return search - numLetters;
 }
+
 
 void Hint::addLetter()
 {
@@ -93,6 +95,7 @@ void Hint::fillLetterPlaces()
     }
 }
 
+
 void Hint::answer(void)
 {
     hint = key + " <-";
@@ -109,7 +112,6 @@ string Hint::example(void)
     string hint = "an example of usage";
     return hint;
 }
-
 
 
 string Hint::help()
