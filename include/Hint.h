@@ -35,7 +35,7 @@ private:
     string hint;
     void addLetter(int);
     void addLetter();
-    int numOfSpaces(string);
+    int numOfSpaces(string,int);
     void fillLetterPlaces();
     void answer(void);
     void disableHints(void);
