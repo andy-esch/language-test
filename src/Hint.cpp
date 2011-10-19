@@ -45,6 +45,8 @@ void Hint::addLetter(int numLetters)
     // Add letters if any ' ' are found in substring
     numLetters += numOfSpaces(string(key,hintNum,string::npos),numLetters);
 
+    if (isAccented(string(key,hintNum,numLetters+1))) numLetters++; // not sure how to do this
+
     if ( hintNum < key.size() )
     {
         if (hintNum + numLetters > key.size()) // Limit num of letters to key size
@@ -57,10 +59,9 @@ void Hint::addLetter(int numLetters)
 }
 
 
-int Hint::numOfSpaces(string str,int numLetters)
+int Hint::numOfSpaces(string str, int numLetters)
 {
-    int isLetter = 0;
-    int search = numLetters;
+    int isLetter = 0, search = numLetters;
     for (int ii = 0; ii < search && search <= str.size(); ii++)
     {
         if (str[ii] != ' ')
@@ -69,6 +70,23 @@ int Hint::numOfSpaces(string str,int numLetters)
             search++;
     }
     return search - numLetters;
+}
+
+
+bool Hint::isAccented(string str)
+{
+    string set[] = {"á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß"};
+    bool accent = false;
+
+    for (int ii = 0; ii < 5; ii++)
+    {
+        if (str.find(set[ii]) != string::npos)
+        {
+            accent = true;
+            break;
+        }
+    }
+    return accent;
 }
 
 

@@ -42,6 +42,7 @@ private:
     string example();
     string synonym();
     string help();
+    bool isAccented(string);
 };
 #endif
 //could add an int penalty so that each hint results in penalty points.
