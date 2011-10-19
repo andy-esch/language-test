@@ -12,7 +12,8 @@
 
 #include <cstdlib>
 #include <string>
-#include <ctime>
+//#include <ctime>
+#include <boost/chrono.hpp>
 #include <iostream>
 #include <vector>
 #include <climits>
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
 {
     /*****    Initialize Variables    *****/
     bool verbose = false, isWrong = true;
-    srand(time(NULL));
+    srand(time(NULL));                      // when does this need to be initialized?
     char inFile[60] = "vocab/test.txt";
     Account acct;
 
@@ -47,7 +48,8 @@ int main(int argc, char **argv)
 
     /****    Language Quiz    *****/
     cout << "Beginning Quiz." << endl;
-    time_t timeStart, timeEnd;
+    boost::chrono::system_clock::time_point timeStart;
+    boost::chrono::duration<double> timeDiff;
     bool disableHintMsg = false;
     unsigned short int ii;
 
@@ -58,7 +60,6 @@ int main(int argc, char **argv)
 
     cards[0].input(cards,inFile);   // wonky -- input() should be a friend
                                     // instead of a Flashcard member function?
-
     cout << "Beginning Quiz." << endl;
 
     // Should this while loop be shifted to its own file flcard_quiz.cpp?
@@ -79,9 +80,9 @@ int main(int argc, char **argv)
         while (!cin.eof() && isWrong)
         {
             numOfTries++;
-            timeStart = time(NULL); // let's use more accurate timer
+            timeStart = boost::chrono::system_clock::now();
             getline(cin, response);
-            timeEnd = time(NULL);
+            timeDiff = boost::chrono::system_clock::now() - timeStart;
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
 	    
             /* options processing */
@@ -109,7 +110,7 @@ int main(int argc, char **argv)
             }
         }
         /* finish this card */
-        cards[ii].recordPerformance(numOfTries,isWrong,(timeEnd-timeStart));
+        cards[ii].recordPerformance(numOfTries,isWrong,timeDiff.count());
         isWrong = true;
     }
 

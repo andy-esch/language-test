@@ -5,7 +5,7 @@ vpath %.cpp src
 vpath %.h include
 
 CXX = g++
-CXXFLAGS = -I include
+CXXFLAGS = -I include -std=c++0x -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono
 
 OBJECTS = functions.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o wordCompare.o SmartPicker.o WordData.o Account.o
 HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h wordCompare.h SmartPicker.h WordData.h Account.h
@@ -22,7 +22,7 @@ ltest: LanguageTest.o $(OBJECTS)
 LanguageTest.o: LanguageTest.cpp
 
 $(OBJECTS): %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) -I include -c $< -o $@
 
 #proto: main_prototype.o $(PROTO_OBJECTS)
 #	$(CXX) $(CXXFLAGS) $^ -o proto
