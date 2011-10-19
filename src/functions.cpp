@@ -195,9 +195,8 @@ int whatDoYouWantToDo(void)
 {
     string options[] = {"flash cards", "conjugations", "fill-in-the-blank", \
                         "multiple choice", "account summary", "exit program"};
-    string languages[] = {"spanish/english", "french/english", "robot/english"};
-    
-    int toDoOption, lang;
+
+    int toDoOption;
     
     cout << "What do you want to do?" << endl;
     cout << "Here are your options: " << endl;
@@ -205,14 +204,6 @@ int whatDoYouWantToDo(void)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
 
     cin >> toDoOption;
-
-    if (toDoOption != 6)
-    {
-        cout << "Which language do you want to work on?" << endl;
-        for (int ii = 1; ii <= 3; ii++)
-            cout << '\t' << ii << ": " << languages[ii - 1] << endl;
-        cin >> lang;
-    }
 
     return toDoOption;
 }

@@ -43,6 +43,7 @@ void Account::establishAccount()
         cin >> ynstr;
         if (ynstr == "yes" && not doesAcctExist(youAre))
             yn = true;
+
     } while (yn == false);  // Should there be other escape sequences?
                             // such as if you accidentally entered this and
                             // don't want to establish a new account?

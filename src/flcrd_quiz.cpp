@@ -78,5 +78,7 @@ int flcrd_quiz(bool verbose, char * inFile)
     
     testResults(cards,verbose);
     
+    cin.clear(); // Need to clear away the EOF somehow
+    
     return 0;
 }
