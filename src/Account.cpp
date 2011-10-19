@@ -41,7 +41,7 @@ void Account::establishAccount()
         cout << "You set your account name to '" << youAre \
              << "'. Do you want to keep that? (yes or no)" << endl;
         cin >> ynstr;
-        if (ynstr == "yes" && doesAcctExist(youAre))
+        if (ynstr == "yes" && not doesAcctExist(youAre))
             yn = true;
     } while (yn == false);  // Should there be other escape sequences?
                             // such as if you accidentally entered this and
@@ -53,7 +53,7 @@ void Account::establishAccount()
 bool Account::doesAcctExist(string acctName)
 {
     /* search xml files to see if one has a name already entered */
-    return true;    // change this obviously
+    return false;    // change this obviously
 }
 
 void Account::setName(string newName)
