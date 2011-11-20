@@ -8,6 +8,18 @@
  *
  *  Created by Añdy Eschbacher on 4/29/11.
  *
+ *
+ *  Create an alternate mode called 'direct feedback' where the user
+ *  instantly learns her/his wrong answer -- or even slighly delayed -- kind of
+ *  learning-machine like, and not being in the dark and moving onto another
+ *  word instead, which could lead to some mental muddiness and focus on
+ *  trouble words.
+ *
+ *  Contained lessons/quizzes.  Lessons that have a clear ending point so
+ *  the student will feel a sense of satisfaction on completing a unit.
+ *  They can be performance-related, time-related, number-of-items-related,
+ *  or more...
+ *
  */
 
 #include <cstdlib>
@@ -17,7 +29,10 @@
 #include "functions.h"
 #include "cmdLineInput.h"
 #include "Account.h"
+
+/* Quizzes */
 #include "flcrd_quiz.h"
+#include "numbers.h"
 
 using std::cin;
 using std::cout;
@@ -52,22 +67,27 @@ int main(int argc, char **argv)
                 cin.clear();
                 break;
             case 2:
+                cout << "you chose number quiz" << endl;
+                score = numbers();
+                cin.clear();
+                break;
+            case 3:
                 cout << "you chose conjugations!" << endl;
                 /* run conjugations program */
                 break;
-            case 3:
+            case 4:
                 cout << "you chose fill-in-the-blank" << endl;
                 /* run fill-in-the-blank program */
                 break;
-            case 4:
+            case 5:
                 cout << "you chose the multiple choice quiz!" << endl;
                 /* run multiple-choice program */
                 break;
-            case 5:
+            case 6:
                 cout << "you chose to see your account summary" << endl;
                 /* print account summary */
                 break;
-            case 6:
+            case 7:
                 cout << "you chose to exit the program" << endl;
                 cout << goodbye(acct.getName()) << endl;
                 exit(0);
@@ -76,7 +96,7 @@ int main(int argc, char **argv)
                 break;
         }
 
-        whatDoYouWantToDo();
+        toDoOption = whatDoYouWantToDo();
     }
 
     cout << goodbye(acct.getName()) << endl;

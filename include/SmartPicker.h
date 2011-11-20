@@ -21,7 +21,7 @@
 #include <cmath>    // fma(), fdim(), exp()
 #include <ctime>    // time()
 #include <cstdlib>  // exit()
-#include <climits>  //   USHRT_MAX
+#include <climits>  // USHRT_MAX
 
 #include "Flashcard.h"
 #include "functions.h"
@@ -32,14 +32,16 @@ using std::vector;
 using std::string;
 using std::cout;
 
+typedef unsigned short int usInt;
+
 class SmartPicker {
 protected:
-    unsigned short int currentIndex;
+    usInt currentIndex;
     void setCurrentIndex(int=0);
 public:
     SmartPicker(void);
-    unsigned short int getNextIndex(int);
-    unsigned short int getCurrentIndex();
+    usInt getNextIndex(int);
+    usInt getCurrentIndex();
 };
 
 /* Should all classes start with a limited set of the vocab and only expand the
@@ -50,14 +52,14 @@ public:
 
 class LeastCorrect: public SmartPicker {
 private:
-    list<unsigned short int> leastCorrectIndices;
-    unsigned short int currLowest;
+    list<usInt> leastCorrectIndices;
+    usInt currLowest;
     void repopulateIndices(const vector<Flashcard> &);
     void leastCorrectIndex(const vector<Flashcard> &);
-    unsigned short int findSmallest(const vector<Flashcard> &);
+    usInt findSmallest(const vector<Flashcard> &);
 public:
     LeastCorrect();
-    unsigned short int getNextIndex(const vector<Flashcard> &);
+    usInt getNextIndex(const vector<Flashcard> &);
     void printIndices();
 };
 
@@ -65,15 +67,15 @@ public:
 
 class LeastPicked: public SmartPicker {
 private:
-    list<unsigned short int> leastPickedIndices;
-    unsigned short int currLowest;
-    void setCurrentLowest(unsigned short int);
+    list<usInt> leastPickedIndices;
+    usInt currLowest;
+    void setCurrentLowest(usInt);
     void leastPickedIndex(const vector<Flashcard> &);
     void repopulateIndices(const vector<Flashcard> &);
-    unsigned short int findSmallest(const vector<Flashcard> &);
+    usInt findSmallest(const vector<Flashcard> &);
 public:
     LeastPicked();
-    unsigned short int getNextIndex(const vector<Flashcard> &);
+    usInt getNextIndex(const vector<Flashcard> &);
     void printIndices();
 };
 
@@ -88,7 +90,7 @@ private:
 public:
     Adaptive(int);
     ~Adaptive();
-    unsigned short int adaptiveIndex(const vector<Flashcard> &);
+    usInt adaptiveIndex(const vector<Flashcard> &);
     void updateProbsAdvanced(int,bool,double, const vector<Flashcard> &);
     void updateProbsBasic(int,bool,double);
     string probabilitySummary(vector<Flashcard> &);

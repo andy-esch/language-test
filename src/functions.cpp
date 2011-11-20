@@ -10,8 +10,6 @@
 
 #include "functions.h"
 
-extern bool debug;
-
 //  To be used to verify if a given test has been passed
 //  This is only a prototype
 bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
@@ -36,7 +34,8 @@ float howWrongIsIt(string test, string compare)
      *  - chose correct gender
      *  - etc.
      *
-     *  I think there must be a good algorithm out there we can use
+     *  I think there must be a good algorithm out there we can use.  One in
+     *  wordCompare measures the levenshtein distance between two words.
      */
     return 0.0;
 }
@@ -82,15 +81,16 @@ bool isInvalidAnswer(string answer, vector<string> ws)
 string hintOptions(int leftmargin)
 {
     stringstream hint;
+    string lMargSpace = whitespace(leftmargin);
     hint << '\a' << endl; // Ring system bell
-    hint << whitespace(leftmargin) << "Want a letter?  Type '-l'." << endl;
-    hint << whitespace(leftmargin) << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-    hint << whitespace(leftmargin) << "Want the answer?  Type '-a'." << endl;
-    hint << whitespace(leftmargin) << "Want the number of letters?  Type '-n'." << endl;
-    hint << whitespace(leftmargin) << "Want to skip this word?  Type '-s'." << endl;
-    hint << whitespace(leftmargin) << "Want help?  Type '-h'." << endl;
-    hint << whitespace(leftmargin) << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-    hint << whitespace(leftmargin) << "Want to turn these messages off?  Type '-d' to disable." << endl;
+    hint << lMargSpace << "Want a letter?  Type '-l'." << endl;
+    hint << lMargSpace << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+    hint << lMargSpace << "Want the answer?  Type '-a'." << endl;
+    hint << lMargSpace << "Want the number of letters?  Type '-n'." << endl;
+    hint << lMargSpace << "Want to skip this word?  Type '-s'." << endl;
+    hint << lMargSpace << "Want help?  Type '-h'." << endl;
+    hint << lMargSpace << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
+    hint << lMargSpace << "Want to turn these messages off?  Type '-d' to disable." << endl;
     return hint.str();
 }
 
@@ -159,8 +159,9 @@ double reaction(double time, int numLttrs)
     double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
     if (reactionTime < 0.0)
         reactionTime = 0.0;
-    if (debug) cout << "reactionTime = " << reactionTime << endl;
-
+#ifdef DEBUG
+    cout << "reactionTime = " << reactionTime << endl;
+#endif
     return reactionTime;
 }
 
@@ -193,14 +194,14 @@ bool exitProg(const char * test, bool cinEof)
 
 int whatDoYouWantToDo(void)
 {
-    string options[] = {"flash cards", "conjugations", "fill-in-the-blank", \
+    string options[] = {"flash cards", "numbers", "conjugations", "fill-in-the-blank", \
                         "multiple choice", "account summary", "exit program"};
 
     int toDoOption;
     
     cout << "What do you want to do?" << endl;
     cout << "Here are your options: " << endl;
-    for (int ii = 1; ii <= 6; ii++)
+    for (int ii = 1; ii <= 7; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
 
     cin >> toDoOption;

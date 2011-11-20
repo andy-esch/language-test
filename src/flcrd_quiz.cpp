@@ -22,8 +22,9 @@ int flcrd_quiz(bool verbose, char * inFile)
     string response;
     LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
+    string strinFile = listDicts();
     
-    cards[0].input(cards,inFile);   // wonky -- input() should be a friend
+    cards[0].input(cards,strinFile);   // wonky -- input() should be a friend
                                     // instead of a Flashcard member function?
 
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.

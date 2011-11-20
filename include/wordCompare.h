@@ -8,6 +8,9 @@
  *
  */
 
+#ifndef WORDCOMPARE_H
+#define WORDCOMPARE_H
+
 #include <iostream>
 #include <string>
 
@@ -18,3 +21,5 @@ string levRater(unsigned int);
 unsigned int levenshtein(string, string);
 float wordCompare(string, string);
 string unique(string);
+
+#endif // WORDCOMPARE_H

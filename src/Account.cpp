@@ -8,11 +8,23 @@
  *
  */
 
+/*
+ *
+ *  If we're going to implement the spaced repetition method in our program,
+ *  perhaps we need to make it work through this Account class since it
+ *  remembers things between sessions.
+ *
+ *
+ *
+ *
+ *
+ */
+
 #include "Account.h"
 
 Account::Account()
 {
-    name = "Andy";
+    name = "Geronimo";
     score = 100.0;
 }
 

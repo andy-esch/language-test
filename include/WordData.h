@@ -15,18 +15,20 @@
 
 #include "functions.h"
 
+typedef unsigned short int usInt;
+
 class WordData
 {
 private:
-    unsigned short int numAsked;
-    unsigned short int numCorrect;
+    usInt numAsked;
+    usInt numCorrect;
     double answeringTime;
 public:
     WordData();
     double getPercentCorrect() const;
     double getAverageCorrectAnswerTime() const;
-    unsigned short int getNumCorrect() const;
-    unsigned short int getNumAsked() const;
+    usInt getNumCorrect() const;
+    usInt getNumAsked() const;
     void incrNumAsked();
     void incrNumCorrect();
     void incrAnsTime(double);
