@@ -3,7 +3,6 @@
  *  
  *
  *  Created by Peter Eschbacher on 10/19/11.
- *  Copyright 2011 __MyCompanyName__. All rights reserved.
  *
  */
 
@@ -19,5 +18,6 @@
 #include "testResults.h"
 #include "Hint.h"
 #include "SmartPicker.h"
+#include "listDicts.h"
 
 int flcrd_quiz(bool,char*);

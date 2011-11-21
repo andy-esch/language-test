@@ -90,32 +90,24 @@ int numbers()
 
         if ( tempNum < 10000 && tempNum >= 1000 )
         {
-//            std::cout << "num is greater than 1000" << std::endl;
             wrdStr += (numbers[tempNum / 1000] + " mil ");
             tempNum -= (tempNum / 1000) * 1000;
-//            std::cout << "tempNum is now: " << tempNum << std::endl;
         }
 
         if ( tempNum < 1000 && tempNum >= 100 )
         {
-//            std::cout << "num is greater than 100" << std::endl;
             wrdStr += (hundreds[tempNum / 100] + " ");
             tempNum -= (tempNum / 100) * 100;
-//            std::cout << "tempNum is now: " << tempNum << std::endl;
         }
 
         if ( tempNum < 100 && tempNum >= 20 )
         {
-//            std::cout << "num is greater than 20" << std::endl;
             wrdStr += tens[tempNum / 10];
             if ((num % 10) != 0)
                 wrdStr += (" " + numbers[num % 10]);
         }
-
-        if ( tempNum < 20 )
-        {
+        else if ( tempNum < 20 )
             wrdStr += numbers[tempNum];
-        }
 
         std::cout << "What is " << num << " in Spanish?" << std::endl;
         getline(std::cin,response);
