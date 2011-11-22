@@ -22,24 +22,24 @@ int flcrd_quiz(bool verbose, char * inFile)
     string response;
     LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
-    string strinFile = listDicts();
+    strcpy(inFile,listDicts().c_str());
     
-    cards[0].input(cards,strinFile.c_str());   // wonky -- input() should be a friend
+    cards[0].input(cards,inFile);   // wonky -- input() should be a friend
                                     // instead of a Flashcard member function?
 
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {
         ii = picker.getNextIndex(cards);      // retrieve new index
-        
+
         string sideBword = cards[ii].getWord('B',randIndex(cards[ii].size('B')));
         string sideAword = cards[ii].getWord('A',randIndex(cards[ii].size('A')));
-        
+
         myhint.setKey(sideBword);
-        
+
         int numOfTries = 0;
-        
+
         cout << sideAword << ": ";
-        
+
         while (!cin.eof() && isWrong)
         {
             numOfTries++;
@@ -47,7 +47,7 @@ int flcrd_quiz(bool verbose, char * inFile)
             getline(cin, response);
             timeDiff = boost::chrono::system_clock::now() - timeStart;
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
-            
+
             /* options processing */
             if ( response[0] == '-' )
             {
