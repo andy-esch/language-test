@@ -64,12 +64,10 @@ int main(int argc, char **argv)
             case 1:
                 cout << "you chose flash cards" << endl;
                 score = flcrd_quiz(verbose,inFile);
-                cin.clear();
                 break;
             case 2:
                 cout << "you chose number quiz" << endl;
                 score = numbers();
-                cin.clear();
                 break;
             case 3:
                 cout << "you chose conjugations!" << endl;
@@ -95,10 +93,12 @@ int main(int argc, char **argv)
                 cout << "hmm, that's not an option" << endl;
                 break;
         }
-
+        /* need way to clear cin so that EOF is cleared out and it doesn't
+           prematurely exit program */
         toDoOption = whatDoYouWantToDo();
     }
-
+    cin.clear();
+    cin.ignore('\n',10);
     cout << goodbye(acct.getName()) << endl;
 
     return 0;

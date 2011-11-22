@@ -39,13 +39,18 @@ unsigned short getPower(const long rawInt)
     return mag;
 }
 
+bool inputsAreNotOkay(int numOfItems, int xMin, int xMax)
+{
+    return !((xMax > xMin) && (numOfItems > 0));
+}
+
 /* need a 'number constructor' function that takes into account sign and magnitude */
 
 int numbers()
 {
     boost::random::mt19937 gen;
     gen.seed(std::time(0));
-    int num, tempNum, numOfItems, lower, upper;
+    int num, tempNum, numOfItems = 0, xmin = 0, xmax = 100;
     bool isCorrect = false;
     std::string wrdStr, response;
     /* Load these from a file eventually */
@@ -53,61 +58,94 @@ int numbers()
                              "seis", "siete", "ocho", "nueve", "diez",
                              "once", "doce", "trece", "catorce", "quince",
                              "dieciséis", "diecisiete", "dieciocho",
-                             "diecinueve"};
+                             "diecinueve", "veinte", "veintiuno", "veintidós",
+                             "veintitrés", "veinticuatro", "veinticinco",
+                             "veintiséis", "veintisiete", "veintiocho",
+                             "veintinueve"};
 
     std::string tens[] = {"cero", "diez", "veinte", "treinta", "cuarenta",
                           "cincuenta", "sesenta", "setenta", "ochenta",
                           "noventa"};
 
-    std::string hundreds[] = {"cero", "cien","doscientos", "trescientos",
+    std::string hundreds[] = {"cero", "ciento","doscientos", "trescientos",
                               "cuatrocientos", "quinientos", "seiscientos",
                               "setecientos", "ochocientos", "novecientos"};
 
     std::string powersOfTen[] = {"uno", "diez", "cien", "mil", "diez mil",
                                  "cien mil", "millón", "mil millones",
                                  "billón"};
-    
-    std::cout << "How many items do you want to be quizzed over?" << std::endl;
-    std::cin >> numOfItems; /* do check to make sure well-formed number */
-    std::cout << "Enter a number range (two integers): ";
-    std::cin >> lower >> upper;
-    
-    for (int ii = 1; ii <= numOfItems; ii++)
     {
-        num = randNum(lower,upper,gen);
-        tempNum = num;
-            //      wrdStr = numConstructor(num);
-//        std::cout << "num = " << num << std::endl;
-//        std::cout << "tempNum / 1000 = " << num / 1000 << std::endl;
-//        tempNum -= (tempNum / 1000) * 1000;
-//        std::cout << "tempNum / 100 = " << tempNum / 100 << std::endl;
-//        tempNum -=(tempNum / 100) * 100;
-//        std::cout << "tempNum / 10 = " << tempNum / 10 << std::endl;
-//        tempNum -= (tempNum / 10) * 10;
-//        std::cout << "tempNum % 10 = " << tempNum % 10 << std::endl;
-//        std::cout << std::endl;
-//        tempNum = num;
+        bool changeOptions = true;
+        while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
+        {
+            char charOption = 'y';
 
+            std::cout << "How many items do you want to be quizzed over?" << std::endl;
+            std::cin >> numOfItems; /* do check to make sure well-formed number */
+
+            std::cout << "Enter a number range: xmin <= x <= xmax " << std::endl;
+
+            std::cout << "xmin = ";
+            std::cin >> xmin;
+
+            std::cout << "xmax = ";
+            std::cin >> xmax;
+            
+            std::cout << "You chose " << numOfItems << " numbers between " \
+                      << xmin << " and " << xmax << "." << std::endl;
+            std::cout << "Keep these options? (y for yes, r for reset) ";
+            std::cin >> charOption;
+            if (charOption == 'y')
+                changeOptions = false;
+            else
+                changeOptions = true;
+        }
+    }
+
+    std::cin.clear();
+    std::cin.ignore(10,'\n');
+    
+    for (int ii = 1; ii <= numOfItems && !std::cin.eof(); ii++)
+    {
+        num = randNum(xmin,xmax,gen);
+        tempNum = num;
+
+        /* put all these ifs in a function? */
+        // Special cases
+        if (num == 100)
+        {
+            wrdStr = "cien";
+            tempNum = 0;
+        }
+        
         if ( tempNum < 10000 && tempNum >= 1000 )
         {
-            wrdStr += (numbers[tempNum / 1000] + " mil ");
+            wrdStr += (numbers[tempNum / 1000] + " mil");
             tempNum -= (tempNum / 1000) * 1000;
         }
 
         if ( tempNum < 1000 && tempNum >= 100 )
         {
-            wrdStr += (hundreds[tempNum / 100] + " ");
+            if (wrdStr != "")
+                wrdStr += " ";
+            wrdStr += (hundreds[tempNum / 100]);
             tempNum -= (tempNum / 100) * 100;
         }
 
-        if ( tempNum < 100 && tempNum >= 20 )
+        if ( tempNum < 100 && tempNum >= 30 )
         {
+            if (wrdStr != "")
+                wrdStr += " ";
             wrdStr += tens[tempNum / 10];
             if ((num % 10) != 0)
-                wrdStr += (" " + numbers[num % 10]);
+                wrdStr += (" y " + numbers[num % 10]);
         }
-        else if ( tempNum < 20 )
+        else if ( tempNum < 30 && !((tempNum == 0) xor (num == 0)) )
+        {
+            if (wrdStr != "")
+                wrdStr += " ";
             wrdStr += numbers[tempNum];
+        }
 
         std::cout << "What is " << num << " in Spanish?" << std::endl;
         getline(std::cin,response);
