@@ -182,25 +182,28 @@ string goodbye(string name)
     return goodbyes[randIndex(9)] + (name==""?"":", "+name) + "!";
 }
 
-bool exitProg(const char * test, bool cinEof)
+bool exitProg(const char * test, bool cinEOF)
 {
     bool exiting = (!strcmp(test,"exit") || \
                     !strcmp(test,"'exit'") || \
                     !strcmp(test,"quit") || \
                     !strcmp(test,"'quit'") || \
-                    cinEof);
+                    cinEOF);
     return exiting;
 }
 
-int whatDoYouWantToDo(void)
+int whatDoYouWantToDo(string name)
 {
-    string options[] = {"flash cards", "numbers", "conjugations", "fill-in-the-blank", \
-                        "multiple choice", "account summary", "exit program"};
+    string options[] = {"flash cards", "numbers", "conjugations", \
+                        "fill-in-the-blank", "multiple choice", \
+                        "account summary", "exit program"};
 
     int toDoOption;
-    
-    cout << "What do you want to do?" << endl;
-    cout << "Here are your options: " << endl;
+
+    cout << endl;
+    cout << "Hello " << name << ", " \
+         << "what do you want to do?\n" \
+         << "Here are your options: " << endl;
     for (int ii = 1; ii <= 7; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
 

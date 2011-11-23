@@ -48,6 +48,6 @@ vector<string> stripParentheses(vector<string> &);
 string stripParentheses(string);
 string goodbye(string="");
 bool exitProg(const char*,bool=0);
-int whatDoYouWantToDo(void);
+int whatDoYouWantToDo(string);
 double inverse(int);
 #endif  // FUNCTIONS_H
