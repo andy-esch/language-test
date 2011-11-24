@@ -128,6 +128,78 @@ string numConstructor(int num)
     return wrdStr;
 }
 
+void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
+{
+    bool changeOptions = true;
+    while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
+    {
+        char charOption = 'y';
+        
+        cout << "How many items do you want to be quizzed over?" << endl;
+        cin >> numOfItems; /* do check to make sure well-formed number */
+        
+        cout << "Enter a number range: xmin <= x <= xmax " << endl;
+        
+        cout << "xmin = ";
+        cin >> xmin;
+        
+        cout << "xmax = ";
+        cin >> xmax;
+        
+        cout << "You chose " << numOfItems << " numbers between " \
+        << xmin << " and " << xmax << "." << endl;
+        cout << "Keep these options? (y for yes, r for reset) ";
+        cin >> charOption;
+        if (charOption == 'y')
+        changeOptions = false;
+        else
+        changeOptions = true;
+        }
+}
+
+void loadOptions(int & numOfItems, int & xmin, int & xmax)
+{
+    unsigned short option;
+    cout << "Pick a specific quiz or make your own." << endl;
+    cout << "\t1: 1 to 10 (20 times)" << endl;
+    cout << "\t2: 1 to 100 (30 times)" << endl;
+    cout << "\t3: 1 to 1000 (30 times)" << endl;
+    cout << "\t4: -1000 to 1000 (30 times)" << endl;
+    cout << "\t5: custom" << endl;
+    cout << "\t6: exit to main screen" << endl;
+    
+    cin >> option;
+    switch (option) {
+        case 1:
+            numOfItems = 20;
+            xmin = 1;
+            xmax = 10;
+            break;
+        case 2:
+            numOfItems = 30;
+            xmin = 1;
+            xmax = 100;
+        case 3:
+            numOfItems = 30;
+            xmin = 1;
+            xmax = 1000;
+        case 4:
+            numOfItems = 30;
+            xmin = -1000;
+            xmax = 1000;
+        case 5:
+            setCustomOptions(numOfItems, xmin, xmax);
+            break;
+        case 6:
+            std::cin.std::ios::setstate(std::ios::eofbit);
+            break;
+        default:
+            numOfItems = 20;
+            xmin = 1;
+            xmax = 10;
+            break;
+    }
+}
 
 int numbers()
 {
@@ -137,34 +209,8 @@ int numbers()
     unsigned short numCorrect = 0;
     bool isCorrect = false;
     string wrdStr, response;
-
-    {
-        bool changeOptions = true;
-        while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
-        {
-            char charOption = 'y';
-
-            cout << "How many items do you want to be quizzed over?" << endl;
-            cin >> numOfItems; /* do check to make sure well-formed number */
-
-            cout << "Enter a number range: xmin <= x <= xmax " << endl;
-
-            cout << "xmin = ";
-            cin >> xmin;
-
-            cout << "xmax = ";
-            cin >> xmax;
-            
-            cout << "You chose " << numOfItems << " numbers between " \
-                 << xmin << " and " << xmax << "." << endl;
-            cout << "Keep these options? (y for yes, r for reset) ";
-            cin >> charOption;
-            if (charOption == 'y')
-                changeOptions = false;
-            else
-                changeOptions = true;
-        }
-    }
+    
+    loadOptions(numOfItems,xmin,xmax);
 
     cin.clear();
     cin.ignore(10,'\n');
@@ -195,6 +241,8 @@ int numbers()
             cout << wrdStr << endl;
             cout << "You are off by: " << levenshtein(wrdStr, response)-1 \
                  << " letters." << endl;
+            cout << "And your response is " << lcsPercent(wrdStr,response) \
+                 << "% correct" << endl;
         }
 
         isCorrect = false;
