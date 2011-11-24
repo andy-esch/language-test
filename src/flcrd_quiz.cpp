@@ -49,7 +49,7 @@ int flcrd_quiz(bool verbose, char * inFile)
             if (cin.eof()) break; // Break loop if CTRL-D (EOF) is entered
 
             /* options processing */
-            if ( response[0] == '-' )
+            if ( response[0] == '-' ) /* if hint */
             {
                 if(response[1]=='s') break;
                 cout << myhint.handle(response,false);
@@ -60,6 +60,10 @@ int flcrd_quiz(bool verbose, char * inFile)
                 isWrong = isInvalidAnswer(response,cards[ii].getSideB());
                 if (isWrong)
                 {
+                    if (verbose) cout << "You are " \
+                                      << lcsPercent(cards[ii].getWord('B',0),response) \
+                                      << "% correct." \
+                                      << endl;
                     if (verbose) cout << correctness(response,cards[ii].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {

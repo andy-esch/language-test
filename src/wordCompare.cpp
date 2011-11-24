@@ -93,3 +93,35 @@ string unique(string str)
     }
     return uniq;
 }
+
+float lcsPercent(std::string answer, std::string response)
+{
+    const int m = answer.size();
+    const int n = response.size();
+    float percentCorrect;
+    int c[m+1][n+1];
+    
+    for (int ii = 1; ii <= m; ii++)
+        c[ii][0] = 0;
+
+    for (int jj = 0; jj <= n; jj++)
+        c[0][jj] = 0;
+
+    for (int ii = 1; ii <= m; ii++)
+    {
+        for (int jj = 1; jj <= n; jj++)
+        {
+            if (answer[ii-1] == response[jj-1])
+                c[ii][jj] = c[ii-1][jj-1] + 1;
+            else if (c[ii-1][jj] >= c[ii][jj-1])
+                c[ii][jj] = c[ii-1][jj];
+            else
+                c[ii][jj] = c[ii][jj-1];
+        }
+    }
+
+    percentCorrect = static_cast<float> (c[m][n]) / \
+                     static_cast<float> (m) * 100;
+    
+    return percentCorrect;
+}

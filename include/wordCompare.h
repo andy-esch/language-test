@@ -21,5 +21,6 @@ string levRater(unsigned int);
 unsigned int levenshtein(string, string);
 float wordCompare(string, string);
 string unique(string);
+float lcsPercent(string, string);
 
 #endif // WORDCOMPARE_H
