@@ -1,6 +1,6 @@
 /*
  *  numbers.cpp
- *  
+ *
  *  Description:
  *
  *
@@ -73,6 +73,54 @@ int findFirstError(string ans, string cmp)
     return errorPos;
 }
 
+int reduce(int num, int mag)
+{
+    return (num/mag)*mag;
+}
+
+string numConst(int num)
+{
+    int tempNum = num;
+    string wrdStr;
+
+    if (tempNum < 1E3 && tempNum >= 1E2)
+    {
+        wrdStr = hundreds[tempNum / 100];
+        tempNum -= reduce(tempNum,1E2);
+    }
+
+    if (tempNum  < 1E2 && num >= 30)
+    {
+        if (!wrdStr.empty())
+            wrdStr += " ";
+        wrdStr += tens[tempNum / 10];
+        if ( (num % 10) != 0 )
+            wrdStr += (" y " + zeroTo29[num % 10]);
+    }
+    else if ( tempNum < 30 && !((tempNum == 0) xor (num == 0)) )
+    {
+        if (!wrdStr.empty())
+            wrdStr += " ";
+        wrdStr += zeroTo29[tempNum];
+    }
+
+    return wrdStr;
+}
+
+string numConstructor2(int num)
+{
+    string wrdStr;
+    int tmpNum = num;
+    if (tmpNum > 1E3)
+    {
+        wrdStr += (numConst(num/1E3) + " mil");
+    }
+    if (tmpNum != 0 && true/*num > */)
+    {
+
+    }
+}
+
 /* need a 'number constructor' function that takes into account sign and magnitude */
 string numConstructor(int num)
 {
@@ -96,7 +144,18 @@ string numConstructor(int num)
         tempNum = 0;
     }
 
-    if ( tempNum < 10000 && tempNum >= 1000 )
+    /* Extract 1E4 to 1E5 portion?
+     *  134,000 / 1E3 = 134 --> construct number from this
+     *
+     *  How about splitting up number into regions abc,def,ghi
+     *  Where each has same behaviors but ends in different suffices, such as:
+     *  987,123,456,789 = (nine hundred eighty seven) billion
+     *                    (one hundred twenty three) million
+     *                    (four hundred fifty six) thousand
+     *                    (seven hundred eighty nine)
+     */
+
+    if ( tempNum < 30000 && tempNum >= 1000 )
     {
         wrdStr += (zeroTo29[tempNum / 1000] + " mil");
         tempNum -= (tempNum / 1000) * 1000;
@@ -128,38 +187,64 @@ string numConstructor(int num)
     return wrdStr;
 }
 
+void takeInput(int & val, const char * message)
+{
+    while (true)
+    {
+        cout << message;
+        cin >> val;
+        if (!cin.fail()) break;
+        else
+        {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+        }
+    }
+}
+
+void takeInput(char & val, const char * message)
+{
+    while (true)
+    {
+        cout << message;
+        cin >> val;
+        if (!cin.fail()) break;
+        else
+        {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+        }
+    }
+}
+
 void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
 {
     bool changeOptions = true;
     while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
     {
         char charOption = 'y';
-        
-        cout << "How many items do you want to be quizzed over?" << endl;
-        cin >> numOfItems; /* do check to make sure well-formed number */
-        
+
+        takeInput(numOfItems,"How many items do you want to be quizzed over?\n");
+
         cout << "Enter a number range: xmin <= x <= xmax " << endl;
-        
-        cout << "xmin = ";
-        cin >> xmin;
-        
-        cout << "xmax = ";
-        cin >> xmax;
-        
+
+        takeInput(xmin,"xmin = ");
+        takeInput(xmax,"xmax = ");
+
         cout << "You chose " << numOfItems << " numbers between " \
         << xmin << " and " << xmax << "." << endl;
-        cout << "Keep these options? (y for yes, r for reset) ";
-        cin >> charOption;
+        takeInput(charOption,"Keep these options? (y for yes, r for reset) ");
+
         if (charOption == 'y')
-        changeOptions = false;
+            changeOptions = false;
         else
-        changeOptions = true;
-        }
+            changeOptions = true;
+    }
 }
 
 void loadOptions(int & numOfItems, int & xmin, int & xmax)
 {
-    unsigned short option;
+    short option;
     cout << "Pick a specific quiz or make your own." << endl;
     cout << "\t1: 1 to 10 (20 times)" << endl;
     cout << "\t2: 1 to 100 (30 times)" << endl;
@@ -167,8 +252,8 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
     cout << "\t4: -1000 to 1000 (30 times)" << endl;
     cout << "\t5: custom" << endl;
     cout << "\t6: exit to main screen" << endl;
-    
-    cin >> option;
+
+    takeInput(option,"");
     switch (option) {
         case 1:
             numOfItems = 20;
@@ -179,19 +264,22 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
             numOfItems = 30;
             xmin = 1;
             xmax = 100;
+            break;
         case 3:
             numOfItems = 30;
             xmin = 1;
             xmax = 1000;
+            break;
         case 4:
             numOfItems = 30;
             xmin = -1000;
             xmax = 1000;
+            break;
         case 5:
             setCustomOptions(numOfItems, xmin, xmax);
             break;
         case 6:
-            std::cin.std::ios::setstate(std::ios::eofbit);
+            cin.std::ios::setstate(std::ios::eofbit);
             break;
         default:
             numOfItems = 20;
@@ -201,7 +289,7 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
     }
 }
 
-int numbers()
+int numbers(void)
 {
     boost::random::mt19937 gen;
     gen.seed(time(0));
@@ -209,13 +297,13 @@ int numbers()
     unsigned short numCorrect = 0;
     bool isCorrect = false;
     string wrdStr, response;
-    
+
     loadOptions(numOfItems,xmin,xmax);
 
     cin.clear();
-    cin.ignore(10,'\n');
-    
-    for (int ii = 1; ii <= numOfItems && !cin.eof(); ii++)
+    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+
+    for (size_t ii = 1; ii <= numOfItems && !cin.eof(); ii++)
     {
         num = randNum(xmin,xmax,gen);
 
@@ -235,10 +323,14 @@ int numbers()
         {
             cout << "You're wrong! The correct response is: '" \
                  << wrdStr << "'" << endl;
+
+            /* Shows first error -- doesn't work with accented words */
             cout << response << endl;
             cout << whitespace(findFirstError(wrdStr,response)-2) \
                  << "^" << endl;
             cout << wrdStr << endl;
+
+            /* Calculates word differences */
             cout << "You are off by: " << levenshtein(wrdStr, response)-1 \
                  << " letters." << endl;
             cout << "And your response is " << lcsPercent(wrdStr,response) \
