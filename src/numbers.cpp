@@ -2,36 +2,37 @@
  *  numbers.cpp
  *
  *  Description:
+ *   Quiz of integer numbers.  This program constructs numbers into a specified
+ *   language, quizzes the user, shows the correctness, and more.  Part of
+ *   LanguageTest.cpp
  *
- *
- *  Created by Peter Eschbacher on 11/8/11.
+ *  Created by Añdy Eschbacher on 11/8/11.
  *
  */
 
-// There may be problems for num < 0 with uniform_int_dist...
 #include "numbers.h"
 
 /* Load these from a file eventually */
-string zeroTo29[] = {"cero", "uno", "dos", "tres", "cuatro", "cinco",
-    "seis", "siete", "ocho", "nueve", "diez",
-    "once", "doce", "trece", "catorce", "quince",
-    "dieciséis", "diecisiete", "dieciocho",
-    "diecinueve", "veinte", "veintiuno", "veintidós",
-    "veintitrés", "veinticuatro", "veinticinco",
-    "veintiséis", "veintisiete", "veintiocho",
-    "veintinueve"};
+string zeroTo29[] = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis",
+                     "siete", "ocho", "nueve", "diez", "once", "doce", "trece",
+                     "catorce", "quince", "dieciséis", "diecisiete",
+                     "dieciocho", "diecinueve", "veinte", "veintiuno",
+                     "veintidós", "veintitrés", "veinticuatro", "veinticinco",
+                     "veintiséis", "veintisiete", "veintiocho", "veintinueve"};
 
 string tens[] = {"cero", "diez", "veinte", "treinta", "cuarenta",
-    "cincuenta", "sesenta", "setenta", "ochenta",
-    "noventa"};
+                 "cincuenta", "sesenta", "setenta", "ochenta",
+                 "noventa"};
 
 string hundreds[] = {"cero", "ciento","doscientos", "trescientos",
-    "cuatrocientos", "quinientos", "seiscientos",
-    "setecientos", "ochocientos", "novecientos"};
+                     "cuatrocientos", "quinientos", "seiscientos",
+                     "setecientos", "ochocientos", "novecientos"};
 
-string powersOfTen[] = {"uno", "diez", "ciento", "mil", "diez mil",
-    "cien mil", "millón", "mil millones",
-    "billón"};
+//string powersOfTen[] = {"uno", "diez", "ciento", "mil", "diez mil",
+//                        "cien mil", "millón", "mil millones",
+//                        "billón"};
+
+string powersOfThousand[] = {"", "mil", "millón", "mil millones", "billón"};
 
 int randNum(int lowLim, int upLim, boost::random::mt19937 &gn)
 {
@@ -187,36 +188,6 @@ string numConstructor(int num)
     return wrdStr;
 }
 
-void takeInput(int & val, const char * message)
-{
-    while (true)
-    {
-        cout << message;
-        cin >> val;
-        if (!cin.fail()) break;
-        else
-        {
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        }
-    }
-}
-
-void takeInput(char & val, const char * message)
-{
-    while (true)
-    {
-        cout << message;
-        cin >> val;
-        if (!cin.fail()) break;
-        else
-        {
-            cin.clear();
-            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        }
-    }
-}
-
 void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
 {
     bool changeOptions = true;
@@ -224,16 +195,16 @@ void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
     {
         char charOption = 'y';
 
-        takeInput(numOfItems,"How many items do you want to be quizzed over?\n");
+        ltest::takeInput(numOfItems,"How many items do you want to be quizzed over?\n");
 
         cout << "Enter a number range: xmin <= x <= xmax " << endl;
 
-        takeInput(xmin,"xmin = ");
-        takeInput(xmax,"xmax = ");
+        ltest::takeInput(xmin,"xmin = ");
+        ltest::takeInput(xmax,"xmax = ");
 
         cout << "You chose " << numOfItems << " numbers between " \
-        << xmin << " and " << xmax << "." << endl;
-        takeInput(charOption,"Keep these options? (y for yes, r for reset) ");
+             << xmin << " and " << xmax << "." << endl;
+        ltest::takeInput(charOption,"Keep these options? (y for yes, r for reset) ");
 
         if (charOption == 'y')
             changeOptions = false;
@@ -244,7 +215,7 @@ void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
 
 void loadOptions(int & numOfItems, int & xmin, int & xmax)
 {
-    short option;
+    int option;
     cout << "Pick a specific quiz or make your own." << endl;
     cout << "\t1: 1 to 10 (20 times)" << endl;
     cout << "\t2: 1 to 100 (30 times)" << endl;
@@ -252,9 +223,9 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
     cout << "\t4: -1000 to 1000 (30 times)" << endl;
     cout << "\t5: custom" << endl;
     cout << "\t6: exit to main screen" << endl;
-
-    takeInput(option,"");
-    switch (option) {
+    ltest::takeInput(option);
+    switch (option)
+    {
         case 1:
             numOfItems = 20;
             xmin = 1;
@@ -326,7 +297,7 @@ int numbers(void)
 
             /* Shows first error -- doesn't work with accented words */
             cout << response << endl;
-            cout << whitespace(findFirstError(wrdStr,response)-2) \
+            cout << ltest::whitespace(findFirstError(wrdStr,response)-2) \
                  << "^" << endl;
             cout << wrdStr << endl;
 

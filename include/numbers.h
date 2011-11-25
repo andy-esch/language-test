@@ -2,7 +2,7 @@
  *  numbers.h
  *  
  *
- *  Created by Peter Eschbacher on 11/15/11.
+ *  Created by Añdy Eschbacher on 11/15/11.
  *
  */
 

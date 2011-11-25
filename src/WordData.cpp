@@ -19,12 +19,12 @@ WordData::WordData(void)
 
 double WordData::getPercentCorrect(void) const
 {
-    return 100.0 * static_cast<double>(numCorrect) * inverse(numAsked);
+    return 100.0 * static_cast<double>(numCorrect) * ltest::inverse(numAsked);
 }
 
 double WordData::getAverageCorrectAnswerTime(void) const
 {
-    return static_cast<double>(answeringTime) * inverse(numCorrect);
+    return static_cast<double>(answeringTime) * ltest::inverse(numCorrect);
 }
 
 unsigned short int WordData::getNumAsked(void) const

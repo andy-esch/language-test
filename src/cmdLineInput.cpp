@@ -31,7 +31,7 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                     cerr << "Warning: Option '-i' must have more than one argument." << endl;
                     cout << "Type a new file name to continue or 'exit' to exit program." << endl;
                     cin >> inFile;
-                    if ( exitProg(inFile,cin.eof()) ) // if 'exit', exit program
+                    if ( ltest::exitProg(inFile,cin.eof()) ) // if 'exit', exit program
                         exit(0);
                     cin.clear();
                     cin.ignore(10,'\n');
@@ -40,7 +40,7 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                 verbose = true;
                 break;
             case 'h': // Print usage info then exit
-                cout << help(argv[0]);
+                cout << ltest::help(argv[0]);
                 exit(0);
             case 'd': // Show debug output info
                 debug = true;
@@ -53,7 +53,7 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
                 break;
             default:
                 cerr << "Invalid commandline options." << endl;
-                help(argv[0]);
+                ltest::help(argv[0]);
                 exit(0);
                 break;
         }

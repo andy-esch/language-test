@@ -55,9 +55,9 @@ unsigned int levenshtein(string str1, string str2)
                 cost = 0;
             else
                 cost = 1;
-            m[ii][jj] = min(m[ii-1][jj] + 1, \
-                            min(m[ii][jj-1] + 1, \
-                                m[ii-1][jj-1] + cost) \
+            m[ii][jj] = ltest::min(m[ii-1][jj] + 1, \
+                                   ltest::min(m[ii][jj-1] + 1, \
+                                              m[ii-1][jj-1] + cost) \
                             );
         }
     }

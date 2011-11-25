@@ -1,7 +1,8 @@
 /*
  *  functions.cpp
  *  
- *  Description: Various non-class functions for LanguageTest.cpp
+ *  Description:
+ *   Various non-class functions for LanguageTest.cpp
  *
  *
  *  Created by Añdy Eschbacher on 9/11/11.
@@ -12,7 +13,7 @@
 
 //  To be used to verify if a given test has been passed
 //  This is only a prototype
-bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
+bool ltest::pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
 {
     int numUnanswered = 0; // Delete this later, for use as prototype only
     bool passVar = ((numOfHints < (numEntries / 30)) && \
@@ -22,7 +23,7 @@ bool pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPerc
     return passVar;
 }
 
-float howWrongIsIt(string test, string compare)
+float ltest::howWrongIsIt(string test, string compare)
 {
     /* 
      * This function will tell the user how wrong their word is if they so
@@ -40,17 +41,22 @@ float howWrongIsIt(string test, string compare)
     return 0.0;
 }
 
-vector<string> stripParentheses(vector<string> & words)
+string ltest::prompt(void)
+{
+    return ">> ";
+}
+
+vector<string> ltest::stripParentheses(vector<string> & words)
 { 
     vector<string> strippedWords = words;
 
-    for (int i = 0; i < words.size(); i++)
-        strippedWords[i] = stripParentheses(strippedWords[i]);
+    for (int ii = 0; ii < words.size(); ii++)
+        strippedWords[ii] = stripParentheses(strippedWords[ii]);
 
     return strippedWords;
 }
 
-string stripParentheses(string original)
+string ltest::stripParentheses(string original)
 {
     string strippedWord = original;
     string paren(" (");
@@ -64,7 +70,7 @@ string stripParentheses(string original)
 // Mimics string compare -- returns 'true' if there is no match
 // I don't like to do all this extra work for each case, but for now it works.
 // Should we make this a member of the class Flashcard?
-bool isInvalidAnswer(string answer, vector<string> ws)
+bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
@@ -77,8 +83,8 @@ bool isInvalidAnswer(string answer, vector<string> ws)
     return isWrong;
 }
 
-
-string hintOptions(int leftmargin)
+/* should be moved to Hint.cpp? */
+string ltest::hintOptions(int leftmargin)
 {
     stringstream hint;
     string lMargSpace = whitespace(leftmargin);
@@ -115,7 +121,7 @@ string hintOptions(int leftmargin)
 //}
 
 
-string ordinal(int num)
+string ltest::ordinal(int num)
 {
     string ords[10] = { "th", "st", "nd", "rd", "th", \
                         "th", "th", "th", "th", "th"};
@@ -124,12 +130,12 @@ string ordinal(int num)
     return ord.str();
 }
 
-int min(int val1, int val2)
+int ltest::min(int val1, int val2)
 {
     return (val1 > val2 ? val2 : val1);
 }
 
-string help(char * prog)
+string ltest::help(char * prog)
 {
     stringstream help;
     help << "Commandline language learner. Version 1.0 Beta" << endl;
@@ -148,12 +154,12 @@ string help(char * prog)
     return help.str();
 }
 
-int randIndex(int num)
+int ltest::randIndex(int num)
 {
     return (rand() % num);
 }
 
-double reaction(double time, int numLttrs)
+double ltest::reaction(double time, int numLttrs)
 {
     // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
     double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
@@ -165,7 +171,7 @@ double reaction(double time, int numLttrs)
     return reactionTime;
 }
 
-string whitespace(int length)
+string ltest::whitespace(int length)
 {
     string whitespace("");
     for (int k = 0; k < length + 2; k++)
@@ -173,7 +179,7 @@ string whitespace(int length)
     return whitespace;
 }
 
-string goodbye(string name)
+string ltest::goodbye(string name)
 {
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
@@ -182,7 +188,7 @@ string goodbye(string name)
     return goodbyes[randIndex(9)] + (name==""?"":", "+name) + "!";
 }
 
-bool exitProg(const char * test, bool cinEOF)
+bool ltest::exitProg(const char * test, bool cinEOF)
 {
     bool exiting = (!strcmp(test,"exit") || \
                     !strcmp(test,"'exit'") || \
@@ -192,7 +198,7 @@ bool exitProg(const char * test, bool cinEOF)
     return exiting;
 }
 
-int whatDoYouWantToDo(string name)
+int ltest::whatDoYouWantToDo(string name)
 {
     string options[] = {"flash cards", "numbers", "conjugations", \
                         "fill-in-the-blank", "multiple choice", \
@@ -206,13 +212,12 @@ int whatDoYouWantToDo(string name)
          << "Here are your options: " << endl;
     for (int ii = 1; ii <= 7; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
-
-    cin >> toDoOption;
+    takeInput(toDoOption);
 
     return toDoOption;
 }
 
-double inverse(int num)
+double ltest::inverse(int num)
 {
     if (num != 0)
         return (1.0 / static_cast<double> (num));

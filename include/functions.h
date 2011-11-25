@@ -8,13 +8,13 @@
  *
  */
 
-#ifndef _FUNCTIONS_H_
-#define _FUNCTIONS_H_
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 #include <algorithm>
 #include <cstring>
-#include <fstream>
 #include <iostream>
+#include <limits>       // numeric_limits<...>::max()
 #include <numeric>
 #include <sstream>
 #include <string>
@@ -32,22 +32,46 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-bool pass(int, int, float, float);
-bool compareAll(vector<string> &, string);
-bool isInvalidAnswer(string, vector<string>);
-string hintOptions(int);
-string hint(int, bool, int, string, int);
-string ordinal(int num);
-int min(int, int);
-string help(char *);
-int randIndex(int);
-double reaction(double, int);
-string whitespace(int length);
-float howWrongIsIt(string,string);
-vector<string> stripParentheses(vector<string> &);
-string stripParentheses(string);
-string goodbye(string="");
-bool exitProg(const char*,bool=0);
-int whatDoYouWantToDo(string);
-double inverse(int);
+namespace ltest {
+
+    bool pass(int, int, float, float);
+    bool compareAll(vector<string> &, string);
+    bool isInvalidAnswer(string, vector<string>);
+    string hintOptions(int);
+    string ordinal(int num);
+    int min(int, int);
+    string help(char *);
+    int randIndex(int);
+    double reaction(double, int);
+    string whitespace(int length);
+    float howWrongIsIt(string,string);
+    vector<string> stripParentheses(vector<string> &);
+    string prompt(void);
+    string stripParentheses(string);
+    string goodbye(string="");
+    bool exitProg(const char*,bool=0);
+    int whatDoYouWantToDo(string);
+    double inverse(int);
+
+    /* */
+    template <class T>
+    void takeInput(T& val, const char * message = NULL)
+    {
+        while (true)
+        {
+            if (cin.eof()) break;
+            if (message != NULL)
+                cout << message << endl;
+            cout << prompt();
+            cin >> val;
+            if (!cin.fail()) break;
+            else
+            {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                cout << prompt();
+            }
+        }    
+    }
+} // namespace
 #endif  // FUNCTIONS_H

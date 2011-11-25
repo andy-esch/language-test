@@ -63,7 +63,7 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
         repopulateIndices(cards);
 
     std::list<unsigned short int>::iterator it = leastCorrectIndices.begin();
-    for (int jj = randIndex(leastCorrectIndices.size()); jj > 0; jj--)
+    for (int jj = ltest::randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
     if (*it == currentIndex)
@@ -134,7 +134,7 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
         repopulateIndices(cards);
 
     std::list<unsigned short int>::iterator it = leastPickedIndices.begin();
-    for (int jj = randIndex(leastPickedIndices.size()); jj > 0; jj--)
+    for (int jj = ltest::randIndex(leastPickedIndices.size()); jj > 0; jj--)
         it++;
 
     if (*it == currentIndex)
@@ -190,7 +190,7 @@ void LeastPicked::setCurrentLowest(unsigned short int newCurrLow)
 // Default Constructor
 Adaptive::Adaptive(int numEntries)
 {
-    probability.assign(numEntries,inverse(numEntries));
+    probability.assign(numEntries,ltest::inverse(numEntries));
     gen.seed(static_cast<unsigned short int>(std::time(0))); // initialize random seed
 }
 

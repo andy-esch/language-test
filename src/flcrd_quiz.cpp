@@ -16,25 +16,25 @@ int flcrd_quiz(bool verbose, char * inFile)
     boost::chrono::system_clock::time_point timeStart;
     boost::chrono::duration<double> timeDiff;
     bool disableHintMsg = false;
-    unsigned short int ii;
+    unsigned short ii;
     bool isWrong = true;
     vector<Flashcard> cards;
     string response;
     LeastPicked picker;
     Hint myhint = Hint("  ",verbose);
+
+    /* Choose flashcard set */
     strcpy(inFile,listDicts().c_str());
-    
+
     cards[0].input(cards,inFile);   // wonky -- input() should be a friend
                                     // instead of a Flashcard member function?
 
     while ( !cin.eof() )    // Should there be other conditions? Yes, all probabilities can't be zero.
     {
-        ii = picker.getNextIndex(cards);      // retrieve new index
+        ii = picker.getNextIndex(cards);
 
-        string sideBword = cards[ii].getWord('B',randIndex(cards[ii].size('B')));
-        string sideAword = cards[ii].getWord('A',randIndex(cards[ii].size('A')));
-
-        myhint.setKey(sideBword);
+        myhint.setKey(cards[ii].getWord('B',ltest::randIndex(cards[ii].size('B'))));
+        string sideAword = cards[ii].getWord('A',ltest::randIndex(cards[ii].size('A')));
 
         int numOfTries = 0;
 
@@ -53,11 +53,11 @@ int flcrd_quiz(bool verbose, char * inFile)
             {
                 if(response[1]=='s') break;
                 cout << myhint.handle(response,false);
-                cout << whitespace(sideAword.size());
+                cout << ltest::whitespace(sideAword.size());
             }
             else /* no hint, check response */
             {
-                isWrong = isInvalidAnswer(response,cards[ii].getSideB());
+                isWrong = ltest::isInvalidAnswer(response,cards[ii].getSideB());
                 if (isWrong)
                 {
                     if (verbose) cout << "You are " \
@@ -67,11 +67,11 @@ int flcrd_quiz(bool verbose, char * inFile)
                     if (verbose) cout << correctness(response,cards[ii].getWord('B',0)) << endl;
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
-                        cout << hintOptions(sideAword.size()) << endl;
+                        cout << ltest::hintOptions(sideAword.size()) << endl;
                         cout << sideAword << ": ";
                     }
                     else
-                        cout << whitespace(sideAword.size());
+                        cout << ltest::whitespace(sideAword.size());
                 }
                 else if( verbose ) cout << "Right!" << endl;
             }
@@ -80,10 +80,10 @@ int flcrd_quiz(bool verbose, char * inFile)
         cards[ii].recordPerformance(numOfTries,isWrong,timeDiff.count());
         isWrong = true;
     }
-    
+
     testResults(cards,verbose);
-    
+
     cin.clear(); // Need to clear away the EOF somehow
-    
+
     return 0;
 }

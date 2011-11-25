@@ -28,7 +28,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
 {
     unsigned int lengthLongestWord = 0;
     for (int i = 0; i < cards.size(); i++)
-        if (stripParentheses(cards[i].getWord('B',0)).size() > lengthLongestWord)
+        if (ltest::stripParentheses(cards[i].getWord('B',0)).size() > lengthLongestWord)
             lengthLongestWord = cards[i].size('B',0);
   
     cout << endl;
@@ -46,7 +46,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
   
     for (int i = 0; i < cards.size(); i++)
     {
-        cout << setw(lengthLongestWord) << stripParentheses(cards[i].getWord('B',0));
+        cout << setw(lengthLongestWord) << ltest::stripParentheses(cards[i].getWord('B',0));
         if ( cards[i].data.getNumAsked() > 0 )
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \

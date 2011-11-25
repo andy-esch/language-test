@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     acct.establishAccount();
     
-    int toDoOption = whatDoYouWantToDo(acct.getName());
+    int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     
     while (!cin.eof())
     {
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
                 break;
             case 7:
                 cout << "you chose to exit the program" << endl;
-                cout << goodbye(acct.getName()) << endl;
+                cout << ltest::goodbye(acct.getName()) << endl;
                 exit(0);
             default:
                 cout << "hmm, that's not an option" << endl;
@@ -95,11 +95,11 @@ int main(int argc, char **argv)
         }
         /* need way to clear cin so that EOF is cleared out and it doesn't
            prematurely exit program */
-        toDoOption = whatDoYouWantToDo(acct.getName());
+        toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     }
     cin.clear();
     cin.ignore('\n',10);
-    cout << goodbye(acct.getName()) << endl;
+    cout << ltest::goodbye(acct.getName()) << endl;
 
     return 0;
 }

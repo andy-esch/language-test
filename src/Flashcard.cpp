@@ -73,7 +73,7 @@ int Flashcard::size(char side, int ind)
 
 void Flashcard::setWeight(int N)
 {
-    weight = inverse(N);
+    weight = ltest::inverse(N);
 }
 
 void Flashcard::clearWS(void)
@@ -99,7 +99,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
         cout << "Enter another filename (or 'exit' to exit): ";
         cin >> inFile;
         
-        if (exitProg(inFile,cin.eof()))
+        if (ltest::exitProg(inFile,cin.eof()))
         {
             cout << endl;
             exit(0);
@@ -113,7 +113,11 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
     while ( !infile.eof() )
     {
-        getline(infile, temp1);             // Read in line from file
+        getline(infile, temp1);             // Read in line from file 
+                                            /* Perhaps use
+                                             *  getline(infile,temp1,'\t'); \\ gets to tab
+                                             *  getline(infile,temp2,); \\ gets after tab
+                                             */  
         
         if (temp1 == "") continue;          // Skip empty lines
         
