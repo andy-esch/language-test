@@ -46,12 +46,14 @@ unsigned short getPower(const long rawInt)
     unsigned short mag = 0;
     cout << setw(9) << "temp" << setw(3) << "  mag" << endl;
     cout << setw(9) << temp << "  " << setw(3) << mag << endl;
+
     while (temp >= 10)
     {
         mag++;
         temp /= 10;
         cout << setw(9) << temp << "  " << setw(3) << mag << endl;
     }
+
     return mag;
 }
 
@@ -316,5 +318,6 @@ int numbers(void)
          << static_cast<double> (numCorrect) / static_cast<double> (numOfItems) * 100.0 \
          << "%)." << endl;
 
+    cin.clear(cin.rdstate()); // ugh, this doesn't seem to be clearing the eofbit...
     return 0;
 }

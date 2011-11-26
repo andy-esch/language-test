@@ -38,32 +38,33 @@ namespace ltest {
     bool compareAll(vector<string> &, string);
     bool isInvalidAnswer(string, vector<string>);
     string hintOptions(int);
-    string ordinal(int num);
-    int min(int, int);
+    string ordinal(const int num);
+    int min(const int, const int);
     string help(char *);
-    int randIndex(int);
-    double reaction(double, int);
-    string whitespace(int length);
+    int randIndex(const int);
+    double reaction(const double, const int);
+    string whitespace(const int length);
     float howWrongIsIt(string,string);
     vector<string> stripParentheses(vector<string> &);
     string prompt(void);
     string stripParentheses(string);
-    string goodbye(string="");
+    string goodbye(const string="");
     bool exitProg(const char*,bool=0);
-    int whatDoYouWantToDo(string);
-    double inverse(int);
+    int whatDoYouWantToDo(const string);
+    double inverse(const int);
 
     /* */
     template <class T>
     void takeInput(T& val, const char * message = NULL)
     {
+        T temp;
         while (true)
         {
             if (cin.eof()) break;
             if (message != NULL)
                 cout << message << endl;
             cout << prompt();
-            cin >> val;
+            cin >> temp;
             if (!cin.fail()) break;
             else
             {
@@ -71,7 +72,8 @@ namespace ltest {
                 cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                 cout << prompt();
             }
-        }    
+        }
+        val = temp;
     }
 } // namespace
 #endif  // FUNCTIONS_H

@@ -6,8 +6,8 @@
  *
  */
 
-#ifndef _NUMBERS_H_
-#define _NUMBERS_H_
+#ifndef NUMBERS_H
+#define NUMBERS_H
 
 #include <iostream>
 #include <cmath>

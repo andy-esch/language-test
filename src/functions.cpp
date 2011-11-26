@@ -74,9 +74,8 @@ bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
-    vector<string>::iterator it, it2;
 
-    for (int ii = 0; ii < ws.size(); ii++)
+    for (int ii = 0; ii < ws.size() && isWrong; ii++)
         if ( !answer.compare(ws[ii]) || !answer.compare(strippedws[ii]) )
             isWrong = false;
 
@@ -121,7 +120,7 @@ string ltest::hintOptions(int leftmargin)
 //}
 
 
-string ltest::ordinal(int num)
+string ltest::ordinal(const int num)
 {
     string ords[10] = { "th", "st", "nd", "rd", "th", \
                         "th", "th", "th", "th", "th"};
@@ -130,7 +129,7 @@ string ltest::ordinal(int num)
     return ord.str();
 }
 
-int ltest::min(int val1, int val2)
+int ltest::min(const int val1, const int val2)
 {
     return (val1 > val2 ? val2 : val1);
 }
@@ -154,12 +153,12 @@ string ltest::help(char * prog)
     return help.str();
 }
 
-int ltest::randIndex(int num)
+int ltest::randIndex(const int num)
 {
     return (rand() % num);
 }
-
-double ltest::reaction(double time, int numLttrs)
+/* obsolete? */
+double ltest::reaction(const double time, const int numLttrs)
 {
     // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
     double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
@@ -171,7 +170,7 @@ double ltest::reaction(double time, int numLttrs)
     return reactionTime;
 }
 
-string ltest::whitespace(int length)
+string ltest::whitespace(const int length)
 {
     string whitespace("");
     for (int k = 0; k < length + 2; k++)
@@ -179,7 +178,7 @@ string ltest::whitespace(int length)
     return whitespace;
 }
 
-string ltest::goodbye(string name)
+string ltest::goodbye(const string name)
 {
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
@@ -198,13 +197,13 @@ bool ltest::exitProg(const char * test, bool cinEOF)
     return exiting;
 }
 
-int ltest::whatDoYouWantToDo(string name)
+int ltest::whatDoYouWantToDo(const string name)
 {
     string options[] = {"flash cards", "numbers", "conjugations", \
                         "fill-in-the-blank", "multiple choice", \
                         "account summary", "exit program"};
 
-    int toDoOption;
+    short toDoOption;
 
     cout << endl;
     cout << "Hello " << name << ", " \
@@ -217,7 +216,7 @@ int ltest::whatDoYouWantToDo(string name)
     return toDoOption;
 }
 
-double ltest::inverse(int num)
+double ltest::inverse(const int num)
 {
     if (num != 0)
         return (1.0 / static_cast<double> (num));
