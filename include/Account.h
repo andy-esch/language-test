@@ -8,9 +8,15 @@
  *
  */
 
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
+
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctime>
+
+#include "functions.h"
 
 using std::cin;
 using std::cout;
@@ -18,13 +24,20 @@ using std::endl;
 using std::string;
 using std::vector;
 
+class quizSummary {
+    string subject;
+    time_t testDate;
+    float score;
+};
+
 class Account {
     string name;
-    vector<string> flashcardTests;
+    vector<quizSummary> results;
     float score;
     string datePassed;
     int numOfTimesAttempted;
     void importViaXml(void);    // Reminder
+    void saveNewResultsToXML(void); // Reminder
     void setName(string);
 public:
     Account();
@@ -35,3 +48,5 @@ public:
     bool doesAcctExist(string);
     string whoAreYou();
 };
+
+#endif // ACCOUNT_H

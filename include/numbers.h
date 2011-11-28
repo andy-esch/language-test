@@ -28,10 +28,12 @@ using std::endl;
 using std::setw;
 using std::string;
 
+typedef unsigned short usInt;
+
 string numConstructor(int);
 int randNum(int, int);
 int numbers(void);
-unsigned short getPower(const long);
+usInt getPower(const long);
 bool inputsAreNotOkay(int, int, int);
 
 #endif // NUMBERS_H

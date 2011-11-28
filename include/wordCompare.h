@@ -16,11 +16,14 @@
 
 #include "functions.h"
 
-string correctness(string, string);
-string levRater(unsigned int);
-unsigned int levenshtein(string, string);
-float wordCompare(string, string);
-string unique(string);
-float lcsPercent(string, string);
+namespace wordCompare {
 
+    string correctness(string, string);
+    string levRater(unsigned int);
+    unsigned short levenshtein(string, string);
+    float wordCompare(string, string);
+    string unique(string);
+    float lcsPercent(string, string);
+
+}
 #endif // WORDCOMPARE_H

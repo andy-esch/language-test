@@ -10,6 +10,7 @@
 
 #ifndef HINT_H
 #define HINT_H
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -21,11 +22,12 @@ using std::endl;
 using std::string;
 using std::vector;
 
+typedef unsigned short usInt;
 
 class Hint {
 public:
     string key; 
-    int hintNum;    // keeps track of where in the word the hint is at.
+    usInt hintNum;    // keeps track of where in the word the hint is at.
     bool verbose;
     string handle(string, bool);
     Hint(string, bool);
@@ -33,7 +35,7 @@ public:
     void setKey(string);
 private:
     string hint;
-    void addLetter(int);
+    void addLetter(usInt);
     void addLetter();
     int numOfSpaces(string,int);
     void fillLetterPlaces();

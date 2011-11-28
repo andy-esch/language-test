@@ -8,10 +8,26 @@
  *
  */
 
-#include "WordData.h"
-#include "Flashcard.h"
+#ifndef TESTRESULTS_H
+#define TESTRESULTS_H
+
+#include <iomanip>
+#include <iostream>
 #include <vector>
+#include <string>
+
+#include "Flashcard.h"
+#include "WordData.h"
+#include "functions.h"
+
+using std::cout;
+using std::endl;
+using std::ios;
+using std::setw;
 using std::vector;
 
+typedef unsigned short usInt;
+
 void testResults(vector<Flashcard>, bool);
-    // void sorter()/
+    // void sorter()
+#endif // TESTRESULTS_H

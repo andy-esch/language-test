@@ -10,7 +10,7 @@
 
 #include "wordCompare.h"
 
-string correctness(string answer, string key)
+string wordCompare::correctness(string answer, string key)
 {
     stringstream response;
     int rating = levenshtein(answer,key);
@@ -19,7 +19,7 @@ string correctness(string answer, string key)
     return response.str();
 }
 
-string levRater(unsigned int value)
+string wordCompare::levRater(unsigned int value)
 {
     string howGood;
     if (value == 1)
@@ -37,81 +37,70 @@ string levRater(unsigned int value)
 }
 
 // Levenshtein Distance Edit calculator for two strings
-unsigned int levenshtein(string str1, string str2)
+unsigned short wordCompare::levenshtein(string str1, string str2)
 {
-    unsigned int cost;
-    unsigned const int lenOne = str1.length(), lenTwo = str2.length();
-    int m[lenOne][lenTwo];
-    for (int ii = 0; ii < lenOne; ii++)
+    unsigned short cost;
+    const unsigned short lenOne = str1.length(), lenTwo = str2.length();
+    unsigned short m[lenOne][lenTwo];
+
+    for (short ii = 0; ii < lenOne; ii++)
         m[ii][0] = ii+1;
-    for (int jj = 0; jj < lenTwo; jj++)
+
+    for (short jj = 0; jj < lenTwo; jj++)
         m[0][jj] = jj+1;
 
-    for (int ii = 1; ii < lenOne; ii++)
+    for (short ii = 1; ii < lenOne; ii++)
     {
-        for (int jj = 1; jj < lenTwo; jj++)
+        for (short jj = 1; jj < lenTwo; jj++)
         {
             if (str1[ii] == str2[jj])
                 cost = 0;
             else
                 cost = 1;
+
             m[ii][jj] = ltest::min(m[ii-1][jj] + 1, \
                                    ltest::min(m[ii][jj-1] + 1, \
                                               m[ii-1][jj-1] + cost) \
-                            );
+                                   );
         }
     }
 
     return m[lenOne-1][lenTwo-1];
 }
 
-// Don't know what's going on here...
-float wordCompare(string known, string test)
-{
-    char currLetter = known[0];
-
-    for (int ii = 0; ii < known.size(); ++ii)
-    {
-        if ( test.find(currLetter) == string::npos )
-        {
-            
-        }
-    }
-}
-
 // Returns a string of the unique letters in string str
-string unique(string str)
+string wordCompare::unique(string str)
 {
     string temp, uniq;
-    uniq.push_back(str[0]);
+    uniq.push_back(str.at(0));
     cout << "uniq = '" << uniq << "'" << endl;
     
-    for (int ii = 1; ii < str.size(); ii++)
+    for (unsigned short ii = 1; ii < str.size(); ii++)
     {
-        if (uniq.find(str[ii]) == string::npos)    // if not found in uniq, add it
-            uniq.push_back(str[ii]);
+        if (uniq.find(str.at(ii)) == string::npos)    // if not found in uniq, add it
+            uniq.push_back(str.at(ii));
     }
     return uniq;
 }
 
-float lcsPercent(std::string answer, std::string response)
+float wordCompare::lcsPercent(string answer, string response)
 {
-    const int m = answer.size();
-    const int n = response.size();
+    const unsigned short m = answer.size();
+    const unsigned short n = response.size();
     float percentCorrect;
-    int c[m+1][n+1];
+    unsigned short c[m+1][n+1];
     
-    for (int ii = 1; ii <= m; ii++)
+    for (short ii = 1; ii <= m; ii++)
         c[ii][0] = 0;
 
-    for (int jj = 0; jj <= n; jj++)
+    for (short jj = 0; jj <= n; jj++)
         c[0][jj] = 0;
 
-    for (int ii = 1; ii <= m; ii++)
+    for (short ii = 1; ii <= m; ii++)
     {
-        for (int jj = 1; jj <= n; jj++)
+        for (short jj = 1; jj <= n; jj++)
         {
-            if (answer[ii-1] == response[jj-1])
+            if (answer.at(ii-1) == response.at(jj-1))
                 c[ii][jj] = c[ii-1][jj-1] + 1;
             else if (c[ii-1][jj] >= c[ii][jj-1])
                 c[ii][jj] = c[ii-1][jj];

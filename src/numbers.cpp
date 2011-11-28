@@ -65,9 +65,9 @@ bool inputsAreNotOkay(int numOfItems, int xMin, int xMax)
 int findFirstError(string ans, string cmp)
 {
     int errorPos = 0;
-    for (int ii = 0; ii < ans.size(); ii++)
+    for (usInt ii = 0; ii < ltest::min(ans.size(),cmp.size()); ii++)
     {
-        if (ans[ii] == cmp[ii])
+        if (ans.at(ii) == cmp.at(ii))
             errorPos++;
         else
             break;
@@ -122,6 +122,7 @@ string numConstructor2(int num)
     {
 
     }
+    return wrdStr;
 }
 
 /* need a 'number constructor' function that takes into account sign and magnitude */
@@ -266,7 +267,7 @@ int numbers(void)
 {
     boost::random::mt19937 gen;
     gen.seed(time(0));
-    int num, tempNum, numOfItems = 0, xmin = 0, xmax = 100;
+    int num, numOfItems = 0, xmin = 0, xmax = 100;
     unsigned short numCorrect = 0;
     bool isCorrect = false;
     string wrdStr, response;
@@ -276,7 +277,7 @@ int numbers(void)
     cin.clear();
     cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
-    for (size_t ii = 1; ii <= numOfItems && !cin.eof(); ii++)
+    for (usInt ii = 1; ii <= numOfItems && !cin.eof(); ii++)
     {
         num = randNum(xmin,xmax,gen);
 
@@ -304,9 +305,9 @@ int numbers(void)
             cout << wrdStr << endl;
 
             /* Calculates word differences */
-            cout << "You are off by: " << levenshtein(wrdStr, response)-1 \
+            cout << "You are off by: " << wordCompare::levenshtein(wrdStr, response)-1 \
                  << " letters." << endl;
-            cout << "And your response is " << lcsPercent(wrdStr,response) \
+            cout << "And your response is " << wordCompare::lcsPercent(wrdStr,response) \
                  << "% correct" << endl;
         }
 

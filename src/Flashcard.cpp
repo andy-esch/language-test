@@ -14,13 +14,13 @@ void Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
 
-    for (int jj = 0; jj < sideA.size() - 1; jj++)
+    for (usInt jj = 0; jj < sideA.size() - 1; jj++)
         cout << sideA[jj] << ", ";
 
     cout << sideA[sideA.size()-1] << endl;
     cout << "sideB: " << endl;
 
-    for (int kk = 0; kk < sideB.size() - 1; kk++)
+    for (usInt kk = 0; kk < sideB.size() - 1; kk++)
         cout << sideB[kk] << ", ";
 
     cout << sideB[sideB.size() - 1] << endl;
@@ -82,6 +82,8 @@ void Flashcard::clearWS(void)
     sideA.clear();
 }
 
+/* TODO: Have a comment character -- ignore input after this character */
+
 void Flashcard::input(vector<Flashcard> & ws, char * inFile)
 {
     // Do some error-checking to make sure there are the proper number of
@@ -90,9 +92,13 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
     size_t delimPos = string::npos;
     ifstream infile(inFile,ifstream::in);   // open file if possible
     Flashcard tempSet;
-    unsigned short int lineNum = 1, delimWidth = 1;
+    unsigned short lineNum = 1, delimWidth = 1;
     string delimiters[] = {"\t","    ","   ","  "};
-    
+
+#ifdef DEBUG
+    cout << "Inputting words from " << inFile << "." << endl;
+#endif // DEBUG
+
     while ( !infile.is_open() )
     {
         cout << "File '" << inFile << "' does not exist as specified." << endl;
@@ -119,7 +125,13 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
                                              *  getline(infile,temp2,); \\ gets after tab
                                              */  
         
-        if (temp1 == "") continue;          // Skip empty lines
+        if (temp1.empty()) continue;          // Skip empty lines
+        else if (temp1.find('#') == string::npos)
+        {
+            cout << "Skipping the following line (comment): " << endl;
+            cout << '\t' << temp1;
+            continue;
+        }
         
         // Find the delimiter
         for (int ii = 0; ii < 4 && delimPos == string::npos; ii++)

@@ -10,10 +10,6 @@
 
 #include "cmdLineInput.h"
 
-using std::cin;
-using std::cerr;
-using std::cout;
-
 void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &debug)
 {
     int c;

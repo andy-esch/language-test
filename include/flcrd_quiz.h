@@ -2,7 +2,7 @@
  *  flcrd_quiz.h
  *  
  *
- *  Created by Peter Eschbacher on 10/19/11.
+ *  Created by Añdy Eschbacher on 10/19/11.
  *
  */
 

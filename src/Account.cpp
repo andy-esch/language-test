@@ -41,19 +41,23 @@ void Account::establishAccount()
 {
     string youAre;
     bool yn = false;
-//    youAre = whoAreYou();
+    string ynstr;
+
     do
     {
         cout << "What is your account name?" << endl;
         getline(cin,youAre);
-        string ynstr;
+
         cout << "You set your account name to '" << youAre \
              << "'. Do you want to keep that? (yes or no)" << endl;
-        cin >> ynstr;
+
+        ltest::takeInput(ynstr);
+
         if (ynstr[0] == 'y' && not doesAcctExist(youAre))
             yn = true;
+
         cin.clear();
-        cin.ignore('\n',10);
+        cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     } while (yn == false);  // Should there be other escape sequences?
                             // such as if you accidentally entered this and
                             // don't want to establish a new account?

@@ -8,26 +8,12 @@
  *
  */
 
-#include <iomanip>
-#include <iostream>
-#include <vector>
-#include <string>
-
 #include "testResults.h"
-#include "Flashcard.h"
-#include "WordData.h"
-#include "functions.h"
-
-using std::cout;
-using std::endl;
-using std::ios;
-using std::setw;
-using std::vector;
 
 void testResults(vector<Flashcard> cards, bool verbose)
 {
-    unsigned int lengthLongestWord = 0;
-    for (int i = 0; i < cards.size(); i++)
+    usInt lengthLongestWord = 0;
+    for (usInt i = 0; i < cards.size(); i++)
         if (ltest::stripParentheses(cards[i].getWord('B',0)).size() > lengthLongestWord)
             lengthLongestWord = cards[i].size('B',0);
   
@@ -35,7 +21,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
     cout << endl;
     cout << setw(lengthLongestWord+13) << "Summary" << endl;
 
-    for (int i = 0; i < lengthLongestWord + 9; i++)
+    for (usInt i = 0; i < lengthLongestWord + 9; i++)
         cout << "=-";
 
     cout << endl;
@@ -44,14 +30,15 @@ void testResults(vector<Flashcard> cards, bool verbose)
     cout.setf(ios::fixed);
     cout.precision(2);
   
-    for (int i = 0; i < cards.size(); i++)
+    for (usInt i = 0; i < cards.size(); i++)
     {
-        cout << setw(lengthLongestWord) << ltest::stripParentheses(cards[i].getWord('B',0));
+        cout << setw(lengthLongestWord) \
+             << ltest::stripParentheses(cards[i].getWord('B',0));
         if ( cards[i].data.getNumAsked() > 0 )
         {
             cout << setw(6) << static_cast<int> (cards[i].data.getPercentCorrect()) \
-            << "% (" << cards[i].data.getNumAsked() << ")";
-            cout << setw(9) << cards[i].data.getAverageCorrectAnswerTime();
+                 << "% (" << cards[i].data.getNumAsked() << ")" \
+                 << setw(9) << cards[i].data.getAverageCorrectAnswerTime();
         }
         else
             cout << setw(6) << "   -" << setw(12) << "   -";

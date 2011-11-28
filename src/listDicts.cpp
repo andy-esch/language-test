@@ -52,7 +52,7 @@ string listDicts(void)
     string dir("./vocab/"), dictPick;
     vector<string> files;
     vector<string>::iterator iter;
-    unsigned short int numOfDicts = 1, dictInt = 0, longestName = 0;
+    unsigned short numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
     // If directory is not found -- do something different instead?
@@ -70,49 +70,56 @@ string listDicts(void)
             if ((*iter).size() > longestName)
                 longestName = (*iter).size();
 
-        cout << "The following dictionaries are available: " << endl;
-        cout << endl;
+        cout << "The following dictionaries are available: \n" << endl;
+
         for (iter = files.begin(); iter != files.end(); ++iter)
         {
-            int strSize = (*iter).size();
-            cout << '\t' << setw(2) << numOfDicts << ". " << *iter << \
-            setw(longestName - (*iter).size() + 9) << numberOfWords(dir+*iter) \
-            << " words" << endl;
+//            unsigned short strSize = (*iter).size(); // unused
+
+            cout << '\t' << setw(2) << numOfDicts << ". " << *iter \
+                 << setw(longestName - (*iter).size() + 9) \
+                 << numberOfWords(dir+*iter) << " words" << endl;
+
             numOfDicts++;
         }
         cout << endl;
         cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;
-        cin >> dictPick;
-        dictInt = atoi(&dictPick[0]);
+        ltest::takeInput(dictPick);
+
+            // TODO: The following six lines needed to be cleaned up!  dictInt is not well-defined
+        dictInt = atoi( &(dictPick.at(0)) );
         
         if ( ltest::exitProg(dictPick.c_str(),cin.eof()) || dictInt <= 0 || dictInt > files.size() )
             exit(0);
         else
-            dictPick = dir + files[dictInt - 1];
+            dictPick = dir + files.at(dictInt - 1);
     }
     else    // If files are not found
     {
-            // This doesn't handle cases where no files are found... but input() does
-        cout << "No dictionaries found." << endl;
-        cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;        
-        cin >> dictPick;
+        // This doesn't handle cases where no files are found... but input() does
+        cout << "No dictionaries found.\n" \
+             << "Select a dictionary for more information.  " \
+             << "Type 'exit' to exit." << endl;        
+        ltest::takeInput(dictPick);
 
         if ( ltest::exitProg(dictPick.c_str(),cin.eof()) )
             exit(0);
     }
 
+    cout << "You picked " << dictPick << endl;
     cin.clear();
-    cin.ignore(10,'\n');
+    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
     // returns full path of file, e.g. "./vocab/sideA.txt"
     return dictPick;
 }
 
-int numberOfWords(string fileName)
+/* Counts the number of entries in a quiz file */
+unsigned short numberOfWords(string fileName)
 {
     ifstream inFile(fileName.c_str(),ifstream::in);
     string temp;
-    int size = 0;
+    unsigned short size = 0;
     if ( inFile.is_open() )
     {
         while ( !inFile.eof() )     // Have something to skip empty lines?

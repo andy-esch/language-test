@@ -31,6 +31,8 @@ using std::ifstream;
 
 extern bool debug;
 
+typedef unsigned short usInt;
+
 class Flashcard {
 private:
     vector<string> sideB;

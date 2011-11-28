@@ -23,7 +23,6 @@
  */
 
 #include <cstdlib>
-#include <string>
 #include <iostream>
 
 #include "functions.h"
@@ -37,7 +36,6 @@
 using std::cin;
 using std::cout;
 using std::endl;
-using std::string;
 
 bool debug = false;
 
@@ -54,9 +52,9 @@ int main(int argc, char **argv)
     cmdLineInput(argc,argv,inFile,verbose,debug);
 
     acct.establishAccount();
-    
+
     int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
-    
+
     while (!cin.eof())
     {
         switch (toDoOption)
@@ -94,11 +92,11 @@ int main(int argc, char **argv)
                 break;
         }
         /* need way to clear cin so that EOF is cleared out and it doesn't
-           prematurely exit program */
+           prematurely cause exiting of the program */
         toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     }
     cin.clear();
-    cin.ignore('\n',10);
+    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     cout << ltest::goodbye(acct.getName()) << endl;
 
     return 0;

@@ -4,8 +4,8 @@
 vpath %.cpp src
 vpath %.h include
 
-CXX = g++
-CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono
+CXX = g++ -Wall
+CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono -DDEBUG
 
 OBJECTS = functions.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o wordCompare.o SmartPicker.o WordData.o Account.o flcrd_quiz.o numbers.o
 HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h wordCompare.h SmartPicker.h WordData.h Account.h flcrd_quiz.h numbers.h

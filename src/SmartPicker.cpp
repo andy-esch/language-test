@@ -76,7 +76,7 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
 {
     currLowest = findSmallest(cards);
-    for (int i = 0; i < cards.size(); i++)
+    for (usInt i = 0; i < cards.size(); i++)
     {
         if (cards[i].data.getNumCorrect() == currLowest)
             leastCorrectIndices.push_back(i);
@@ -85,7 +85,7 @@ void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
 
 void LeastCorrect::printIndices(void)
 {
-    std::list<unsigned short int>::iterator it = leastCorrectIndices.begin();
+    std::list<usInt>::iterator it = leastCorrectIndices.begin();
     cout << *it;
     for (it++; it != leastCorrectIndices.end(); it++ )
         cout << ", " << *it;
@@ -98,7 +98,7 @@ unsigned short int LeastCorrect::findSmallest(const vector<Flashcard> & deck)
 {
     unsigned short int currentLowest = deck[0].data.getNumCorrect(), temp;
     
-    for (int ii = 1; ii < deck.size(); ii++)
+    for (usInt ii = 1; ii < deck.size(); ii++)
     {
         temp = deck[ii].data.getNumCorrect();
         if (temp < currentLowest)
@@ -148,7 +148,7 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 void LeastPicked::repopulateIndices(const vector<Flashcard> & cards)
 {
     currLowest = findSmallest(cards);
-    for (int i = 0; i < cards.size(); i++)
+    for (usInt i = 0; i < cards.size(); i++)
     {
         if (cards[i].data.getNumAsked() == currLowest)
             leastPickedIndices.push_back(i);
@@ -170,7 +170,7 @@ unsigned short int LeastPicked::findSmallest(const vector<Flashcard> & deck)
 {
     unsigned short int currentLowest = deck[0].data.getNumAsked(), temp;
     
-    for (int ii = 1; ii < deck.size(); ii++)
+    for (usInt ii = 1; ii < deck.size(); ii++)
     {
         temp = deck[ii].data.getNumAsked();
         if (temp < currentLowest)
@@ -223,7 +223,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     double gamma = 0.01, gamWeight = 1.0;   // Experiment with different gammas
     vector<double>::iterator it, itIndex = (probability.begin() + index);
 
-    for (int ii = 0; ii < probability.size(); ii++)
+    for (usInt ii = 0; ii < probability.size(); ii++)
     {
         if (cards[ii].data.getNumAsked() == 0 && ii != index)
         {
@@ -245,7 +245,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
         gamWeight = -wgt;
         gamma = beta;
     }
-    for (int ii = 0; ii < probability.size(); ii++)
+    for (usInt ii = 0; ii < probability.size(); ii++)
     {
         if ( ii == index )
             probability[ii] *= fma(wgt,alpha,1.0);
@@ -272,13 +272,13 @@ void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
     }
 }
 
-unsigned short int Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
+usInt Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
 {
     // ansTime is a float and weight is a double -- does the precision difference matter?
 //    updateProbs(index, weight(isWrong,ansTime));
 
-    static unsigned short int lastIndex = USHRT_MAX;
-    unsigned short int currentIndex;
+    static usInt lastIndex = USHRT_MAX;
+    usInt currentIndex;
     boost::random::discrete_distribution<> dist(probability);
 
     do
@@ -295,7 +295,7 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 {
     stringstream ps;
     ps << "Summary:\n";
-    for (int ii = 0; ii < cards.size(); ii++)
+    for (usInt ii = 0; ii < cards.size(); ii++)
     {
         ps << cards[ii].getWord('B',0) << '\t' << static_cast<int> (100 * probability[ii]) << endl;
     }
@@ -305,7 +305,7 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 
 void Adaptive::setLevDistance(string str1, string str2)
 {
-    unsigned short int temp1 = levenshtein(str1,str2);
+    unsigned short temp1 = wordCompare::levenshtein(str1,str2);
 
     levDistance = static_cast<double> (temp1);
 }

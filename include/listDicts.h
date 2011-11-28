@@ -33,4 +33,4 @@ using std::setw;
 int getTxtFiles(string, vector<string> &);
 //void listDicts(char[]);
 string listDicts();
-int numberOfWords(string);
+unsigned short numberOfWords(string);

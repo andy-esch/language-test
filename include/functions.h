@@ -12,13 +12,13 @@
 #define FUNCTIONS_H
 
 #include <algorithm>
-#include <cstring>
+#include <cstring>      // strcmp()
 #include <iostream>
 #include <limits>       // numeric_limits<...>::max()
 #include <numeric>
 #include <sstream>
-#include <string>
 #include <stdexcept>    // out_of_range(), exception()
+#include <string>
 #include <typeinfo>     // name(), what()
 #include <vector>
 
@@ -33,13 +33,20 @@ using std::stringstream;
 using std::vector;
 
 namespace ltest {
+    
+    typedef unsigned short usInt;
 
     bool pass(int, int, float, float);
+    usInt isAccented(string);
     bool compareAll(vector<string> &, string);
+    bool containsContraction(string);
     bool isInvalidAnswer(string, vector<string>);
     string hintOptions(int);
     string ordinal(const int num);
-    int min(const int, const int);
+
+    template <class M>
+    M min(M m1, M m2) { return (m1<m2?m1:m2); }
+
     string help(char *);
     int randIndex(const int);
     double reaction(const double, const int);
@@ -70,7 +77,7 @@ namespace ltest {
             {
                 cin.clear();
                 cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-                cout << prompt();
+                cout << '\n' << prompt();
             }
         }
         val = temp;

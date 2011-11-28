@@ -31,7 +31,7 @@ float ltest::howWrongIsIt(string test, string compare)
      * I don't know how to start... AE
      * Ideas:
      *  - percentage of correct letters? - but in correct order?
-     *  - choosing similiar consonant?  b instead of p, etc.
+     *  - choosing similiar consonant?  b instead of v, etc.
      *  - chose correct gender
      *  - etc.
      *
@@ -40,6 +40,19 @@ float ltest::howWrongIsIt(string test, string compare)
      */
     return 0.0;
 }
+
+//unsigned short ltest::isAccented(string str)
+//{
+//    vector<string> set("á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß");
+//    unsigned short accents = 0;
+//    
+//    for (int ii = 0; ii < set.size(); ii++)
+//    {
+//        cout << endl;
+//    }
+//
+//    return accents;
+//}
 
 string ltest::prompt(void)
 {
@@ -50,7 +63,7 @@ vector<string> ltest::stripParentheses(vector<string> & words)
 { 
     vector<string> strippedWords = words;
 
-    for (int ii = 0; ii < words.size(); ii++)
+    for (usInt ii = 0; ii < words.size(); ii++)
         strippedWords[ii] = stripParentheses(strippedWords[ii]);
 
     return strippedWords;
@@ -67,15 +80,24 @@ string ltest::stripParentheses(string original)
     return strippedWord;
 }
 
+bool ltest::containsContraction(string str)
+{
+    return (str.find('\'') != string::npos);
+}
+
 // Mimics string compare -- returns 'true' if there is no match
 // I don't like to do all this extra work for each case, but for now it works.
 // Should we make this a member of the class Flashcard?
+
+/* TODO: have a contraction converter: if I'm is present, convert to I am, or
+         at least score it correctly 
+ */
 bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
     bool isWrong = true;
 
-    for (int ii = 0; ii < ws.size() && isWrong; ii++)
+    for (usInt ii = 0; ii < ws.size() && isWrong; ii++)
         if ( !answer.compare(ws[ii]) || !answer.compare(strippedws[ii]) )
             isWrong = false;
 
@@ -129,10 +151,10 @@ string ltest::ordinal(const int num)
     return ord.str();
 }
 
-int ltest::min(const int val1, const int val2)
-{
-    return (val1 > val2 ? val2 : val1);
-}
+//int ltest::min(const int val1, const int val2)
+//{
+//    return (val1 > val2 ? val2 : val1);
+//}
 
 string ltest::help(char * prog)
 {

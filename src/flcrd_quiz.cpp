@@ -4,7 +4,7 @@
  *  Description:
  *
  *
- *  Created by Peter Eschbacher on 10/19/11.
+ *  Created by Añdy Eschbacher on 10/19/11.
  *
  */
 
@@ -60,11 +60,14 @@ int flcrd_quiz(bool verbose, char * inFile)
                 isWrong = ltest::isInvalidAnswer(response,cards[ii].getSideB());
                 if (isWrong)
                 {
-                    if (verbose) cout << "You are " \
-                                      << lcsPercent(cards[ii].getWord('B',0),response) \
-                                      << "% correct." \
-                                      << endl;
-                    if (verbose) cout << correctness(response,cards[ii].getWord('B',0)) << endl;
+                    if (verbose)
+                    {
+                        cout << "You are " \
+                             << wordCompare::lcsPercent(cards[ii].getWord('B',0),response) \
+                             << "% correct." << endl;
+                        cout << wordCompare::correctness(response,cards[ii].getWord('B',0)) << endl;
+                    }
+
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
                     {
                         cout << ltest::hintOptions(sideAword.size()) << endl;
@@ -73,7 +76,7 @@ int flcrd_quiz(bool verbose, char * inFile)
                     else
                         cout << ltest::whitespace(sideAword.size());
                 }
-                else if( verbose ) cout << "Right!" << endl;
+                else if (verbose) cout << "Right!" << endl;
             }
         }
         /* finish this card */

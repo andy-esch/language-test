@@ -40,7 +40,7 @@ void Hint::setKey(string answerKey)
 }
 
 
-void Hint::addLetter(int numLetters)
+void Hint::addLetter(usInt numLetters)
 {
     // Add letters if any ' ' are found in substring
     numLetters += numOfSpaces(string(key,hintNum,string::npos),numLetters);
@@ -61,12 +61,12 @@ void Hint::addLetter(int numLetters)
 
 int Hint::numOfSpaces(string str, int numLetters)
 {
-    int isLetter = 0, search = numLetters;
-    for (int ii = 0; ii < search && search <= str.size(); ii++)
+    usInt isLetter = 0, search = numLetters;
+    for (short ii = 0; ii < search && search <= str.size(); ii++)
     {
-        if (str[ii] != ' ')
+        if (str.at(ii) != ' ')
             isLetter++;
-        if (str[ii] == ' ')
+        else
             search++;
     }
     return search - numLetters;
@@ -97,18 +97,20 @@ void Hint::addLetter()
         hint.replace(hintNum,1,string(1,key[hintNum]));
         hintNum++;
     }
-    if (key[hintNum]==' ')
+
+    if (key.at(hintNum) == ' ')
         addLetter();
-    if (hintNum==key.size())
-        hint+=" <-";
+
+    if (hintNum == key.size())
+        hint += " <-";
 }
 
 
 void Hint::fillLetterPlaces()
 {
-    for (int i = hintNum; i < key.size(); i++)
+    for (usInt i = hintNum; i < key.size(); i++)
     {
-        if(key[i] != ' ')
+        if(key.at(i) != ' ')
             hint.replace(i,1,"-");
     }
 }
