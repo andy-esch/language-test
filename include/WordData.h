@@ -7,6 +7,7 @@
  *  Created by Añdy Eschbacher on 9/11/11.
  *
  */
+
 #ifndef WORDDATA_H
 #define WORDDATA_H
 
@@ -14,8 +15,7 @@
 #include <iostream>
 
 #include "functions.h"
-
-typedef unsigned short int usInt;
+#include "ltest_typedefs.h"
 
 class WordData
 {

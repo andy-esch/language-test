@@ -18,10 +18,14 @@
 
 #include "Account.h"
 
-Account::Account()
+QuizSummary::QuizSummary()
+            :subject(""), testDate(0), score(0.0)
 {
-    name = "Geronimo";
-    score = 100.0;
+}
+
+Account::Account()
+        :name("Geronimo"), results(0), score(100.0), datePassed(""), numOfTimesAttempted(0)
+{
 }
 
 void Account::exportAccount(string name)

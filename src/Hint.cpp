@@ -11,22 +11,24 @@
 #include "Hint.h"
 
 Hint::Hint(string answerKey, bool selectVerbose)
+     :key(answerKey), hintNum(0), verbose(selectVerbose), hint(key.size(),' ')
 {
-    key = answerKey;
-    hintNum = 0;
-    verbose = selectVerbose;
-    hint = "";
-    while (hint.size() <= key.size())
-        hint += " ";
+//    key = answerKey;
+//    hintNum = 0;
+//    verbose = selectVerbose;
+//    hint = "";
+//    while (hint.size() <= key.size())
+//        hint += " ";
 }
 
 // Default constructor
 Hint::Hint()
+     :key(" "), hintNum(0), verbose(false), hint(" ")
 {
-    key = " ";
-    hintNum = 0;
-    verbose = false;
-    hint = " ";
+//    key = " ";
+//    hintNum = 0;
+//    verbose = false;
+//    hint = " ";
 }
 
 
@@ -75,12 +77,13 @@ int Hint::numOfSpaces(string str, int numLetters)
 
 bool Hint::isAccented(string str)
 {
-    string set[] = {"á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß"};
+    vector<string> set{"á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß"};
+    vector<string>::iterator it;
     bool accent = false;
 
-    for (int ii = 0; ii < 5; ii++)
+    for (it = set.begin(); it != set.end(); it++)
     {
-        if (str.find(set[ii]) != string::npos)
+        if (str.find(*it) != string::npos)
         {
             accent = true;
             break;

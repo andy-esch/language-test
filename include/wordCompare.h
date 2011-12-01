@@ -15,6 +15,7 @@
 #include <string>
 
 #include "functions.h"
+#include "ltest_typedefs.h"
 
 namespace wordCompare {
 

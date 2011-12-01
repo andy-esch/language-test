@@ -65,7 +65,7 @@ bool inputsAreNotOkay(int numOfItems, int xMin, int xMax)
 int findFirstError(string ans, string cmp)
 {
     int errorPos = 0;
-    for (usInt ii = 0; ii < ltest::min(ans.size(),cmp.size()); ii++)
+    for (usInt ii = 0; ii < ltest::min<size_t>(ans.size(),cmp.size()); ii++)
     {
         if (ans.at(ii) == cmp.at(ii))
             errorPos++;

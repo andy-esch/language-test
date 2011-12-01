@@ -21,14 +21,13 @@
 
 #include "functions.h"
 #include "wordCompare.h"
+#include "ltest_typedefs.h"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::setw;
 using std::string;
-
-typedef unsigned short usInt;
 
 string numConstructor(int);
 int randNum(int, int);

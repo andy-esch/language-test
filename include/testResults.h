@@ -19,14 +19,13 @@
 #include "Flashcard.h"
 #include "WordData.h"
 #include "functions.h"
+#include "ltest_typedefs.h"
 
 using std::cout;
 using std::endl;
 using std::ios;
 using std::setw;
 using std::vector;
-
-typedef unsigned short usInt;
 
 void testResults(vector<Flashcard>, bool);
     // void sorter()

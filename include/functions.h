@@ -11,18 +11,17 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <algorithm>
 #include <cstring>      // strcmp()
-#include <iostream>
+#include <iostream>     // cin, cout, endl, etc.
 #include <limits>       // numeric_limits<...>::max()
-#include <numeric>
-#include <sstream>
+#include <sstream>      // string stream
 #include <stdexcept>    // out_of_range(), exception()
-#include <string>
+#include <string>       // string class, member functions
 #include <typeinfo>     // name(), what()
-#include <vector>
+#include <vector>       // vector class, member functions
 
 #include "WordData.h"
+#include "ltest_typedefs.h"
 
 using std::cin;
 using std::cout;
@@ -33,8 +32,6 @@ using std::stringstream;
 using std::vector;
 
 namespace ltest {
-    
-    typedef unsigned short usInt;
 
     bool pass(int, int, float, float);
     usInt isAccented(string);

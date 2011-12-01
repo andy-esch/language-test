@@ -16,13 +16,12 @@
 #include <vector>
 
 #include "functions.h"
+#include "ltest_typedefs.h"
 
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-
-typedef unsigned short usInt;
 
 class Hint {
 public:

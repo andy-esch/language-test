@@ -26,19 +26,19 @@
 #include "Flashcard.h"
 #include "functions.h"
 #include "wordCompare.h"
+#include "ltest_typedefs.h"
 
 using std::list;
 using std::vector;
 using std::string;
 using std::cout;
 
-typedef unsigned short int usInt;
-
 class SmartPicker {
 protected:
     usInt currentIndex;
     void setCurrentIndex(int=0);
 public:
+    virtual ~SmartPicker() { };
     SmartPicker(void);
     usInt getNextIndex(int);
     usInt getCurrentIndex();

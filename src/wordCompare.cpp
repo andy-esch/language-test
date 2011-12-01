@@ -37,11 +37,11 @@ string wordCompare::levRater(unsigned int value)
 }
 
 // Levenshtein Distance Edit calculator for two strings
-unsigned short wordCompare::levenshtein(string str1, string str2)
+usInt wordCompare::levenshtein(string str1, string str2)
 {
-    unsigned short cost;
-    const unsigned short lenOne = str1.length(), lenTwo = str2.length();
-    unsigned short m[lenOne][lenTwo];
+    usInt cost;
+    const usInt lenOne = str1.length(), lenTwo = str2.length();
+    usInt m[lenOne][lenTwo];
 
     for (short ii = 0; ii < lenOne; ii++)
         m[ii][0] = ii+1;
@@ -58,8 +58,8 @@ unsigned short wordCompare::levenshtein(string str1, string str2)
             else
                 cost = 1;
 
-            m[ii][jj] = ltest::min(m[ii-1][jj] + 1, \
-                                   ltest::min(m[ii][jj-1] + 1, \
+            m[ii][jj] = ltest::min<usInt>(m[ii-1][jj] + 1, \
+                                   ltest::min<usInt>(m[ii][jj-1] + 1, \
                                               m[ii-1][jj-1] + cost) \
                                    );
         }
@@ -75,7 +75,7 @@ string wordCompare::unique(string str)
     uniq.push_back(str.at(0));
     cout << "uniq = '" << uniq << "'" << endl;
     
-    for (unsigned short ii = 1; ii < str.size(); ii++)
+    for (usInt ii = 1; ii < str.size(); ii++)
     {
         if (uniq.find(str.at(ii)) == string::npos)    // if not found in uniq, add it
             uniq.push_back(str.at(ii));
@@ -85,10 +85,10 @@ string wordCompare::unique(string str)
 
 float wordCompare::lcsPercent(string answer, string response)
 {
-    const unsigned short m = answer.size();
-    const unsigned short n = response.size();
+    const usInt m = answer.size();
+    const usInt n = response.size();
     float percentCorrect;
-    unsigned short c[m+1][n+1];
+    usInt c[m+1][n+1];
     
     for (short ii = 1; ii <= m; ii++)
         c[ii][0] = 0;

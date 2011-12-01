@@ -24,15 +24,17 @@ using std::endl;
 using std::string;
 using std::vector;
 
-class quizSummary {
+class QuizSummary {
     string subject;
     time_t testDate;
     float score;
+public:
+    QuizSummary();
 };
 
 class Account {
     string name;
-    vector<quizSummary> results;
+    vector<QuizSummary> results;
     float score;
     string datePassed;
     int numOfTimesAttempted;

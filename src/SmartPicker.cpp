@@ -16,8 +16,8 @@
 
 // Default constructor
 SmartPicker::SmartPicker(void)
+            :currentIndex(0)
 {
-    currentIndex = 0;
 }
 
 void SmartPicker::setCurrentIndex(int index)
@@ -26,12 +26,12 @@ void SmartPicker::setCurrentIndex(int index)
 }
 
 
-unsigned short int SmartPicker::getCurrentIndex(void)
+usInt SmartPicker::getCurrentIndex(void)
 {
     return currentIndex;
 }
 
-unsigned short int SmartPicker::getNextIndex(int cardsSize)
+usInt SmartPicker::getNextIndex(int cardsSize)
 {
     setCurrentIndex((++currentIndex) % cardsSize);
     return currentIndex;
@@ -39,11 +39,11 @@ unsigned short int SmartPicker::getNextIndex(int cardsSize)
 
 /**    LeastCorrect members    **/
 LeastCorrect::LeastCorrect(void)
+             :leastCorrectIndices(0), currLowest(0)
 {
-    currLowest = 0;
 }
 
-unsigned short int LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
+usInt LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 {
     // generate and set new index
     leastCorrectIndex(cards);
@@ -53,7 +53,7 @@ unsigned short int LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 
 void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 {
-    static unsigned short int lastIndex = USHRT_MAX;
+    static usInt lastIndex = USHRT_MAX;
 
     if (lastIndex != USHRT_MAX)
         if (cards[lastIndex].data.getNumCorrect() > currLowest)
@@ -62,7 +62,7 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
     if (leastCorrectIndices.empty() )
         repopulateIndices(cards);
 
-    std::list<unsigned short int>::iterator it = leastCorrectIndices.begin();
+    std::list<usInt>::iterator it = leastCorrectIndices.begin();
     for (int jj = ltest::randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
@@ -94,9 +94,9 @@ void LeastCorrect::printIndices(void)
 
 // Is there a way to generalize this to use numCorrect and numAsked for the same
 // function?
-unsigned short int LeastCorrect::findSmallest(const vector<Flashcard> & deck)
+usInt LeastCorrect::findSmallest(const vector<Flashcard> & deck)
 {
-    unsigned short int currentLowest = deck[0].data.getNumCorrect(), temp;
+    usInt currentLowest = deck[0].data.getNumCorrect(), temp;
     
     for (usInt ii = 1; ii < deck.size(); ii++)
     {
@@ -110,11 +110,11 @@ unsigned short int LeastCorrect::findSmallest(const vector<Flashcard> & deck)
 
 /**    LeastPicked members    **/
 LeastPicked::LeastPicked()
+            :leastPickedIndices(0), currLowest(0)
 {
-    currLowest = 0;
 }
 
-unsigned short int LeastPicked::getNextIndex(const vector<Flashcard> & cards)
+usInt LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
     // generate new index
     leastPickedIndex(cards);
@@ -124,7 +124,7 @@ unsigned short int LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 
 void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 {
-    static unsigned short int lastIndex = USHRT_MAX;
+    static usInt lastIndex = USHRT_MAX;
 
     if (lastIndex != USHRT_MAX)
         if (cards[lastIndex].data.getNumAsked() > currLowest)
@@ -133,7 +133,7 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
     if (leastPickedIndices.empty() )
         repopulateIndices(cards);
 
-    std::list<unsigned short int>::iterator it = leastPickedIndices.begin();
+    std::list<usInt>::iterator it = leastPickedIndices.begin();
     for (int jj = ltest::randIndex(leastPickedIndices.size()); jj > 0; jj--)
         it++;
 
@@ -157,7 +157,7 @@ void LeastPicked::repopulateIndices(const vector<Flashcard> & cards)
 
 void LeastPicked::printIndices(void)
 {
-    list<unsigned short int>::iterator it = leastPickedIndices.begin();
+    list<usInt>::iterator it = leastPickedIndices.begin();
     cout << *it;
     for (it++; it != leastPickedIndices.end(); it++ )
         cout << ", " << *it;
@@ -166,9 +166,9 @@ void LeastPicked::printIndices(void)
 
 // Is there a way to generalize this to use numCorrect and numAsked for the same
 // function?
-unsigned short int LeastPicked::findSmallest(const vector<Flashcard> & deck)
+usInt LeastPicked::findSmallest(const vector<Flashcard> & deck)
 {
-    unsigned short int currentLowest = deck[0].data.getNumAsked(), temp;
+    usInt currentLowest = deck[0].data.getNumAsked(), temp;
     
     for (usInt ii = 1; ii < deck.size(); ii++)
     {
@@ -180,7 +180,7 @@ unsigned short int LeastPicked::findSmallest(const vector<Flashcard> & deck)
     return currentLowest;
 }
 
-void LeastPicked::setCurrentLowest(unsigned short int newCurrLow)
+void LeastPicked::setCurrentLowest(usInt newCurrLow)
 {
     currLowest = newCurrLow;
 }
@@ -189,9 +189,10 @@ void LeastPicked::setCurrentLowest(unsigned short int newCurrLow)
 
 // Default Constructor
 Adaptive::Adaptive(int numEntries)
+         :probability(0), gen(static_cast<usInt> (std::time(0))), levDistance(0.0)
 {
     probability.assign(numEntries,ltest::inverse(numEntries));
-    gen.seed(static_cast<unsigned short int>(std::time(0))); // initialize random seed
+//    gen.seed(static_cast<usInt>(std::time(0))); // initialize random seed
 }
 
 // Desctructor
@@ -272,7 +273,7 @@ void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
     }
 }
 
-usInt Adaptive::adaptiveIndex(const vector<Flashcard> & cards)
+usInt Adaptive::adaptiveIndex(const vector<Flashcard> & cards) ///uhm is this func arg needed?
 {
     // ansTime is a float and weight is a double -- does the precision difference matter?
 //    updateProbs(index, weight(isWrong,ansTime));

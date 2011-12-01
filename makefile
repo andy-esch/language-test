@@ -1,16 +1,30 @@
 # *****************************************************
 # Parameters to control Makefile operation
-# Configured for my computer -- we should learn a more general way to make makefiles
+
 vpath %.cpp src
 vpath %.h include
 
-CXX = g++ -Wall
-CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono -DDEBUG
+CXX = g++ -std=c++0x
+CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono
+DEBUGFLAGS = -Weffc++ -Wall -DDEBUG
+OPTIM = -O3 -funroll-loops
 
-OBJECTS = functions.o Flashcard.o listDicts.o testResults.o Hint.o cmdLineInput.o wordCompare.o SmartPicker.o WordData.o Account.o flcrd_quiz.o numbers.o
-HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h cmdLineInput.h wordCompare.h SmartPicker.h WordData.h Account.h flcrd_quiz.h numbers.h
-#PROTO_OBJECTS = functions.o account.o Flashcard.o WordData.o
-#PROTO_HEADERS = functions.h account.h Flashcard.h WordData.h
+OBJECTS = Account.o \
+          cmdLineInput.o \
+		  Flashcard.o \
+		  flcrd_quiz.o \
+		  functions.o \
+		  Hint.o \
+		  listDicts.o \
+		  numbers.o \
+		  SmartPicker.o \
+		  testResults.o \
+		  wordCompare.o \
+		  WordData.o
+
+HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h \
+		  cmdLineInput.h wordCompare.h SmartPicker.h WordData.h Account.h \
+		  flcrd_quiz.h numbers.h
 
 # ****************************************************
 
@@ -22,7 +36,7 @@ ltest: LanguageTest.o $(OBJECTS)
 LanguageTest.o: LanguageTest.cpp
 
 $(OBJECTS): %.o: %.cpp
-	$(CXX) -I include -c $< -o $@
+	$(CXX) $(DEBUGFLAGS) -I include -c $< -o $@
 
 #proto: main_prototype.o $(PROTO_OBJECTS)
 #	$(CXX) $(CXXFLAGS) $^ -o proto

@@ -10,6 +10,11 @@
 
 #include "Flashcard.h"
 
+Flashcard::Flashcard(void)
+          :sideA(0), sideB(0), data(), weight(0.0)
+{
+}
+
 void Flashcard::toScreen(void)
 {
     cout << "sideA: " << endl;
@@ -126,7 +131,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
                                              */  
         
         if (temp1.empty()) continue;          // Skip empty lines
-        else if (temp1.find('#') == string::npos)
+        else if (temp1.find('#') != string::npos)
         {
             cout << "Skipping the following line (comment): " << endl;
             cout << '\t' << temp1;
@@ -191,21 +196,34 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
 void Flashcard::insertWords(string words, Flashcard & tempset, int step)
 {
     size_t found;
-    if (debug) cout << "words are: '" << words << "'" << endl;
+#ifdef DEBUG
+    cout << "words are: '" << words << "'" << endl;
+#endif // DEBUG
     
-    while ( words.find(",") != string::npos )   // while comma is found
+    while ( words.find(",") != string::npos || \
+            words.find("|") != string::npos)
     {
-        found = words.rfind(",");
+        if (words.rfind("|") != string::npos)
+            found = words.rfind("|");
+        else
+            found = words.rfind(",");
+
         string tempWord = words.substr(found+1);
-        if (debug) cout << "New word: " << tempWord << endl;
+#ifdef DEBUG
+        cout << "New word: " << tempWord << endl;
+#endif // DEBUG
         switch (step)
         {
             case 1:
-                if (debug) cout << "case : " << step << endl;
+#ifdef DEBUG
+                cout << "case : " << step << endl;
+#endif // DEBUG
                 tempset.sideA.push_back(tempWord);
                 break;
             case 2:
-                if (debug) cout << "case : " << step << endl;
+#ifdef DEBUG
+                cout << "case : " << step << endl;
+#endif // DEBUG
                 tempset.sideB.push_back(tempWord);
                 break;
             default:
@@ -213,17 +231,22 @@ void Flashcard::insertWords(string words, Flashcard & tempset, int step)
         }
         words.erase(found);
     }
-    
-    if (debug) cout << "New word: " << words << endl;
+#ifdef DEBUG
+    cout << "New word: " << words << endl;
+#endif // DEBUG
     
     switch (step)   // Otherwise catch non-comma case
     {
         case 1:
-            if (debug) cout << "case : " << step << endl;
+#ifdef DEBUG
+            cout << "case : " << step << endl;
+#endif // DEBUG
             tempset.sideA.push_back(words);
             break;
         case 2:
-            if (debug) cout << "case : " << step << endl;
+#ifdef DEBUG
+            cout << "case : " << step << endl;
+#endif // DEBUG
             tempset.sideB.push_back(words);
             break;
         default:

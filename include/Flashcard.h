@@ -21,6 +21,7 @@
 
 #include "WordData.h"
 #include "functions.h"
+#include "ltest_typedefs.h"
 
 using std::cout;
 using std::cin;
@@ -31,17 +32,17 @@ using std::ifstream;
 
 extern bool debug;
 
-typedef unsigned short usInt;
-
 class Flashcard {
 private:
-    vector<string> sideB;
     vector<string> sideA;
+    vector<string> sideB;
 //    vector<string> remark;        should these contain the parentheticals? -- put in "" for non-remarks?
     void insertWords(string, Flashcard &, int);
 public:
     WordData data;
     double weight;      // What is this used for?
+    /* Flashcard constructors, etc. */
+    Flashcard(void);
     /* public member functions */
     void toScreen();
     void clearWS();         // Clear wordset (used in input())

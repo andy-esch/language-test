@@ -11,10 +11,8 @@
 #include "WordData.h"
 
 WordData::WordData(void)
+         :numAsked(0), numCorrect(0), answeringTime(0.0)
 {
-    numAsked = 0;
-    numCorrect = 0;
-    answeringTime = 0.0;
 }
 
 double WordData::getPercentCorrect(void) const
