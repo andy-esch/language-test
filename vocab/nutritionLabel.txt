@@ -1,0 +1,14 @@
+datos de nutrición    nutrition facts
+tamaño por ración    serving size
+raciones por envase    servings per container
+calorias    calories
+calorias de grasa    calories from fat
+grasa total    total fat
+grasa saturada    saturated fat
+grasa trans    trans fat
+colesterol    cholesterol
+sodio    sodium
+carbohidrato total    total carbohydrate
+fibra diaria,fibra alimenticia    dietary fiber
+azucar    sugar
+proteinas    protein

@@ -1,0 +1,14 @@
+blanco  white
+rojo    red
+azul    blue
+verde   green
+amarillo    yellow
+negro   black
+morado  purple
+rosado  pink
+marrón  brown
+dorado  gold
+gris    gray
+anaranjado|naranja  orange
+plateado    silver
+azúl cielo  sky blue
