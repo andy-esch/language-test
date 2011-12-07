@@ -33,6 +33,8 @@ using std::vector;
 using std::string;
 using std::cout;
 
+
+/* need more constructors -- how do the derived ones behave? */
 class SmartPicker {
 protected:
     usInt currentIndex;
@@ -41,6 +43,7 @@ public:
     virtual ~SmartPicker() { };
     SmartPicker(void);
     usInt getNextIndex(int);
+    // Access methods
     usInt getCurrentIndex();
 };
 
@@ -58,8 +61,10 @@ private:
     void leastCorrectIndex(const vector<Flashcard> &);
     usInt findSmallest(const vector<Flashcard> &);
 public:
+    // Constructor
     LeastCorrect();
     usInt getNextIndex(const vector<Flashcard> &);
+    usInt getNumOfIndices() const;
     void printIndices();
 };
 

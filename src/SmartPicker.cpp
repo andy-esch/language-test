@@ -222,7 +222,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     int numOfNumAskedIs0 = 0;
     double alpha = fdim(1.0,pStar), beta;
     double gamma = 0.01, gamWeight = 1.0;   // Experiment with different gammas
-    vector<double>::iterator it, itIndex = (probability.begin() + index);
+//    vector<double>::iterator it, itIndex = (probability.begin() + index);
 
     for (usInt ii = 0; ii < probability.size(); ii++)
     {
@@ -246,6 +246,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
         gamWeight = -wgt;
         gamma = beta;
     }
+
     for (usInt ii = 0; ii < probability.size(); ii++)
     {
         if ( ii == index )
@@ -259,10 +260,11 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
 
 void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
 {
-    double wgt = weight(isWrong,ansTime);
-    double pStar = probability[index];
-    double alpha = fdim(1.0,pStar), beta = pStar;
-    vector<double>::iterator it, itIndex = (probability.begin() + index);
+    const double wgt = weight(isWrong,ansTime);
+    const double pStar = probability[index];
+    const double alpha = fdim(1.0,pStar), beta = pStar;
+    vector<double>::iterator it;
+    const vector<double>::iterator itIndex = (probability.begin() + index);
 
     for (it = probability.begin(); it != probability.end(); it++)
     {
@@ -279,7 +281,6 @@ usInt Adaptive::adaptiveIndex(const vector<Flashcard> & cards) ///uhm is this fu
 //    updateProbs(index, weight(isWrong,ansTime));
 
     static usInt lastIndex = USHRT_MAX;
-    usInt currentIndex;
     boost::random::discrete_distribution<> dist(probability);
 
     do
