@@ -55,6 +55,8 @@ int flcrd_quiz(bool verbose, char * inFile)
                 cout << myhint.handle(response,false);
                 cout << ltest::whitespace(sideAword.size());
             }
+            else if ( response == "*exit")
+                return 0;
             else /* no hint, check response */
             {
                 isWrong = ltest::isInvalidAnswer(response,cards[ii].getSideB());

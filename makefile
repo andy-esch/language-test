@@ -6,11 +6,11 @@ vpath %.h include
 
 CXX = g++ -std=c++0x
 CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono
-DEBUGFLAGS = -Weffc++ -Wall -DDEBUG
+DEBUGFLAGS = -Weffc++ -Wall #-DDEBUG
 OPTIM = -O3 -funroll-loops
 
 OBJECTS = Account.o \
-          cmdLineInput.o \
+          programPrefs.o \
 		  Flashcard.o \
 		  flcrd_quiz.o \
 		  functions.o \
@@ -23,7 +23,7 @@ OBJECTS = Account.o \
 		  WordData.o
 
 HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h \
-		  cmdLineInput.h wordCompare.h SmartPicker.h WordData.h Account.h \
+		  programPrefs.h wordCompare.h SmartPicker.h WordData.h Account.h \
 		  flcrd_quiz.h numbers.h
 
 # ****************************************************
@@ -31,12 +31,12 @@ HEADERS = functions.h Flashcard.h listDicts.h testResults.h Hint.h \
 mkcln: ltest #clean
 
 ltest: LanguageTest.o $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o ltest
+	$(CXX) $(CXXFLAGS) $(OPTIM) $^ -o ltest
 
 LanguageTest.o: LanguageTest.cpp
 
 $(OBJECTS): %.o: %.cpp
-	$(CXX) $(DEBUGFLAGS) -I include -c $< -o $@
+	$(CXX) $(DEBUGFLAGS) $(OPTIM) -I include -c $< -o $@
 
 #proto: main_prototype.o $(PROTO_OBJECTS)
 #	$(CXX) $(CXXFLAGS) $^ -o proto

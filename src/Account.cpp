@@ -24,7 +24,8 @@ QuizSummary::QuizSummary()
 }
 
 Account::Account()
-        :name("Geronimo"), results(0), score(100.0), datePassed(""), numOfTimesAttempted(0)
+        :name("Geronimo"), results(0), score(100.0), \
+         datePassed(""), numOfTimesAttempted(0)
 {
 }
 

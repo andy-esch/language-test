@@ -26,7 +26,7 @@
 #include <iostream>
 
 #include "functions.h"
-#include "cmdLineInput.h"
+#include "programPrefs.h"
 #include "Account.h"
 
 /* Quizzes */
@@ -38,18 +38,19 @@ using std::cout;
 using std::endl;
 
 bool debug = false;
+bool verbose = false;
 
 int main(int argc, char **argv)
 {
     /*****    Initialize Variables    *****/
-    bool verbose = false;
+
     srand(time(NULL));                      // does this need to be initialized?
     char inFile[60] = "vocab/test.txt";
     Account acct;
     int score;
 
     /*****    Take optional input from command line   *****/
-    cmdLineInput(argc,argv,inFile,verbose,debug);
+    progPrefs::cmdLineInput(argc,argv,inFile,verbose,debug);
 
     acct.establishAccount();
 
@@ -84,6 +85,10 @@ int main(int argc, char **argv)
                 /* print account summary */
                 break;
             case 7:
+                cout << "you chose to change some program options" << endl;
+                progPrefs::changeProgOptions(acct);
+                break;
+            case 8:
                 cout << "you chose to exit the program" << endl;
                 cout << ltest::goodbye(acct.getName()) << endl;
                 exit(0);
