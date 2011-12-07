@@ -1,5 +1,5 @@
 /*
- *  cmdLineInput.h
+ *  programPrefs.h
  *  
  *  Description:
  *
@@ -8,13 +8,12 @@
  *
  */
 
-#ifndef CMDLINEINPUT_H
-#define CMDLINEINPUT_H
+#ifndef PROGRAMPREFS_H
+#define PROGRAMPREFS_H
 
 #include <iostream>
 #include <cstdlib>
 
-#include "cmdLineInput.h"
 #include "functions.h"
 #include "listDicts.h"
 
@@ -22,6 +21,11 @@ using std::cin;
 using std::cerr;
 using std::cout;
 
-void cmdLineInput(int, char **, char *, bool &, bool &);
+namespace progPrefs {
+    void cmdLineInput(int, char **, char *, bool &, bool &);
+    void changeProgOptions(Account &);
+} // progPrefs
 
-#endif // CMDLINEINPUT_H
+#endif // PROGRAMPREFS_H
+
+// EOF

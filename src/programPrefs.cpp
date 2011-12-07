@@ -1,19 +1,19 @@
 /*
- *  cmdLineOpts.cpp
+ *  programPrefs.cpp
  *  
  *  Description:
+ *     Functions to control the environment variables of ltest
  *
  *
  *  Created by Añdy Eschbacher on 10/6/11.
  *
  */
 
-#include "cmdLineInput.h"
+#include "programPrefs.h"
 
-void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &debug)
+void progPrefs::cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &debug)
 {
     int c;
-    extern int optopt;
     while ( (c = getopt(argc, argv, ":i:vhdl")) != -1)
     {
         switch (c)
@@ -55,3 +55,14 @@ void cmdLineInput(int argc, char **argv, char * inFile, bool &verbose, bool &deb
         }
     }
 }
+
+void progPrefs::changeProgOptions(Account & acct)
+{
+    cout << "The following variables are set: " << endl;
+    cout << "1: verbose = " << (verbose?"on":"off") << endl;
+    cout << "2: User = " << acct.getName() << endl;
+    cout << endl;
+    cout << "Enter a number to change its value" << endl;
+}
+
+// EOF
