@@ -22,6 +22,7 @@
 
 #include "WordData.h"
 #include "ltest_typedefs.h"
+#include "Account.h"
 
 using std::cin;
 using std::cout;
@@ -30,6 +31,8 @@ using std::ifstream;
 using std::string;
 using std::stringstream;
 using std::vector;
+
+extern bool verbose;
 
 namespace ltest {
 
@@ -50,16 +53,16 @@ namespace ltest {
     string whitespace(const int length);
     float howWrongIsIt(string,string);
     vector<string> stripParentheses(vector<string> &);
-    string prompt(void);
+    string prompt(const char * = NULL);
     string stripParentheses(string);
     string goodbye(const string="");
     bool exitProg(const char*,bool=0);
     int whatDoYouWantToDo(const string);
     double inverse(const int);
 
-    /* */
+    /* attempt at a more robust input processor */
     template <class T>
-    void takeInput(T& val, const char * message = NULL)
+    void takeInput(T& val, const char * message = NULL, const char * prmpt = ">> ")
     {
         T temp;
         while (true)
@@ -67,17 +70,19 @@ namespace ltest {
             if (cin.eof()) break;
             if (message != NULL)
                 cout << message << endl;
-            cout << prompt();
+            cout << prompt(prmpt);
             cin >> temp;
             if (!cin.fail()) break;
             else
             {
                 cin.clear();
                 cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-                cout << '\n' << prompt();
+                cout << '\n' << prompt(prmpt);
             }
         }
+
         val = temp;
     }
-} // namespace
+} // namespace ltest
+
 #endif  // FUNCTIONS_H

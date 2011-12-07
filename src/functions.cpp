@@ -1,6 +1,6 @@
 /*
  *  functions.cpp
- *  
+ *
  *  Description:
  *   Various non-class functions for LanguageTest.cpp
  *
@@ -25,7 +25,7 @@ bool ltest::pass(int numOfHints, int numEntries, float totalAvgTime, float total
 
 float ltest::howWrongIsIt(string test, string compare)
 {
-    /* 
+    /*
      * This function will tell the user how wrong their word is if they so
      * choose to know...  There are several ways to say how wrong they are, so
      * I don't know how to start... AE
@@ -45,7 +45,7 @@ float ltest::howWrongIsIt(string test, string compare)
 //{
 //    vector<string> set("á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß");
 //    unsigned short accents = 0;
-//    
+//
 //    for (int ii = 0; ii < set.size(); ii++)
 //    {
 //        cout << endl;
@@ -54,13 +54,13 @@ float ltest::howWrongIsIt(string test, string compare)
 //    return accents;
 //}
 
-string ltest::prompt(void)
+string ltest::prompt(const char * prmpt)
 {
-    return ">> ";
+    return prmpt;
 }
 
 vector<string> ltest::stripParentheses(vector<string> & words)
-{ 
+{
     vector<string> strippedWords = words;
 
     for (usInt ii = 0; ii < words.size(); ii++)
@@ -89,8 +89,8 @@ bool ltest::containsContraction(string str)
 // I don't like to do all this extra work for each case, but for now it works.
 // Should we make this a member of the class Flashcard?
 
-/* TODO: have a contraction converter: if I'm is present, convert to I am, or
-         at least score it correctly 
+/* TODO: have a contraction converter: if "I'm" is present, convert to "I am", or
+         at least score it correctly
  */
 bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 {
@@ -145,7 +145,7 @@ string ltest::hintOptions(int leftmargin)
 string ltest::ordinal(const int num)
 {
     string ords[10] = { "th", "st", "nd", "rd", "th", \
-                        "th", "th", "th", "th", "th"};
+                        "th", "th", "th", "th", "th" };
     stringstream ord;
     ord << num << ords[num % 10];
     return ord.str();
@@ -201,7 +201,7 @@ string ltest::goodbye(const string name)
                          "Adieu", "Ciao", "Tchüss", "Au revoir",
                          "Namaste"};
 
-    return goodbyes[randIndex(9)] + (name==""?"":", "+name) + "!";
+    return goodbyes[randIndex(9)] + (name==""?"":", ") + name + "!";
 }
 
 bool ltest::exitProg(const char * test, bool cinEOF)
@@ -218,7 +218,8 @@ int ltest::whatDoYouWantToDo(const string name)
 {
     string options[] = {"flash cards", "numbers", "conjugations", \
                         "fill-in-the-blank", "multiple choice", \
-                        "account summary", "exit program"};
+                        "account summary", "set program options", \
+                        "exit program"};
 
     short toDoOption;
 
@@ -226,7 +227,7 @@ int ltest::whatDoYouWantToDo(const string name)
     cout << "Hello " << name << ", " \
          << "what do you want to do?\n" \
          << "Here are your options: " << endl;
-    for (int ii = 1; ii <= 7; ii++)
+    for (int ii = 1; ii <= 8; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
     takeInput(toDoOption);
 
