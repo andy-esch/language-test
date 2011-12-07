@@ -83,8 +83,7 @@ string listDicts(void)
             numOfDicts++;
         }
         cout << endl;
-        cout << "Select a dictionary for more information.  Type 'exit' to exit." << endl;
-        ltest::takeInput(dictPick);
+        ltest::takeInput(dictPick, "Select a dictionary for more information.  Type 'exit' to exit.");
 
             // TODO: The following six lines needed to be cleaned up!  dictInt is not well-defined
         dictInt = atoi( &(dictPick.at(0)) );

@@ -202,8 +202,8 @@ void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
 
         cout << "Enter a number range: xmin <= x <= xmax " << endl;
 
-        ltest::takeInput(xmin,"xmin = ");
-        ltest::takeInput(xmax,"xmax = ");
+        ltest::takeInput(xmin, NULL, "xmin = ");
+        ltest::takeInput(xmax, NULL, "xmax = ");
 
         cout << "You chose " << numOfItems << " numbers between " \
              << xmin << " and " << xmax << "." << endl;
