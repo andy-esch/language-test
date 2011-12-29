@@ -42,7 +42,7 @@ int getTxtFiles(string dir, vector<string> &files)
 
 //void listDicts(char dictType[])   
 
-/* Perhaps we could pass a character to denote which type of dictionary we want
+/** Perhaps we could pass a character to denote which type of dictionary we want
  to choose from such as n = nouns, v = sideA, etc. or something fancier
  eventually? and perhaps different types of sorting of output, which is fairly
  easy with strings */
@@ -56,18 +56,21 @@ string listDicts(void)
     usInt numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
+    rl_bind_key('\t',rl_abort); // disable auto-complete
+
     // If directory is not found -- do something different instead?
     if ( retValue != 0 )
     {
-        cout << "Error " << retValue << ": Could not open the directory '" << dir << "'" << endl;
-        cout << "Exiting program." << endl;
+        cerr << "Error " << retValue << ": Could not open the directory '" \
+             << dir << "'" << endl \
+             << "Exiting program." << endl;
         exit(0);
     }
 
     cout << endl;
-    if (!files.empty())
+    if (!files.empty())  // If files are found
     {
-        do  // If files are found
+        do
         {
             for (iter = files.begin(); iter != files.end(); ++iter)
                 if ((*iter).size() > longestName)
@@ -84,27 +87,24 @@ string listDicts(void)
                 numOfDicts++;
             }
 
-            cout << "Choose a dictionary by number or filter by type: nouns (n), adjectives (a), verbs (v), phrases (p), etc. (unimplemented -- this is here as a reminder)." << endl;
-            cout << endl;
+            cout << "Choose a dictionary by number or filter by type: "
+                     "nouns (n), adjectives (a), verbs (v), phrases (p), etc. "
+                     "(unimplemented -- this is here as a reminder).\n" << endl;
 
             dictPick = readline("\n>> ");
 
-            if (ltest::exitProg(dictPick))
-                exit(0);
+            if (ltest::exitProg(dictPick)) exit(0);
 
-            if (isdigit(dictPick[0]))
-                dictInt = atoi(dictPick);
-            else
+            dictInt = atoi(dictPick);
+
+            if (!isdigit(dictPick[0]) || dictInt > files.size() || dictInt <= 0 )
                 cout << dictPick << " is not a valid choice." << endl;
-            
-            if ( ltest::exitProg(dictPick,cin.eof()) )
-                exit(0);
-            else
-                filePath = dir + files.at(dictInt - 1);
-        } while ( dictInt > files.size() || dictInt <= 0 );
-    }
 
-    if ( files.empty() )    // If files are not found
+        } while ( dictInt > files.size() || dictInt <= 0 );
+
+        filePath = dir + files.at(dictInt - 1);
+    }
+    else // If files are not found
     {
         // This doesn't handle cases where no files are found... but input() does
         cout << "No dictionaries found.\n" \
@@ -115,10 +115,7 @@ string listDicts(void)
         if ( ltest::exitProg(dictPick,cin.eof()) )
             exit(0);
     }
-
     cout << "You picked " << dictPick << endl;
-    cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
     free(dictPick);
 

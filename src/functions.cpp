@@ -108,7 +108,7 @@ bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 string ltest::hintOptions(int leftmargin)
 {
     stringstream hint;
-    string lMargSpace = whitespace(leftmargin);
+    string lMargSpace = printWhitespace(leftmargin);
     hint << '\a' << endl; // Ring system bell
     hint << lMargSpace << "Want a letter?  Type '-l'." << endl;
     hint << lMargSpace << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
@@ -187,14 +187,6 @@ double ltest::reaction(const double time, const int numLttrs)
     return reactionTime;
 }
 
-string ltest::whitespace(const int length)
-{
-    string whitespace("");
-    for (int k = 0; k < length + 2; k++)
-        whitespace += " ";
-    return whitespace;
-}
-
 string ltest::goodbye(const string name)
 {
     string goodbyes[] = {"Goodbye", "Hej då", "Sayonara", "¡Adiós",
@@ -204,6 +196,7 @@ string ltest::goodbye(const string name)
     return goodbyes[randIndex(9)] + (name==""?"":", ") + name + "!";
 }
 
+// Returns true if 'exit' or 'quit' is entered
 bool ltest::exitProg(const char * test, bool cinEOF)
 {
     bool exiting = (!strcmp(test,"exit") || \
@@ -229,7 +222,7 @@ int ltest::whatDoYouWantToDo(const string name)
          << "Here are your options: " << endl;
     for (int ii = 1; ii <= 8; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
-    takeInput(toDoOption);
+    toDoOption = atoi(readline(">> "));
 
     return toDoOption;
 }
@@ -241,3 +234,5 @@ double ltest::inverse(const int num)
     else
         return 0; // return a nan() value?
 }
+
+// EOF

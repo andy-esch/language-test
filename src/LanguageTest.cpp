@@ -44,7 +44,6 @@ int main(int argc, char **argv)
 {
     /*****    Initialize Variables    *****/
 
-    srand(time(NULL));                      // does this need to be initialized?
     char inFile[60] = "vocab/test.txt";
     Account acct;
     int score;
@@ -56,7 +55,7 @@ int main(int argc, char **argv)
 
     int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
 
-    while (!cin.eof())
+    while (1)
     {
         switch (toDoOption)
         {
@@ -96,8 +95,7 @@ int main(int argc, char **argv)
                 cout << "hmm, that's not an option" << endl;
                 break;
         }
-        /* need way to clear cin so that EOF is cleared out and it doesn't
-           prematurely cause exiting of the program */
+
         toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     }
     cin.clear();

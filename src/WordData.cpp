@@ -25,12 +25,12 @@ double WordData::getAverageCorrectAnswerTime(void) const
     return static_cast<double>(answeringTime) * ltest::inverse(numCorrect);
 }
 
-unsigned short int WordData::getNumAsked(void) const
+usInt WordData::getNumAsked(void) const
 {
     return numAsked;
 }
 
-unsigned short int WordData::getNumCorrect(void) const
+usInt WordData::getNumCorrect(void) const
 {
     return numCorrect;
 }
