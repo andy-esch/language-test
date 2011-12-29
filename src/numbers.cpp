@@ -300,7 +300,7 @@ int numbers(void)
 
             /* Shows first error -- doesn't work with accented words */
             cout << response << endl;
-            cout << ltest::whitespace(findFirstError(wrdStr,response)-2) \
+            cout << ltest::printWhitespace(findFirstError(wrdStr,response)-2) \
                  << "^" << endl;
             cout << wrdStr << endl;
 

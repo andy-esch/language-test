@@ -140,7 +140,7 @@ string Hint::example(void)
 string Hint::help()
 {
     stringstream hint;
-    string ws10 = ltest::whitespace(10);
+    string ws10 = ltest::printWhitespace(10);
     hint << ws10 << '\a' << endl;
     hint << ws10 << "Want a letter?  Type '-l'." << endl;
     hint << ws10 << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
