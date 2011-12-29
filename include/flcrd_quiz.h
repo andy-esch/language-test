@@ -6,12 +6,17 @@
  *
  */
 
+#ifndef FLCRD_QUIZ_H
+#define FLCRD_QUIZ_H
+
 #include <cstdlib>
 #include <string>
-#include <boost/chrono.hpp>
 #include <iostream>
 #include <vector>
 #include <climits>
+
+#include <boost/chrono.hpp>
+#include <readline/readline.h>
 
 #include "functions.h"
 #include "Flashcard.h"
@@ -19,5 +24,8 @@
 #include "Hint.h"
 #include "SmartPicker.h"
 #include "listDicts.h"
+#include "ltest_typedefs.h"
 
 int flcrd_quiz(bool,char*);
+
+#endif // FLCRD_QUIZ_H

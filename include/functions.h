@@ -20,6 +20,8 @@
 #include <typeinfo>     // name(), what()
 #include <vector>       // vector class, member functions
 
+#include <readline/readline.h>
+
 #include "WordData.h"
 #include "ltest_typedefs.h"
 #include "Account.h"
@@ -50,13 +52,24 @@ namespace ltest {
     string help(char *);
     int randIndex(const int);
     double reaction(const double, const int);
-    string whitespace(const int length);
+
+    template <class Z>
+    string printWhitespace(Z length)
+    {
+        if (length > 0)
+        {
+            string temp(length+1,' ');
+            return temp;   
+        }
+        else
+            return "";
+    }
     float howWrongIsIt(string,string);
     vector<string> stripParentheses(vector<string> &);
     string prompt(const char * = NULL);
     string stripParentheses(string);
     string goodbye(const string="");
-    bool exitProg(const char*,bool=0);
+    bool exitProg(const char*,bool=false);
     int whatDoYouWantToDo(const string);
     double inverse(const int);
 
