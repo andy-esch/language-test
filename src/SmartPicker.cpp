@@ -3,8 +3,7 @@
  *
  *  Description: Algorithms for flashcard selection.
  *      Adaptive: probability of card selection based on past performance
- *      through use of boost random library.  Algorithm inspired by
- *      http://www.boost.org/doc/libs/1_47_0/doc/html/boost_random/tutorial.html
+ *      through use of boost random library.
  *
  *  Created by KEPS on 4/10/11.
  *
@@ -15,30 +14,29 @@
 /**    SmartPicker members    **/
 
 // Default constructor
-SmartPicker::SmartPicker(void)
+SmartPicker::SmartPicker()
             :currentIndex(0)
 {
 }
 
-void SmartPicker::setCurrentIndex(int index)
+void SmartPicker::setCurrentIndex(int newValue)
 {
-    currentIndex = index;
+    currentIndex = newValue;
 }
 
-
-usInt SmartPicker::getCurrentIndex(void)
+usInt SmartPicker::getCurrentIndex()
 {
     return currentIndex;
 }
 
-usInt SmartPicker::getNextIndex(int cardsSize)
+usInt SmartPicker::getNextIndex(const vector<Flashcard> & cards)
 {
-    setCurrentIndex((++currentIndex) % cardsSize);
+    setCurrentIndex((++currentIndex) % cards.size());
     return currentIndex;
 }
 
 /**    LeastCorrect members    **/
-LeastCorrect::LeastCorrect(void)
+LeastCorrect::LeastCorrect()
              :leastCorrectIndices(0), currLowest(0)
 {
 }
@@ -83,7 +81,7 @@ void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
     }
 }
 
-void LeastCorrect::printIndices(void)
+void LeastCorrect::printIndices()
 {
     std::list<usInt>::iterator it = leastCorrectIndices.begin();
     cout << *it;
@@ -94,7 +92,7 @@ void LeastCorrect::printIndices(void)
 
 // Is there a way to generalize this to use numCorrect and numAsked for the same
 // function?
-usInt LeastCorrect::findSmallest(const vector<Flashcard> & deck)
+usInt LeastCorrect::findSmallest(const vector<Flashcard> & deck) const
 {
     usInt currentLowest = deck[0].data.getNumCorrect(), temp;
     
@@ -118,7 +116,7 @@ usInt LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
     // generate new index
     leastPickedIndex(cards);
-    
+
     return currentIndex;
 }
 
@@ -133,7 +131,7 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
     if (leastPickedIndices.empty() )
         repopulateIndices(cards);
 
-    std::list<usInt>::iterator it = leastPickedIndices.begin();
+    list<usInt>::iterator it = leastPickedIndices.begin();
     for (int jj = ltest::randIndex(leastPickedIndices.size()); jj > 0; jj--)
         it++;
 
@@ -155,7 +153,7 @@ void LeastPicked::repopulateIndices(const vector<Flashcard> & cards)
     }
 }
 
-void LeastPicked::printIndices(void)
+void LeastPicked::printIndices()
 {
     list<usInt>::iterator it = leastPickedIndices.begin();
     cout << *it;
@@ -192,7 +190,6 @@ Adaptive::Adaptive(int numEntries)
          :probability(0), gen(static_cast<usInt> (std::time(0))), levDistance(0.0)
 {
     probability.assign(numEntries,ltest::inverse(numEntries));
-//    gen.seed(static_cast<usInt>(std::time(0))); // initialize random seed
 }
 
 // Desctructor
@@ -213,20 +210,18 @@ double Adaptive::weight(bool wrong, double diff)
     return weight;
 }
 
-void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
+void Adaptive::updateProbsAdvanced(const double wgt, \
                                    const vector<Flashcard> & cards)
 {   // Updates probabilities
-    double wgt = weight(isWrong,ansTime);
     double probUnasked = 0.0;
-    double pStar = probability[index];
+    const double pStar = probability[currentIndex];
     int numOfNumAskedIs0 = 0;
     double alpha = fdim(1.0,pStar), beta;
     double gamma = 0.01, gamWeight = 1.0;   // Experiment with different gammas
-//    vector<double>::iterator it, itIndex = (probability.begin() + index);
 
     for (usInt ii = 0; ii < probability.size(); ii++)
     {
-        if (cards[ii].data.getNumAsked() == 0 && ii != index)
+        if (cards[ii].data.getNumAsked() == 0 && ii != currentIndex)
         {
             probUnasked += probability[ii];
             numOfNumAskedIs0++;
@@ -249,7 +244,7 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
 
     for (usInt ii = 0; ii < probability.size(); ii++)
     {
-        if ( ii == index )
+        if ( ii == currentIndex )
             probability[ii] *= fma(wgt,alpha,1.0);
         else if ( cards[ii].data.getNumAsked() != 0 )
             probability[ii] *= fma(-wgt,beta,1.0);
@@ -258,13 +253,12 @@ void Adaptive::updateProbsAdvanced(int index, bool isWrong, double ansTime, \
     }
 }
 
-void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
+void Adaptive::updateProbsBasic(const double wgt)
 {
-    const double wgt = weight(isWrong,ansTime);
-    const double pStar = probability[index];
+    const double pStar = probability[currentIndex];
     const double alpha = fdim(1.0,pStar), beta = pStar;
     vector<double>::iterator it;
-    const vector<double>::iterator itIndex = (probability.begin() + index);
+    const vector<double>::iterator itIndex = (probability.begin() + currentIndex);
 
     for (it = probability.begin(); it != probability.end(); it++)
     {
@@ -275,10 +269,12 @@ void Adaptive::updateProbsBasic(int index, bool isWrong, double ansTime)
     }
 }
 
-usInt Adaptive::adaptiveIndex(const vector<Flashcard> & cards) ///uhm is this func arg needed?
+usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
 {
-    // ansTime is a float and weight is a double -- does the precision difference matter?
-//    updateProbs(index, weight(isWrong,ansTime));
+    // Need to find a way to get the following three variables into this function
+    bool isWrong = true; // Add isWrong and ansTime to object defn?
+    double ansTime = 2.3;
+    Adaptive::updateProbsAdvanced(weight(isWrong,ansTime), cards);
 
     static usInt lastIndex = USHRT_MAX;
     boost::random::discrete_distribution<> dist(probability);
@@ -297,6 +293,7 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 {
     stringstream ps;
     ps << "Summary:\n";
+
     for (usInt ii = 0; ii < cards.size(); ii++)
     {
         ps << cards[ii].getWord('B',0) << '\t' << static_cast<int> (100 * probability[ii]) << endl;
@@ -311,3 +308,5 @@ void Adaptive::setLevDistance(string str1, string str2)
 
     levDistance = static_cast<double> (temp1);
 }
+
+// EOF

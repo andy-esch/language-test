@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef _SMARTPICKER_H_
-#define _SMARTPICKER_H_
+#ifndef SMARTPICKER_H
+#define SMARTPICKER_H
 
 #include <boost/random/mersenne_twister.hpp>        // mt19937
 #include <boost/random/discrete_distribution.hpp>   //discrete_distribution()
@@ -34,24 +34,25 @@ using std::string;
 using std::cout;
 
 
-/* need more constructors -- how do the derived ones behave? */
-class SmartPicker {
-protected:
-    usInt currentIndex;
-    void setCurrentIndex(int=0);
-public:
-    virtual ~SmartPicker() { };
-    SmartPicker(void);
-    usInt getNextIndex(int);
-    // Access methods
-    usInt getCurrentIndex();
-};
-
 /* Should all classes start with a limited set of the vocab and only expand the
  * list if a certain performance level is reached?  For instance, start out with
  * a set of 10, and if, say, all the words have an 70% correctness, add a few
  * more words...
  */
+
+class SmartPicker {
+protected:
+    usInt currentIndex;
+    void setCurrentIndex(int=0);
+public:
+    virtual ~SmartPicker() {};
+    SmartPicker();
+    usInt getNextIndex(const vector<Flashcard> &);
+    // Access methods
+    usInt getCurrentIndex();
+};
+
+
 
 class LeastCorrect: public SmartPicker {
 private:
@@ -59,7 +60,7 @@ private:
     usInt currLowest;
     void repopulateIndices(const vector<Flashcard> &);
     void leastCorrectIndex(const vector<Flashcard> &);
-    usInt findSmallest(const vector<Flashcard> &);
+    usInt findSmallest(const vector<Flashcard> &) const;
 public:
     // Constructor
     LeastCorrect();
@@ -95,11 +96,13 @@ private:
 public:
     Adaptive(int);
     ~Adaptive();
-    usInt adaptiveIndex(const vector<Flashcard> &);
-    void updateProbsAdvanced(int,bool,double, const vector<Flashcard> &);
-    void updateProbsBasic(int,bool,double);
+    usInt getNextIndex(const vector<Flashcard> &);
+    void updateProbsAdvanced(const double, const vector<Flashcard> &);
+    void updateProbsBasic(const double);
     string probabilitySummary(vector<Flashcard> &);
     void setLevDistance(string,string);
 };
 
 #endif // SMARTPICKER_H
+
+// EOF
