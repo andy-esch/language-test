@@ -45,5 +45,6 @@ private:
     string help();
     bool isAccented(string);
 };
+
 #endif // HINT_H
 //could add an int penalty so that each hint results in penalty points.

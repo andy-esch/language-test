@@ -33,4 +33,5 @@ public:
     void incrNumCorrect();
     void incrAnsTime(double);
 };
+
 #endif // WORDDATA_H

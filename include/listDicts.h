@@ -29,6 +29,7 @@ using std::string;
 using std::vector;
 using std::cin;
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::ios;
 using std::ifstream;
