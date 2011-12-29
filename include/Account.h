@@ -16,6 +16,8 @@
 #include <vector>
 #include <ctime>
 
+#include <readline/readline.h>
+
 #include "functions.h"
 
 using std::cin;
@@ -40,7 +42,7 @@ class Account {
     int numOfTimesAttempted;
     void importViaXml(void);    // Reminder
     void saveNewResultsToXML(void); // Reminder
-    void setName(string);
+    void setName(char *);
 public:
     Account();
     void exportAccount(string);

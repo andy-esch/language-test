@@ -18,8 +18,12 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <cctype>
+
+#include <readline/readline.h>
 
 #include "functions.h"
+#include "ltest_typedefs.h"
 
 using std::string;
 using std::vector;

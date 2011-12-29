@@ -44,30 +44,29 @@ string Account::getName()
 
 void Account::establishAccount()
 {
-    string youAre;
+    char *youAre;
     bool yn = false;
-    string ynstr;
+    char *ynstr;
 
     do
     {
-        cout << "What is your account name?" << endl;
-        getline(cin,youAre);
+        cout << "What is your account name?  Enter 'guest' to start a guest account" << endl;
+        youAre = readline(">> ");
 
         cout << "You set your account name to '" << youAre \
              << "'. Do you want to keep that? (yes or no)" << endl;
 
-        ltest::takeInput(ynstr);
+        ynstr = readline(">> ");
 
         if (ynstr[0] == 'y' && not doesAcctExist(youAre))
             yn = true;
 
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    } while (yn == false);  // Should there be other escape sequences?
-                            // such as if you accidentally entered this and
-                            // don't want to establish a new account?
+    } while (yn == false);
 
     setName(youAre);
+
+    free(youAre);
+    free(ynstr);
 }
 
 bool Account::doesAcctExist(string acctName)
@@ -76,7 +75,7 @@ bool Account::doesAcctExist(string acctName)
     return false;    // change this obviously
 }
 
-void Account::setName(string newName)
+void Account::setName(char * newName)
 {
     name = newName;
 }

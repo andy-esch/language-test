@@ -49,10 +49,11 @@ int getTxtFiles(string dir, vector<string> &files)
 
 string listDicts(void)
 { 
-    string dir("./vocab/"), dictPick;
+    string dir("./vocab/"), filePath;
+    char *dictPick = NULL;
     vector<string> files;
     vector<string>::iterator iter;
-    unsigned short numOfDicts = 1, dictInt = 0, longestName = 0;
+    usInt numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
     // If directory is not found -- do something different instead?
@@ -64,44 +65,54 @@ string listDicts(void)
     }
 
     cout << endl;
-    if ( !files.empty() ) // If files are found
+    if (!files.empty())
     {
-        for (iter = files.begin(); iter != files.end(); ++iter)
-            if ((*iter).size() > longestName)
-                longestName = (*iter).size();
-
-        cout << "The following dictionaries are available: \n" << endl;
-
-        for (iter = files.begin(); iter != files.end(); ++iter)
+        do  // If files are found
         {
-//            unsigned short strSize = (*iter).size(); // unused
+            for (iter = files.begin(); iter != files.end(); ++iter)
+                if ((*iter).size() > longestName)
+                    longestName = (*iter).size();
 
-            cout << '\t' << setw(2) << numOfDicts << ". " << *iter \
-                 << setw(longestName - (*iter).size() + 9) \
-                 << numberOfWords(dir+*iter) << " words" << endl;
+            cout << "The following dictionaries are available: \n" << endl;
 
-            numOfDicts++;
-        }
-        cout << endl;
-        ltest::takeInput(dictPick, "Select a dictionary for more information.  Type 'exit' to exit.");
+            for (iter = files.begin(), numOfDicts = 1; iter != files.end(); ++iter)
+            {
+                cout << '\t' << setw(2) << numOfDicts << ". " << *iter \
+                     << setw(longestName - (*iter).size() + 9) \
+                     << numberOfWords(dir + *iter) << " words" << endl;
 
-            // TODO: The following six lines needed to be cleaned up!  dictInt is not well-defined
-        dictInt = atoi( &(dictPick.at(0)) );
-        
-        if ( ltest::exitProg(dictPick.c_str(),cin.eof()) || dictInt <= 0 || dictInt > files.size() )
-            exit(0);
-        else
-            dictPick = dir + files.at(dictInt - 1);
+                numOfDicts++;
+            }
+
+            cout << "Choose a dictionary by number or filter by type: nouns (n), adjectives (a), verbs (v), phrases (p), etc. (unimplemented -- this is here as a reminder)." << endl;
+            cout << endl;
+
+            dictPick = readline("\n>> ");
+
+            if (ltest::exitProg(dictPick))
+                exit(0);
+
+            if (isdigit(dictPick[0]))
+                dictInt = atoi(dictPick);
+            else
+                cout << dictPick << " is not a valid choice." << endl;
+            
+            if ( ltest::exitProg(dictPick,cin.eof()) )
+                exit(0);
+            else
+                filePath = dir + files.at(dictInt - 1);
+        } while ( dictInt > files.size() || dictInt <= 0 );
     }
-    else    // If files are not found
+
+    if ( files.empty() )    // If files are not found
     {
         // This doesn't handle cases where no files are found... but input() does
         cout << "No dictionaries found.\n" \
              << "Select a dictionary for more information.  " \
              << "Type 'exit' to exit." << endl;        
-        ltest::takeInput(dictPick);
+        dictPick = readline("\n>> ");
 
-        if ( ltest::exitProg(dictPick.c_str(),cin.eof()) )
+        if ( ltest::exitProg(dictPick,cin.eof()) )
             exit(0);
     }
 
@@ -109,16 +120,18 @@ string listDicts(void)
     cin.clear();
     cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
+    free(dictPick);
+
     // returns full path of file, e.g. "./vocab/sideA.txt"
-    return dictPick;
+    return filePath;
 }
 
 /* Counts the number of entries in a quiz file */
-unsigned short numberOfWords(string fileName)
+usInt numberOfWords(string fileName)
 {
     ifstream inFile(fileName.c_str(),ifstream::in);
     string temp;
-    unsigned short size = 0;
+    usInt size = 0;
     if ( inFile.is_open() )
     {
         while ( !inFile.eof() )     // Have something to skip empty lines?
