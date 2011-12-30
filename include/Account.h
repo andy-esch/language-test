@@ -20,7 +20,6 @@
 
 #include "functions.h"
 #include "ltest_typedefs.h"
-//#include "progPrefs.h"
 
 using std::cin;
 using std::cout;

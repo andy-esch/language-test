@@ -62,6 +62,8 @@ void Account::establishAccount()
     char *youAre, *yesOrNo;
     bool yn = false;
 
+    rl_bind_key('\t',rl_abort); // disable auto-complete
+
     do
     {
         cout << endl \
@@ -72,9 +74,9 @@ void Account::establishAccount()
         do
         {
             youAre = readline(">> ");
-        } while ( !strcmp(youAre,"\0") );
+        } while ( !strcmp(youAre, "\0") );
 
-        if ( !strcmp(youAre,"guest") )
+        if ( !strcmp(youAre, "guest") )
         {
             cout << endl \
                  << "You are picking a guest account.  Your data will only be" \

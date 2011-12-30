@@ -35,3 +35,5 @@ public:
 };
 
 #endif // WORDDATA_H
+
+// EOF

@@ -54,10 +54,10 @@ int main(int argc, char **argv)
     ltest::welcomeMessage();
     acct.establishAccount();
 
-    int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
-
     while (1)
     {
+        int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
+
         switch (toDoOption)
         {
             case 1:
@@ -100,8 +100,6 @@ int main(int argc, char **argv)
                 cout << "hmm, that's not an option" << endl;
                 break;
         }
-
-        toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     }
 
     return 0;
