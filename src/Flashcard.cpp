@@ -47,7 +47,7 @@ vector<string> Flashcard::getSideA(void)
     return sideA;
 }
 
-string Flashcard::getWord(char side, int i) const
+string Flashcard::getWord(char side, usInt i) const
 {
     if (side == 'A')
         return sideA[i];
@@ -60,7 +60,7 @@ vector<string> Flashcard::getSideB(void)
     return sideB;
 }
 
-int Flashcard::size(char side)
+usInt Flashcard::size(char side)
 {
     if (side == 'A')
         return sideA.size();
@@ -68,7 +68,7 @@ int Flashcard::size(char side)
         return sideB.size();
 }
 
-int Flashcard::size(char side, int ind)
+usInt Flashcard::size(char side, usInt ind)
 {
     if (side == 'A')
         return sideA[ind].size();
@@ -76,7 +76,7 @@ int Flashcard::size(char side, int ind)
         return sideB[ind].size();
 }
 
-void Flashcard::setWeight(int N)
+void Flashcard::setWeight(usInt N)
 {
     weight = ltest::inverse(N);
 }
@@ -253,3 +253,5 @@ void Flashcard::insertWords(string words, Flashcard & tempset, int step)
             break;  // What should we do for this case?
     }
 }
+
+// EOF

@@ -43,17 +43,17 @@ using std::cout;
 class SmartPicker {
 protected:
     usInt currentIndex;
-    void setCurrentIndex(int=0);
+    void setCurrentIndex(usInt=0);
 public:
-    virtual ~SmartPicker() {};
     SmartPicker();
-    virtual usInt getNextIndex(const vector<Flashcard> &) =0;
+    virtual ~SmartPicker() {};
+    virtual usInt getNextIndex(const vector<Flashcard> &) = 0;
     // Access methods
-    usInt getCurrentIndex();
+    usInt getCurrentIndex() const;
 };
 
 
-class WalkThrough : public SmartPicker {
+class WalkThrough: public SmartPicker {
 public:    
     usInt getNextIndex(const vector<Flashcard> &);
 };
@@ -97,6 +97,8 @@ private:
     vector<double> probability;
     boost::mt19937 gen;
     double levDistance;
+    double currAnsTime;
+    bool isWrong;
     double weight(bool,double);
 public:
     Adaptive(int);

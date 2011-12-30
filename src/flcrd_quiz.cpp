@@ -1,6 +1,6 @@
 /*
  *  flcrd_quiz.cpp
- *  
+ *
  *  Description:
  *
  *
@@ -19,19 +19,21 @@ int flcrd_quiz(char * inFile, Account & acct)
     usInt ii = 0;
     bool isWrong = true, disableHintMsg = false;
     vector<Flashcard> cards;
-    string response;
+    string response, prompt;
     SmartPicker * picker;
 
     Hint myhint("  ", acct.getVerbose());
     char * temp = NULL;
-    
+
     /* Choose flashcard set */
     strcpy(inFile,listDicts().c_str());
-    
-    cards[0].input(cards,inFile);   // wonky -- input() should be a friend
-                                    // instead of a Flashcard member function?
 
-    cout << "Pick 1 for LeastPicked, 2 for Adaptive, 3 for LeastCorrect" << endl;
+    cards[0].input(cards,inFile);   // wonky -- input() should be a friend instead of a Flashcard member function?
+
+    cout << "Pick how you're quizzed:\n" \
+         << "   1. for LeastPicked\n" \
+         << "   2. for Adaptive\n" \
+         << "   3. for LeastCorrect\n" << endl;
     cin >> ii;
 
     switch (ii)
@@ -48,14 +50,16 @@ int flcrd_quiz(char * inFile, Account & acct)
             cout << "You picked LeastCorrect" << endl;
             picker = new LeastCorrect;
             break;
-        default:
+        case 4:
             cout << "You picked WalkThrough" << endl;
             picker = new WalkThrough;
             break;
+        default:
+            cout << "Your choice isn't valid, so you're getting LeastPicked" << endl;
+            picker = new LeastPicked;
+            break;
     }
 
-    ii = 0;
-    
     do
     {
         ii = picker->getNextIndex(cards);
@@ -63,10 +67,10 @@ int flcrd_quiz(char * inFile, Account & acct)
         // could we conditionally set this instead?
         myhint.setKey( cards[ii].getWord('B',ltest::randIndex(cards[ii].size('B'))) );
         string sideAword = cards[ii].getWord('A',ltest::randIndex(cards[ii].size('A')));
-        
+
         int numOfTries = 0;
 
-        string prompt = sideAword;
+        prompt = sideAword;
 
         while (!cin.eof() && isWrong)
         {
@@ -87,8 +91,7 @@ int flcrd_quiz(char * inFile, Account & acct)
 
                 cout << myhint.handle(response, false);
             }
-            else if ( response == "*exit")
-                return 0;
+            else if ( response == "exit") break;
             else /* no hint, check response */
             {
                 isWrong = ltest::isInvalidAnswer(response,cards[ii].getSideB());
@@ -97,16 +100,13 @@ int flcrd_quiz(char * inFile, Account & acct)
                     if (acct.getVerbose())
                     {
                         cout << "You are " \
-                        << wordCompare::lcsPercent(cards[ii].getWord('B',0),response) \
-                        << "% correct." << endl \
-                        << wordCompare::correctness(response,cards[ii].getWord('B',0)) << endl;
+                             << wordCompare::lcsPercent(cards[ii].getWord('B',0),response) \
+                             << "% correct.\n" \
+                             << wordCompare::correctness(response,cards[ii].getWord('B',0)) << endl;
                     }
 
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
-                    {
-                        cout << ltest::hintOptions(sideAword.size()) << endl \
-                             << sideAword << ": ";
-                    }
+                        cout << ltest::hintOptions(sideAword.size()) << '\n' << sideAword << ": ";
                     else
                         prompt = ltest::printWhitespace(sideAword.size()-1);
                 }

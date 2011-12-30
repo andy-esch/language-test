@@ -19,12 +19,12 @@ SmartPicker::SmartPicker()
 {
 }
 
-void SmartPicker::setCurrentIndex(int newValue)
+void SmartPicker::setCurrentIndex(usInt newValue)
 {
     currentIndex = newValue;
 }
 
-usInt SmartPicker::getCurrentIndex()
+usInt SmartPicker::getCurrentIndex() const
 {
     return currentIndex;
 }
@@ -66,7 +66,7 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
     if (leastCorrectIndices.empty())
         repopulateIndices(cards);
 
-    std::list<usInt>::iterator it = leastCorrectIndices.begin();
+    std::list<usInt>::const_iterator it = leastCorrectIndices.begin();
     for (usInt jj = ltest::randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
@@ -89,7 +89,7 @@ void LeastCorrect::repopulateIndices(const vector<Flashcard> & cards)
 
 void LeastCorrect::printIndices()
 {
-    std::list<usInt>::iterator it = leastCorrectIndices.begin();
+    std::list<usInt>::const_iterator it = leastCorrectIndices.begin();
     cout << *it;
     for (it++; it != leastCorrectIndices.end(); it++ )
         cout << ", " << *it;
@@ -140,7 +140,7 @@ void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
     if (leastPickedIndices.empty() )
         repopulateIndices(cards);
 
-    list<usInt>::iterator it = leastPickedIndices.begin();
+    list<usInt>::const_iterator it = leastPickedIndices.begin();
     for (int jj = ltest::randIndex(leastPickedIndices.size()); jj > 0; jj--)
         it++;
 
@@ -164,7 +164,7 @@ void LeastPicked::repopulateIndices(const vector<Flashcard> & cards)
 
 void LeastPicked::printIndices()
 {
-    list<usInt>::iterator it = leastPickedIndices.begin();
+    list<usInt>::const_iterator it = leastPickedIndices.begin();
     cout << *it;
     for (it++; it != leastPickedIndices.end(); it++ )
         cout << ", " << *it;
@@ -196,13 +196,14 @@ void LeastPicked::setCurrentLowest(usInt newCurrLow)
 
 // Default Constructor
 Adaptive::Adaptive(int numEntries)
-         :probability(0), gen(static_cast<usInt> (std::time(0))), levDistance(0.0)
+         :probability(0), gen(static_cast<usInt> (std::time(0))), \
+          levDistance(0.0), currAnsTime(0.0), isWrong(true)
 {
     probability.assign(numEntries,ltest::inverse(numEntries));
 }
 
 // Desctructor
-Adaptive::~Adaptive(void)
+Adaptive::~Adaptive()
 {
     probability.clear();
 }
@@ -267,7 +268,7 @@ void Adaptive::updateProbsBasic(const double wgt)
     const double pStar = probability[currentIndex];
     const double alpha = fdim(1.0,pStar), beta = pStar;
     vector<double>::iterator it;
-    const vector<double>::iterator itIndex = (probability.begin() + currentIndex);
+    const vector<double>::const_iterator itIndex = (probability.begin() + currentIndex);
 
     for (it = probability.begin(); it != probability.end(); it++)
     {
@@ -283,10 +284,8 @@ usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
 #ifdef DEBUG
     cout << "Index from Adaptive class" << endl;
 #endif // DEBUG
-    // Need to find a way to get the following three variables into this function
-    bool isWrong = true; // Add isWrong and ansTime to object defn?
-    double ansTime = 2.3;
-    Adaptive::updateProbsAdvanced(weight(isWrong,ansTime), cards);
+
+    Adaptive::updateProbsAdvanced(weight(isWrong,currAnsTime), cards);
 
     static usInt lastIndex = USHRT_MAX;
     boost::random::discrete_distribution<> dist(probability);

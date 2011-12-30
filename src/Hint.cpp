@@ -69,7 +69,7 @@ int Hint::numOfSpaces(string str, int numLetters)
 bool Hint::isAccented(string str)
 {
     vector<string> set{"á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß"};
-    vector<string>::iterator it;
+    vector<string>::const_iterator it;
     bool accent = false;
 
     for (it = set.begin(); it != set.end(); it++)
@@ -104,7 +104,7 @@ void Hint::fillLetterPlaces()
 {
     for (usInt i = hintNum; i < key.size(); i++)
     {
-        if(key.at(i) != ' ')
+        if (key.at(i) != ' ')
             hint.replace(i,1,"-");
     }
 }

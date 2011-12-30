@@ -47,12 +47,14 @@ public:
     void clearWS();         // Clear wordset (used in input())
     WordData getWordData();
     void recordPerformance(int,bool,double);
-    void setWeight(int);
-    string getWord(char,int) const;
+    void setWeight(usInt);
+    string getWord(char,usInt) const;
     vector<string> getSideA();  
     vector<string> getSideB();
-    int size(char);             // size of card side
-    int size(char,int);         // size of individual word
+    usInt size(char);             // size of card side
+    usInt size(char,usInt);         // size of individual word
     void input(vector<Flashcard> &, char *);
 };
 #endif // FLASHCARD_H
+
+// EOF

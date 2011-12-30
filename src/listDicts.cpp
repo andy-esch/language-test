@@ -52,7 +52,7 @@ string listDicts(void)
     string dir("./vocab/"), filePath;
     char *dictPick = NULL;
     vector<string> files;
-    vector<string>::iterator iter;
+    vector<string>::const_iterator iter;
     usInt numOfDicts = 1, dictInt = 0, longestName = 0;
     int retValue = getTxtFiles(dir,files);
 
