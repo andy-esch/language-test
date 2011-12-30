@@ -16,12 +16,13 @@ int flcrd_quiz(char * inFile, Account & acct)
 
     boost::chrono::system_clock::time_point timeStart;
     boost::chrono::duration<double> timeDiff;
-    usInt ii;
+    usInt ii = 0;
     bool isWrong = true, disableHintMsg = false;
     vector<Flashcard> cards;
     string response;
-    LeastPicked picker;
-    Hint myhint("  ",acct.getVerbose());
+    SmartPicker * picker;
+
+    Hint myhint("  ", acct.getVerbose());
     char * temp = NULL;
     
     /* Choose flashcard set */
@@ -29,13 +30,38 @@ int flcrd_quiz(char * inFile, Account & acct)
     
     cards[0].input(cards,inFile);   // wonky -- input() should be a friend
                                     // instead of a Flashcard member function?
-    
-    do    // Should there be other conditions? Yes, all probabilities can't be zero.
+
+    cout << "Pick 1 for LeastPicked, 2 for Adaptive, 3 for LeastCorrect" << endl;
+    cin >> ii;
+
+    switch (ii)
     {
-        ii = picker.getNextIndex(cards);
+        case 1:
+            cout << "You picked LeastPicked" << endl;
+            picker = new LeastPicked;
+            break;
+        case 2:
+            cout << "You picked Adaptive" << endl;
+            picker = new Adaptive(cards.size());
+            break;
+        case 3:
+            cout << "You picked LeastCorrect" << endl;
+            picker = new LeastCorrect;
+            break;
+        default:
+            cout << "You picked WalkThrough" << endl;
+            picker = new WalkThrough;
+            break;
+    }
+
+    ii = 0;
+    
+    do
+    {
+        ii = picker->getNextIndex(cards);
 
         // could we conditionally set this instead?
-        myhint.setKey(cards[ii].getWord('B',ltest::randIndex(cards[ii].size('B'))));
+        myhint.setKey( cards[ii].getWord('B',ltest::randIndex(cards[ii].size('B'))) );
         string sideAword = cards[ii].getWord('A',ltest::randIndex(cards[ii].size('A')));
         
         int numOfTries = 0;
@@ -94,7 +120,9 @@ int flcrd_quiz(char * inFile, Account & acct)
 
     testResults(cards,acct.getVerbose());
 
-    cin.clear(); // Need to clear away the EOF somehow
+    delete picker;
 
     return 0;
 }
+
+// EOF
