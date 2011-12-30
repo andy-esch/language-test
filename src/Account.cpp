@@ -25,7 +25,7 @@ QuizSummary::QuizSummary()
 
 Account::Account()
         :name("Geronimo"), results(0), score(100.0), \
-         datePassed(""), numOfTimesAttempted(0)
+         datePassed(""), numOfTimesAttempted(0), verbose(false)
 {
 }
 
@@ -42,23 +42,55 @@ string Account::getName()
     return name;
 }
 
+void Account::setVerbose(bool newVal)
+{
+    verbose = newVal;
+}
+
+void Account::setVerbose()
+{
+    verbose = !verbose;
+}
+
+bool Account::getVerbose() const
+{
+    return verbose;
+}
+
 void Account::establishAccount()
 {
-    char *youAre;
+    char *youAre, *yesOrNo;
     bool yn = false;
-    char *ynstr;
 
     do
     {
-        cout << "What is your account name?  Enter 'guest' to start a guest account" << endl;
-        youAre = readline(">> ");
+        cout << endl \
+             << "Current user is " << name << ".\n" << endl \
+             << "What is your account name?  " \
+             << "Enter 'guest' to start a temporary guest account" << endl;
 
-        cout << "You set your account name to '" << youAre \
-             << "'. Do you want to keep that? (yes or no)" << endl;
+        do
+        {
+            youAre = readline(">> ");
+        } while ( !strcmp(youAre,"\0") );
 
-        ynstr = readline(">> ");
+        if ( !strcmp(youAre,"guest") )
+        {
+            cout << endl \
+                 << "You are picking a guest account.  Your data will only be" \
+                 << " active during the current session.  Nothing will be saved." \
+                 << "  Do you want to continue as a guest?" << endl;
+        }
+        else
+        {
+            cout << endl \
+                 << "You set your account name to '" << youAre \
+                 << "'. Do you want to keep that? (yes or no)" << endl;
+        }
 
-        if (ynstr[0] == 'y' && not doesAcctExist(youAre))
+        yesOrNo = readline(">> ");
+
+        if (yesOrNo[0] == 'y' && not doesAcctExist(youAre))
             yn = true;
 
     } while (yn == false);
@@ -66,7 +98,7 @@ void Account::establishAccount()
     setName(youAre);
 
     free(youAre);
-    free(ynstr);
+    free(yesOrNo);
 }
 
 bool Account::doesAcctExist(string acctName)
