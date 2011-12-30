@@ -34,10 +34,10 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-extern bool verbose;
 
 namespace ltest {
 
+    void welcomeMessage();
     bool pass(int, int, float, float);
     usInt isAccented(string);
     bool compareAll(vector<string> &, string);

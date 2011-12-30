@@ -26,7 +26,7 @@
 #include <iostream>
 
 #include "functions.h"
-#include "programPrefs.h"
+#include "progPrefs.h"
 #include "Account.h"
 
 /* Quizzes */
@@ -37,8 +37,6 @@ using std::cin;
 using std::cout;
 using std::endl;
 
-bool debug = false;
-bool verbose = false;
 
 int main(int argc, char **argv)
 {
@@ -48,9 +46,12 @@ int main(int argc, char **argv)
     Account acct;
     int score;
 
-    /*****    Take optional input from command line   *****/
-    progPrefs::cmdLineInput(argc,argv,inFile,verbose,debug);
+    srand(time(NULL));
 
+    /*****    Take optional input from command line   *****/
+    progPrefs::cmdLineInput(argc,argv,inFile);
+
+    ltest::welcomeMessage();
     acct.establishAccount();
 
     int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
@@ -61,7 +62,7 @@ int main(int argc, char **argv)
         {
             case 1:
                 cout << "you chose flash cards" << endl;
-                score = flcrd_quiz(verbose,inFile);
+                score = flcrd_quiz(inFile,acct);
                 break;
             case 2:
                 cout << "you chose number quiz" << endl;
@@ -80,14 +81,18 @@ int main(int argc, char **argv)
                 /* run multiple-choice program */
                 break;
             case 6:
+                cout << "you chose to change the user!" << endl;
+                acct.establishAccount();
+                break;
+            case 7:
                 cout << "you chose to see your account summary" << endl;
                 /* print account summary */
                 break;
-            case 7:
+            case 8:
                 cout << "you chose to change some program options" << endl;
                 progPrefs::changeProgOptions(acct);
                 break;
-            case 8:
+            case 9:
                 cout << "you chose to exit the program" << endl;
                 cout << ltest::goodbye(acct.getName()) << endl;
                 exit(0);
@@ -98,9 +103,6 @@ int main(int argc, char **argv)
 
         toDoOption = ltest::whatDoYouWantToDo(acct.getName());
     }
-    cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    cout << ltest::goodbye(acct.getName()) << endl;
 
     return 0;
 }

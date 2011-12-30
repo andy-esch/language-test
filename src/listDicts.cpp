@@ -87,11 +87,13 @@ string listDicts(void)
                 numOfDicts++;
             }
 
-            cout << "Choose a dictionary by number or filter by type: "
+            cout << "\nChoose a dictionary by number or filter by type: "
                      "nouns (n), adjectives (a), verbs (v), phrases (p), etc. "
-                     "(unimplemented -- this is here as a reminder).\n" << endl;
-
-            dictPick = readline("\n>> ");
+                     "(unimplemented -- this is here as a reminder)." << endl;
+            do
+            {
+                dictPick = readline("\n>> ");
+            } while ( !strcmp(dictPick,"\0") );
 
             if (ltest::exitProg(dictPick)) exit(0);
 

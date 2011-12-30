@@ -11,7 +11,7 @@ OPTIM = -O3 -funroll-loops
 CMAKE_COMMAND = /opt/local/bin/cmake
 
 OBJECTS = Account.o \
-          programPrefs.o \
+          progPrefs.o \
 		  Flashcard.o \
 		  flcrd_quiz.o \
 		  functions.o \
@@ -28,7 +28,7 @@ HEADERS = functions.h \
           listDicts.h \
           testResults.h \
           Hint.h \
-          programPrefs.h wordCompare.h SmartPicker.h WordData.h Account.h \
+          progPrefs.h wordCompare.h SmartPicker.h WordData.h Account.h \
 		  flcrd_quiz.h numbers.h
 
 TESTS = SmartPicker_test

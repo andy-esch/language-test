@@ -10,25 +10,16 @@
 
 #include "Hint.h"
 
+/* TODO: What to do about the verbose variables in Hint.cpp and Hint.h? */
 Hint::Hint(string answerKey, bool selectVerbose)
      :key(answerKey), hintNum(0), verbose(selectVerbose), hint(key.size(),' ')
 {
-//    key = answerKey;
-//    hintNum = 0;
-//    verbose = selectVerbose;
-//    hint = "";
-//    while (hint.size() <= key.size())
-//        hint += " ";
 }
 
 // Default constructor
 Hint::Hint()
      :key(" "), hintNum(0), verbose(false), hint(" ")
 {
-//    key = " ";
-//    hintNum = 0;
-//    verbose = false;
-//    hint = " ";
 }
 
 

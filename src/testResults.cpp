@@ -10,7 +10,7 @@
 
 #include "testResults.h"
 
-void testResults(vector<Flashcard> cards, bool verbose)
+void testResults(vector<Flashcard> cards, bool isVerbose)
 {
     usInt lengthLongestWord = 0;
     for (usInt i = 0; i < cards.size(); i++)
@@ -44,7 +44,7 @@ void testResults(vector<Flashcard> cards, bool verbose)
             cout << setw(6) << "   -" << setw(12) << "   -";
       
       
-        if ( verbose )
+        if ( isVerbose )
         {
             cout << setw(15) << cards[i].size('A') << " word" << ((cards[i].size('A')>1)?"s:":":");
             for (int k = 0; k < cards[i].size('A'); k++)

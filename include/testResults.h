@@ -20,6 +20,7 @@
 #include "WordData.h"
 #include "functions.h"
 #include "ltest_typedefs.h"
+#include "Account.h"
 
 using std::cout;
 using std::endl;

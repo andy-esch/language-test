@@ -11,6 +11,11 @@
 
 #include "functions.h"
 
+void ltest::welcomeMessage()
+{
+    cout << "\nWelcome to ltest!" << endl;
+}
+
 //  To be used to verify if a given test has been passed
 //  This is only a prototype
 bool ltest::pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
@@ -162,10 +167,8 @@ string ltest::help(char * prog)
     help << endl;
     help << "options:" << endl;
     help << "    -i <string>    input file name" << endl;
-    help << "    -v             turn off verbose output" << endl;
     help << "    -l             list available dictionaries" << endl;
     help << "    -h             print out this help menu" << endl;
-    help << "    -d             print debugging information to troubleshoot" << endl;
     help << endl;
     return help.str();
 }
@@ -211,17 +214,19 @@ int ltest::whatDoYouWantToDo(const string name)
 {
     string options[] = {"flash cards", "numbers", "conjugations", \
                         "fill-in-the-blank", "multiple choice", \
-                        "account summary", "set program options", \
-                        "exit program"};
+                        "change user", "account summary", \
+                        "set program options", "exit program"};
 
-    short toDoOption;
+    usInt toDoOption;
 
-    cout << endl;
-    cout << "Hello " << name << ", " \
+    cout << '\n' \
+         << "Hello " << name << ", " \
          << "what do you want to do?\n" \
          << "Here are your options: " << endl;
-    for (int ii = 1; ii <= 8; ii++)
+
+    for (int ii = 1; ii <= 9; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
+
     toDoOption = atoi(readline(">> "));
 
     return toDoOption;

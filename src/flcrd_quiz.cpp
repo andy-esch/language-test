@@ -13,15 +13,15 @@
 int flcrd_quiz(char * inFile, Account & acct)
 {
     cout << "Beginning Flashcard Quiz." << endl;
+
     boost::chrono::system_clock::time_point timeStart;
     boost::chrono::duration<double> timeDiff;
-    bool disableHintMsg = false;
     usInt ii;
-    bool isWrong = true;
+    bool isWrong = true, disableHintMsg = false;
     vector<Flashcard> cards;
     string response;
     LeastPicked picker;
-    Hint myhint = Hint("  ",acct.getVerbose());
+    Hint myhint("  ",acct.getVerbose());
     char * temp = NULL;
     
     /* Choose flashcard set */
