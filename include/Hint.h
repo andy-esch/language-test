@@ -28,7 +28,7 @@ public:
     string key; 
     usInt hintNum;    // keeps track of where in the word the hint is at.
     bool verbose;
-    string handle(string, bool);
+    string handle(string,bool);
     Hint(string, bool);
     Hint();
     void setKey(string);

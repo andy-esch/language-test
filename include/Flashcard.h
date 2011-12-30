@@ -30,7 +30,6 @@ using std::string;
 using std::vector;
 using std::ifstream;
 
-extern bool debug;
 
 class Flashcard {
 private:
