@@ -29,8 +29,11 @@ usInt SmartPicker::getCurrentIndex()
     return currentIndex;
 }
 
-usInt SmartPicker::getNextIndex(const vector<Flashcard> & cards)
+usInt WalkThrough::getNextIndex(const vector<Flashcard> & cards)
 {
+#ifdef DEBUG
+    cout << "Index from WalkThrough class" << endl;
+#endif // DEBUG
     setCurrentIndex((++currentIndex) % cards.size());
     return currentIndex;
 }
@@ -43,6 +46,9 @@ LeastCorrect::LeastCorrect()
 
 usInt LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 {
+#ifdef DEBUG
+    cout << "Index from LeastCorrect class" << endl;
+#endif // DEBUG
     // generate and set new index
     leastCorrectIndex(cards);
 
@@ -57,11 +63,11 @@ void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
         if (cards[lastIndex].data.getNumCorrect() > currLowest)
             leastCorrectIndices.remove(lastIndex);
 
-    if (leastCorrectIndices.empty() )
+    if (leastCorrectIndices.empty())
         repopulateIndices(cards);
 
     std::list<usInt>::iterator it = leastCorrectIndices.begin();
-    for (int jj = ltest::randIndex(leastCorrectIndices.size()); jj > 0; jj--)
+    for (usInt jj = ltest::randIndex(leastCorrectIndices.size()); jj > 0; jj--)
         it++;
 
     if (*it == currentIndex)
@@ -114,6 +120,9 @@ LeastPicked::LeastPicked()
 
 usInt LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
+#ifdef DEBUG
+    cout << "Index from LeastPicked class" << endl;
+#endif // DEBUG
     // generate new index
     leastPickedIndex(cards);
 
@@ -271,6 +280,9 @@ void Adaptive::updateProbsBasic(const double wgt)
 
 usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
 {
+#ifdef DEBUG
+    cout << "Index from Adaptive class" << endl;
+#endif // DEBUG
     // Need to find a way to get the following three variables into this function
     bool isWrong = true; // Add isWrong and ansTime to object defn?
     double ansTime = 2.3;

@@ -34,10 +34,10 @@ using std::string;
 using std::cout;
 
 
-/* Should all classes start with a limited set of the vocab and only expand the
- * list if a certain performance level is reached?  For instance, start out with
- * a set of 10, and if, say, all the words have an 70% correctness, add a few
- * more words...
+/*  Should all classes start with a limited set of the vocab and only expand the
+ *  list if a certain performance level is reached?  For instance, start out with
+ *  a set of 10, and if, say, all the words have an 70% correctness, add a few
+ *  more words...
  */
 
 class SmartPicker {
@@ -47,11 +47,16 @@ protected:
 public:
     virtual ~SmartPicker() {};
     SmartPicker();
-    usInt getNextIndex(const vector<Flashcard> &);
+    virtual usInt getNextIndex(const vector<Flashcard> &) =0;
     // Access methods
     usInt getCurrentIndex();
 };
 
+
+class WalkThrough : public SmartPicker {
+public:    
+    usInt getNextIndex(const vector<Flashcard> &);
+};
 
 
 class LeastCorrect: public SmartPicker {
