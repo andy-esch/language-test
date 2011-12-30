@@ -25,7 +25,8 @@
 #include "SmartPicker.h"
 #include "listDicts.h"
 #include "ltest_typedefs.h"
+#include "Account.h"
 
-int flcrd_quiz(bool,char*);
+int flcrd_quiz(char*,Account&);
 
 #endif // FLCRD_QUIZ_H

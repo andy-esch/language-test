@@ -10,7 +10,7 @@
 
 #include "flcrd_quiz.h"
 
-int flcrd_quiz(bool verbose, char * inFile)
+int flcrd_quiz(char * inFile, Account & acct)
 {
     cout << "Beginning Flashcard Quiz." << endl;
     boost::chrono::system_clock::time_point timeStart;
@@ -21,10 +21,8 @@ int flcrd_quiz(bool verbose, char * inFile)
     vector<Flashcard> cards;
     string response;
     LeastPicked picker;
-    Hint myhint = Hint("  ",verbose);
+    Hint myhint = Hint("  ",acct.getVerbose());
     char * temp = NULL;
-    
-    srand(time(NULL));                      // does this need to be initialized?
     
     /* Choose flashcard set */
     strcpy(inFile,listDicts().c_str());
@@ -42,16 +40,18 @@ int flcrd_quiz(bool verbose, char * inFile)
         
         int numOfTries = 0;
 
-//        cout << sideAword << ": ";
+        string prompt = sideAword;
 
         while (!cin.eof() && isWrong)
         {
             numOfTries++;
+
             timeStart = boost::chrono::system_clock::now();
-            temp = readline((sideAword + ": ").c_str());
-//            getline(cin, response);
+            temp = readline((prompt + ": ").c_str());
             timeDiff = boost::chrono::system_clock::now() - timeStart;
+
             response = temp;
+
             if (ltest::exitProg(temp)) break;
 
             /* options processing */
@@ -59,8 +59,7 @@ int flcrd_quiz(bool verbose, char * inFile)
             {
                 if ( response[1]=='s' ) break;
 
-                cout << myhint.handle(response, false) \
-                     << ltest::printWhitespace(sideAword.size());
+                cout << myhint.handle(response, false);
             }
             else if ( response == "*exit")
                 return 0;
@@ -69,7 +68,7 @@ int flcrd_quiz(bool verbose, char * inFile)
                 isWrong = ltest::isInvalidAnswer(response,cards[ii].getSideB());
                 if (isWrong)
                 {
-                    if (verbose)
+                    if (acct.getVerbose())
                     {
                         cout << "You are " \
                         << wordCompare::lcsPercent(cards[ii].getWord('B',0),response) \
@@ -83,9 +82,9 @@ int flcrd_quiz(bool verbose, char * inFile)
                              << sideAword << ": ";
                     }
                     else
-                        cout << ltest::printWhitespace(sideAword.size());
+                        prompt = ltest::printWhitespace(sideAword.size()-1);
                 }
-                else if (verbose) cout << "Right!" << endl;
+                else if (acct.getVerbose()) cout << "Right!" << endl;
             }
         }
         /* finish this card */
@@ -93,7 +92,7 @@ int flcrd_quiz(bool verbose, char * inFile)
         isWrong = true;
     } while ( !ltest::exitProg(temp) );
 
-    testResults(cards,verbose);
+    testResults(cards,acct.getVerbose());
 
     cin.clear(); // Need to clear away the EOF somehow
 
