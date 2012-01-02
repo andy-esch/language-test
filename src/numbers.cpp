@@ -34,13 +34,151 @@ string hundreds[] = {"cero", "ciento","doscientos", "trescientos",
 
 string powersOfThousand[] = {"", "mil", "millón", "mil millones", "billón"};
 
-int randNum(int lowLim, int upLim, boost::random::mt19937 &gn)
+long randNum(int lowLim, int upLim, boost::random::mt19937 &gn)
 {
+#ifdef DEBUG
+    cout << "Entered randNum" << endl;
+#endif // DEBUG
+
     boost::random::uniform_int_distribution<> dist(lowLim, upLim);
+
+#ifdef DEBUG
+    int randomNum = dist(gn);
+    cout << "dist(gn) = " << randomNum << endl;
+    return randomNum;
+#else // not define DEBUG
     return dist(gn);
+#endif // DEBUG
 }
 
-unsigned short getPower(const long rawInt)
+// Only handles positive numbers
+vector<usInt> numDecomp(const long num)
+{
+    long tempNum = (num < 0 ? -1.0 : 1.0) * num;
+    vector<usInt> numbers;
+
+#ifdef DEBUG
+    cout << "numConst values: " << endl;
+#endif // DEBUG
+    while (tempNum != 0 || num == 0)
+    {
+        if (num == 0)
+        {
+            numbers.push_back(0);
+            break;
+        }
+
+        numbers.push_back(tempNum % 1000);
+#ifdef DEBUG
+        cout << tempNum % 1000 << endl;
+#endif //DEBUG
+        tempNum /= 1000;
+    }
+
+    return numbers;
+}
+
+string numConst(const long num)
+{
+    vector<usInt> nums = numDecomp(num);
+    string wordString;
+    if (num < -1)
+        wordString = "negativos ";
+    else if (num == -1)
+        wordString = "negativos ";
+
+    for (int ii = nums.size()-1; ii >= 0; ii--)
+    {
+        wordString += (auxConst(nums.at(ii)) + " " + powersOfThousand[ii]);
+        if (ii > 0)
+            wordString += " ";
+    }
+    
+    if (wordString[wordString.length()-1] == ' ')
+        wordString.erase(wordString.length()-1);
+
+//    wordString = removeLeadingTrailingSpaces(wordString);
+
+    return wordString;
+}
+
+string auxConst(const usInt var)
+{
+    string wrdStr;
+    usInt tempVar = var;
+
+    if ( tempVar >= 1000)
+    {
+        cerr << "Error: out of range." << endl;
+        exit(0);
+    }
+    else if ( tempVar <= 1000 && tempVar >= 100 )
+    {
+        wrdStr += hundreds[tempVar / 100];
+        
+        tempVar = tempVar % 100;
+    }
+    
+    if ( tempVar < 100 && tempVar >= 30 )
+    {
+        addSpace(wrdStr);
+        
+        wrdStr += tens[tempVar / 10];
+        
+        if ((var % 10) != 0)
+            wrdStr += (" y " + zeroTo29[tempVar % 10]);
+    }
+    else if ( tempVar < 30 && !((tempVar == 0) xor (var == 0)) )
+    {
+        addSpace(wrdStr);
+        
+        wrdStr += zeroTo29[tempVar];
+    }
+    return wrdStr;
+}
+
+void addSpace(string & temp)
+{
+    if (!temp.empty())
+        temp += " ";
+}
+
+string commaAdder(const string str, bool sign)
+{
+    string word(str);
+    
+    for (short jj = word.size() - 3;
+         jj > 0;
+         jj -= 3)
+    {
+        word.insert(jj,",");
+    }
+
+    if (!sign) word.insert(0,"-");
+    
+    return word;
+}
+
+//string numCommaed(vector<usInt> & nums)
+//{
+//    string commaString;
+//
+//    commaString = (nums.at(nums.size()-1) + "");
+//    cout << "nums.at(nums.size()-1) = " << nums.at(nums.size()-1) << endl;
+//    cout << "commaString = " << commaString << endl;
+//
+//    for (int ii = nums.size() - 2; ii >= 0; ii--)
+//    {
+//        commaString += ("," + nums.at(ii));
+//        cout << "nums.at(" << ii << ") = " << nums.at(ii) << endl;
+//        cout << "commaString = " << commaString << endl;
+//    }
+//
+//
+//    return commaString;
+//}
+
+usInt getPower(const long rawInt)
 {
     long temp = rawInt;
     unsigned short mag = 0;
@@ -81,68 +219,26 @@ int reduce(int num, int mag)
     return (num/mag)*mag;
 }
 
-string numConst(int num)
-{
-    int tempNum = num;
-    string wrdStr;
-
-    if (tempNum < 1E3 && tempNum >= 1E2)
-    {
-        wrdStr = hundreds[tempNum / 100];
-        tempNum -= reduce(tempNum,1E2);
-    }
-
-    if (tempNum  < 1E2 && num >= 30)
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += tens[tempNum / 10];
-        if ( (num % 10) != 0 )
-            wrdStr += (" y " + zeroTo29[num % 10]);
-    }
-    else if ( tempNum < 30 && !((tempNum == 0) xor (num == 0)) )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += zeroTo29[tempNum];
-    }
-
-    return wrdStr;
-}
-
-string numConstructor2(int num)
-{
-    string wrdStr;
-    int tmpNum = num;
-    if (tmpNum > 1E3)
-    {
-        wrdStr += (numConst(num/1E3) + " mil");
-    }
-    if (tmpNum != 0 && true/*num > */)
-    {
-
-    }
-    return wrdStr;
-}
-
 /* need a 'number constructor' function that takes into account sign and magnitude */
-string numConstructor(int num)
+string numConstructor(const long num)
 {
     string wrdStr;
-
+    long tempNum = num;
+    
     if (num < 0)
     {
-        num = -1.0 * num;
-        if (num != 1)
+#ifdef DEBUG
+        cout << num << " is negative" << endl;
+#endif // DEBUG
+        tempNum *= -1.0;
+        if (tempNum != 1)
             wrdStr += "negativos";
-        else if (num == 1)
+        else if (tempNum == 1)
             wrdStr += "negativo";
     }
 
-    int tempNum = num;
-
     // Special cases
-    if (num == 100)
+    if (abs(num) == 100)
     {
         wrdStr = "cien";
         tempNum = 0;
@@ -159,9 +255,33 @@ string numConstructor(int num)
      *                    (seven hundred eighty nine)
      */
 
-    if ( tempNum < 30000 && tempNum >= 1000 )
+/* TODO: Replace this arduous algorithm with something leaner
+ by using reduce() as a member function */
+    if ( tempNum < 1000000 && tempNum >= 30000 )
     {
+        if (!wrdStr.empty())
+            wrdStr += " ";
+        wrdStr += tens[tempNum / 10000];
+#ifdef DEBUG
+        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
+#endif
+        tempNum -= (tempNum / 10000) * 10000;
+#if DEBUG
+        cout << "tempNum is now: " << tempNum << endl;
+#endif // DEBUG
+        if ((tempNum / 1000) != 0)
+            wrdStr += (" y " + zeroTo29[tempNum / 1000]);
+        wrdStr += " mil";
+        tempNum -= (tempNum / 1000) * 1000;
+    }
+    else if ( tempNum < 30000 && tempNum >= 1000 )
+    {
+        if (!wrdStr.empty())
+            wrdStr += " ";
         wrdStr += (zeroTo29[tempNum / 1000] + " mil");
+#ifdef DEBUG
+        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
+#endif
         tempNum -= (tempNum / 1000) * 1000;
     }
 
@@ -169,8 +289,14 @@ string numConstructor(int num)
     {
         if (!wrdStr.empty())
             wrdStr += " ";
-        wrdStr += (hundreds[tempNum / 100]);
+        wrdStr += hundreds[tempNum / 100];
+#ifdef DEBUG
+        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << " -> ";
+#endif
         tempNum -= (tempNum / 100) * 100;
+#ifdef DEBUG
+        cout << tempNum << ")" << endl;
+#endif
     }
 
     if ( tempNum < 100 && tempNum >= 30 )
@@ -179,31 +305,39 @@ string numConstructor(int num)
             wrdStr += " ";
         wrdStr += tens[tempNum / 10];
         if ((num % 10) != 0)
-            wrdStr += (" y " + zeroTo29[num % 10]);
+            wrdStr += (" y " + zeroTo29[tempNum % 10]);
+#ifdef DEBUG
+        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
+#endif
     }
     else if ( tempNum < 30 && !((tempNum == 0) xor (num == 0)) )
     {
         if (!wrdStr.empty())
             wrdStr += " ";
         wrdStr += zeroTo29[tempNum];
+#ifdef DEBUG
+        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
+#endif
     }
 
     return wrdStr;
 }
 
-void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
+void setCustomOptions(usInt & numOfItems, int & xmin, int & xmax)
 {
     bool changeOptions = true;
     while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
     {
         char charOption = 'y';
 
-        ltest::takeInput(numOfItems,"How many items do you want to be quizzed over?\n");
+        // TODO: Change this line to something like option = readint(">> ");
+        numOfItems = atoi(readline("How many items do you want to be quizzed over?\n>> "));
 
         cout << "Enter a number range: xmin <= x <= xmax " << endl;
 
-        ltest::takeInput(xmin, NULL, "xmin = ");
-        ltest::takeInput(xmax, NULL, "xmax = ");
+        // TODO: Change this line to something like option = readint(">> ");
+        xmin = atoi(readline("xmin = "));
+        xmax = atoi(readline("xmax = "));
 
         cout << "You chose " << numOfItems << " numbers between " \
              << xmin << " and " << xmax << "." << endl;
@@ -216,17 +350,25 @@ void setCustomOptions(int & numOfItems, int & xmin, int & xmax)
     }
 }
 
-void loadOptions(int & numOfItems, int & xmin, int & xmax)
+//void loadOptions(Number & num);
+void loadOptions(usInt & numOfItems, int & xmin, int & xmax)
 {
     int option;
+    char * opt;
     cout << "Pick a specific quiz or make your own." << endl;
     cout << "\t1: 1 to 10 (20 times)" << endl;
     cout << "\t2: 1 to 100 (30 times)" << endl;
     cout << "\t3: 1 to 1000 (30 times)" << endl;
-    cout << "\t4: -1000 to 1000 (30 times)" << endl;
-    cout << "\t5: custom" << endl;
-    cout << "\t6: exit to main screen" << endl;
-    ltest::takeInput(option);
+    cout << "\t4: -1000 to 1000 (20 times)" << endl;
+    cout << "\t5: -1E6 to 1E6 (10 times)" << endl;
+    cout << "\t6: custom" << endl;
+    cout << "\t7: exit to main screen" << endl;
+
+    // TODO: Change this line to something like option = readint(">> ");
+    // currently this is a memory leak apparently.
+    opt = readline(">> ");
+    option = atoi(opt);
+
     switch (option)
     {
         case 1:
@@ -245,14 +387,19 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
             xmax = 1000;
             break;
         case 4:
-            numOfItems = 30;
+            numOfItems = 20;
             xmin = -1000;
             xmax = 1000;
             break;
         case 5:
-            setCustomOptions(numOfItems, xmin, xmax);
+            numOfItems = 10;
+            xmin = -100000;
+            xmax = 100000;
             break;
         case 6:
+            setCustomOptions(numOfItems, xmin, xmax);
+            break;
+        case 7:
             cin.std::ios::setstate(std::ios::eofbit);
             break;
         default:
@@ -261,39 +408,49 @@ void loadOptions(int & numOfItems, int & xmin, int & xmax)
             xmax = 10;
             break;
     }
+    free(opt);
 }
 
-int numbers(void)
+int numbers(Account & acct)
 {
     boost::random::mt19937 gen;
     gen.seed(time(0));
-    int num, numOfItems = 0, xmin = 0, xmax = 100;
+    usInt numOfItems = 0;
+    long num;
+    int xmin = 0, xmax = 100;
     unsigned short numCorrect = 0;
     bool isCorrect = false;
     string wrdStr, response;
+    vector<usInt> vectorTemp;
 
     loadOptions(numOfItems,xmin,xmax);
-
-    cin.clear();
-    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
 
     for (usInt ii = 1; ii <= numOfItems && !cin.eof(); ii++)
     {
         num = randNum(xmin,xmax,gen);
+        vectorTemp = numDecomp(num);
 
-        wrdStr = numConstructor(num);
+#ifdef DEBUG
+        cout << "num = " << num << endl;
+#endif // DEBUG
 
-        cout << "What is " << num << " in Spanish?" << endl;
-        getline(cin,response);
-        if (cin.eof()) break;
+//        wrdStr = numConstructor(num);
+        wrdStr = numConst(num);
+
+        cout << "What is " << commaAdder(ltest::numToStr(abs(num)),ltest::sgn(num)) << " in Spanish?" << endl;
+
+/* TODO: change response to char * to address memory leak? */
+        response = readline(">> ");
         isCorrect = (response == wrdStr);
 
-        if ( isCorrect )
+        if (ltest::exitProg(response.c_str(),cin.eof())) break;
+        else if ( isCorrect )
         {
-            cout << "You're right!" << endl;
+            if (acct.getVerbose())
+                cout << "You're right!" << endl;
             numCorrect++;
         }
-        else
+        else // if wrong
         {
             cout << "You're wrong! The correct response is: '" \
                  << wrdStr << "'" << endl;
@@ -322,3 +479,5 @@ int numbers(void)
     cin.clear(cin.rdstate()); // ugh, this doesn't seem to be clearing the eofbit...
     return 0;
 }
+
+// EOF
