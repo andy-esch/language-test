@@ -35,28 +35,42 @@ using std::string;
 using std::cerr;
 
 /* rethink the naming of this class */
-//class Number {
-//    usInt numOfItem;
-//    int xmin, xmax;
-//    /* private member functions */
+class Number {
+    usInt numOfItems;
+    long xmin, xmax;
+    long currentNum;
+    /* private member functions */
 //    int reduce(int, int);
-//public:
-//    setNumber(usInt, int, int);
-//    string getNewNumber(Number &);
-//}
+public:
+    Number();
+    void setNumber(usInt, long, long);
+    usInt getnumOfItems() const { return numOfItems; }
+    long getxmin() const { return xmin; }
+    long getxmax() const { return xmax; }
+    string getNewNumber(Number &);
+};
 
-long randNum(int, int, boost::random::mt19937 &);
-usInt getPower(const long);
-bool inputsAreNotOkay(int, int, int);
-int findFirstError(string, string);
-string numConstructor(const long);
-void setCustomOptions(usInt &, int &, int &);
-void loadOptions(usInt &, int &, int &);
-int numbers(Account &);
+long randNum(long, long, boost::random::mt19937_64 &);
+vector<usInt> numDecomp(const long);
+string numConst(const long);
 string auxConst(const usInt);
 void addSpace(string &);
-string removeLeadingTrailingSpaces(string);
-string numConst(const long);
+string commaAdder(const string, const bool=true);
+usInt getPower(const long); // not in use
+bool inputsAreNotOkay(Number &);
+int findFirstError(string, string);
+
+template <class U, class V>
+U reduce(U num1, V num2)
+{
+    return (num1/num2) * num2;
+}
+
+void setCustomOptions(Number &);
+void loadOptions(Number &);
+int numbers(Account &);
+
+//string numConstructor(const long); // going out
 
 #endif // NUMBERS_H
 

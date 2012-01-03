@@ -34,16 +34,29 @@ string hundreds[] = {"cero", "ciento","doscientos", "trescientos",
 
 string powersOfThousand[] = {"", "mil", "millón", "mil millones", "billón"};
 
-long randNum(int lowLim, int upLim, boost::random::mt19937 &gn)
+
+Number::Number()
+       :numOfItems(10), xmin(0), xmax(1000), currentNum(0)
+{
+}
+
+void Number::setNumber(usInt newnumOfItems, long newxmin, long newxmax)
+{
+    numOfItems = newnumOfItems;
+    xmin = newxmin;
+    xmax = newxmax;
+}
+
+long randNum(long lowLim, long upLim, boost::random::mt19937_64 &gn)
 {
 #ifdef DEBUG
     cout << "Entered randNum" << endl;
 #endif // DEBUG
 
-    boost::random::uniform_int_distribution<> dist(lowLim, upLim);
+    boost::random::uniform_int_distribution<long> dist(lowLim, upLim);
 
 #ifdef DEBUG
-    int randomNum = dist(gn);
+    long randomNum = dist(gn);
     cout << "dist(gn) = " << randomNum << endl;
     return randomNum;
 #else // not define DEBUG
@@ -143,7 +156,7 @@ void addSpace(string & temp)
         temp += " ";
 }
 
-string commaAdder(const string str, bool sign)
+string commaAdder(const string str, const bool sign)
 {
     string word(str);
     
@@ -158,25 +171,6 @@ string commaAdder(const string str, bool sign)
     
     return word;
 }
-
-//string numCommaed(vector<usInt> & nums)
-//{
-//    string commaString;
-//
-//    commaString = (nums.at(nums.size()-1) + "");
-//    cout << "nums.at(nums.size()-1) = " << nums.at(nums.size()-1) << endl;
-//    cout << "commaString = " << commaString << endl;
-//
-//    for (int ii = nums.size() - 2; ii >= 0; ii--)
-//    {
-//        commaString += ("," + nums.at(ii));
-//        cout << "nums.at(" << ii << ") = " << nums.at(ii) << endl;
-//        cout << "commaString = " << commaString << endl;
-//    }
-//
-//
-//    return commaString;
-//}
 
 usInt getPower(const long rawInt)
 {
@@ -195,9 +189,9 @@ usInt getPower(const long rawInt)
     return mag;
 }
 
-bool inputsAreNotOkay(int numOfItems, int xMin, int xMax)
+bool inputsAreNotOkay(Number & num)
 {
-    return !((xMax > xMin) && (numOfItems > 0));
+    return !((num.getxmax() > num.getxmin()) && (num.getnumOfItems() > 0));
 }
 
 int findFirstError(string ans, string cmp)
@@ -214,133 +208,32 @@ int findFirstError(string ans, string cmp)
     return errorPos;
 }
 
-int reduce(int num, int mag)
-{
-    return (num/mag)*mag;
-}
-
-/* need a 'number constructor' function that takes into account sign and magnitude */
-string numConstructor(const long num)
-{
-    string wrdStr;
-    long tempNum = num;
-    
-    if (num < 0)
-    {
-#ifdef DEBUG
-        cout << num << " is negative" << endl;
-#endif // DEBUG
-        tempNum *= -1.0;
-        if (tempNum != 1)
-            wrdStr += "negativos";
-        else if (tempNum == 1)
-            wrdStr += "negativo";
-    }
-
-    // Special cases
-    if (abs(num) == 100)
-    {
-        wrdStr = "cien";
-        tempNum = 0;
-    }
-
-    /* Extract 1E4 to 1E5 portion?
-     *  134,000 / 1E3 = 134 --> construct number from this
-     *
-     *  How about splitting up number into regions abc,def,ghi
-     *  Where each has same behaviors but ends in different suffices, such as:
-     *  987,123,456,789 = (nine hundred eighty seven) billion
-     *                    (one hundred twenty three) million
-     *                    (four hundred fifty six) thousand
-     *                    (seven hundred eighty nine)
-     */
-
-/* TODO: Replace this arduous algorithm with something leaner
- by using reduce() as a member function */
-    if ( tempNum < 1000000 && tempNum >= 30000 )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += tens[tempNum / 10000];
-#ifdef DEBUG
-        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
-#endif
-        tempNum -= (tempNum / 10000) * 10000;
-#if DEBUG
-        cout << "tempNum is now: " << tempNum << endl;
-#endif // DEBUG
-        if ((tempNum / 1000) != 0)
-            wrdStr += (" y " + zeroTo29[tempNum / 1000]);
-        wrdStr += " mil";
-        tempNum -= (tempNum / 1000) * 1000;
-    }
-    else if ( tempNum < 30000 && tempNum >= 1000 )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += (zeroTo29[tempNum / 1000] + " mil");
-#ifdef DEBUG
-        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
-#endif
-        tempNum -= (tempNum / 1000) * 1000;
-    }
-
-    if ( tempNum < 1000 && tempNum >= 100 )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += hundreds[tempNum / 100];
-#ifdef DEBUG
-        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << " -> ";
-#endif
-        tempNum -= (tempNum / 100) * 100;
-#ifdef DEBUG
-        cout << tempNum << ")" << endl;
-#endif
-    }
-
-    if ( tempNum < 100 && tempNum >= 30 )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += tens[tempNum / 10];
-        if ((num % 10) != 0)
-            wrdStr += (" y " + zeroTo29[tempNum % 10]);
-#ifdef DEBUG
-        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
-#endif
-    }
-    else if ( tempNum < 30 && !((tempNum == 0) xor (num == 0)) )
-    {
-        if (!wrdStr.empty())
-            wrdStr += " ";
-        wrdStr += zeroTo29[tempNum];
-#ifdef DEBUG
-        cout << "wrdStr = '" << wrdStr << "' (" << tempNum << ")" << endl;
-#endif
-    }
-
-    return wrdStr;
-}
-
-void setCustomOptions(usInt & numOfItems, int & xmin, int & xmax)
+void setCustomOptions(Number & num)
 {
     bool changeOptions = true;
-    while (inputsAreNotOkay(numOfItems, xmin, xmax) || changeOptions)
+    usInt numItems;
+    long xmn, xmx;
+    char * temp;
+
+    while (inputsAreNotOkay(num) || changeOptions)
     {
         char charOption = 'y';
 
         // TODO: Change this line to something like option = readint(">> ");
-        numOfItems = atoi(readline("How many items do you want to be quizzed over?\n>> "));
+        temp = readline("How many items do you want to be quizzed over?\n>> ");
+        numItems = atoi(temp);
 
         cout << "Enter a number range: xmin <= x <= xmax " << endl;
 
         // TODO: Change this line to something like option = readint(">> ");
-        xmin = atoi(readline("xmin = "));
-        xmax = atoi(readline("xmax = "));
+        temp = readline("xmin = ");
+        xmn = atol(temp);
+        temp = readline("xmax = ");
+        xmx = atol(temp);
 
-        cout << "You chose " << numOfItems << " numbers between " \
-             << xmin << " and " << xmax << "." << endl;
+        cout << "You chose " << numItems << " numbers between " \
+             << commaAdder(ltest::numToStr(xmn),ltest::sgn(xmn)) << " and " \
+             << commaAdder(ltest::numToStr(xmx),ltest::sgn(xmx)) << "." << endl;
         ltest::takeInput(charOption,"Keep these options? (y for yes, r for reset) ");
 
         if (charOption == 'y')
@@ -348,10 +241,13 @@ void setCustomOptions(usInt & numOfItems, int & xmin, int & xmax)
         else
             changeOptions = true;
     }
+
+    num.setNumber(numItems,xmn,xmx);
+    free(temp);
 }
 
 //void loadOptions(Number & num);
-void loadOptions(usInt & numOfItems, int & xmin, int & xmax)
+void loadOptions(Number & num)
 {
     int option;
     char * opt;
@@ -372,40 +268,28 @@ void loadOptions(usInt & numOfItems, int & xmin, int & xmax)
     switch (option)
     {
         case 1:
-            numOfItems = 20;
-            xmin = 1;
-            xmax = 10;
+            num.setNumber(20,0,10);
             break;
         case 2:
-            numOfItems = 30;
-            xmin = 1;
-            xmax = 100;
+            num.setNumber(30,0,100);
             break;
         case 3:
-            numOfItems = 30;
-            xmin = 1;
-            xmax = 1000;
+            num.setNumber(30,0,1000);
             break;
         case 4:
-            numOfItems = 20;
-            xmin = -1000;
-            xmax = 1000;
+            num.setNumber(20,-1000,1000);
             break;
         case 5:
-            numOfItems = 10;
-            xmin = -100000;
-            xmax = 100000;
+            num.setNumber(10,-100000,100000);
             break;
         case 6:
-            setCustomOptions(numOfItems, xmin, xmax);
+            setCustomOptions(num);
             break;
         case 7:
             cin.std::ios::setstate(std::ios::eofbit);
             break;
         default:
-            numOfItems = 20;
-            xmin = 1;
-            xmax = 10;
+            num.setNumber(20,0,10);
             break;
     }
     free(opt);
@@ -413,35 +297,34 @@ void loadOptions(usInt & numOfItems, int & xmin, int & xmax)
 
 int numbers(Account & acct)
 {
-    boost::random::mt19937 gen;
+    boost::random::mt19937_64 gen;
     gen.seed(time(0));
-    usInt numOfItems = 0;
+    Number nm;
+    usInt numCorrect = 0;
     long num;
-    int xmin = 0, xmax = 100;
-    unsigned short numCorrect = 0;
     bool isCorrect = false;
-    string wrdStr, response;
+    string answer, response;
     vector<usInt> vectorTemp;
+    
 
-    loadOptions(numOfItems,xmin,xmax);
+    loadOptions(nm);
 
-    for (usInt ii = 1; ii <= numOfItems && !cin.eof(); ii++)
+    for (usInt ii = 1; ii <= nm.getnumOfItems() && !cin.eof(); ii++)
     {
-        num = randNum(xmin,xmax,gen);
+        num = randNum(nm.getxmin(),nm.getxmax(),gen);
         vectorTemp = numDecomp(num);
 
 #ifdef DEBUG
         cout << "num = " << num << endl;
 #endif // DEBUG
 
-//        wrdStr = numConstructor(num);
-        wrdStr = numConst(num);
+        answer = numConst(num);
 
         cout << "What is " << commaAdder(ltest::numToStr(abs(num)),ltest::sgn(num)) << " in Spanish?" << endl;
 
 /* TODO: change response to char * to address memory leak? */
         response = readline(">> ");
-        isCorrect = (response == wrdStr);
+        isCorrect = (response == answer);
 
         if (ltest::exitProg(response.c_str(),cin.eof())) break;
         else if ( isCorrect )
@@ -453,27 +336,29 @@ int numbers(Account & acct)
         else // if wrong
         {
             cout << "You're wrong! The correct response is: '" \
-                 << wrdStr << "'" << endl;
+                 << answer << "'" << endl;
 
             /* Shows first error -- doesn't work with accented words */
             cout << response << endl;
-            cout << ltest::printWhitespace(findFirstError(wrdStr,response)-2) \
+            cout << ltest::printWhitespace(findFirstError(answer,response)-2) \
                  << "^" << endl;
-            cout << wrdStr << endl;
+            cout << answer << endl;
 
             /* Calculates word differences */
-            cout << "You are off by: " << wordCompare::levenshtein(wrdStr, response)-1 \
+            cout << "You are off by: " << wordCompare::levenshtein(answer, response)-1 \
                  << " letters." << endl;
-            cout << "And your response is " << wordCompare::lcsPercent(wrdStr,response) \
+            cout << "And your response is " << wordCompare::lcsPercent(answer,response) \
                  << "% correct" << endl;
         }
 
         isCorrect = false;
-        wrdStr.clear();
+        answer.clear();
+// TODO: Does the following clear empty the whole vector?
+        vectorTemp.clear();
     }
-    cout << "You got " << numCorrect << " correct out of " << numOfItems \
+    cout << "You got " << numCorrect << " correct out of " << nm.getnumOfItems() \
          << " (" \
-         << static_cast<double> (numCorrect) / static_cast<double> (numOfItems) * 100.0 \
+         << static_cast<double> (numCorrect) / static_cast<double> (nm.getnumOfItems()) * 100.0 \
          << "%)." << endl;
 
     cin.clear(cin.rdstate()); // ugh, this doesn't seem to be clearing the eofbit...
