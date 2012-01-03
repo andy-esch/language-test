@@ -37,7 +37,7 @@ void Account::loadAccount(void)
 {
 }
 
-string Account::getName()
+string Account::getName() const
 {
     return name;
 }
@@ -92,7 +92,7 @@ void Account::establishAccount()
 
         yesOrNo = readline(">> ");
 
-        if (yesOrNo[0] == 'y' && not doesAcctExist(youAre))
+        if ((yesOrNo[0] == 'y' || yesOrNo[0] == 'Y') && not doesAcctExist(youAre))
             yn = true;
 
     } while (yn == false);
@@ -120,3 +120,5 @@ string Account::whoAreYou()
     cout << "What is your account name?" << endl;
     return acctName;
 }
+
+// EOF

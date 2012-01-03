@@ -54,7 +54,7 @@ public:
     void exportAccount(string);
     void loadAccount();
 /* Access methods */
-    string getName();
+    string getName() const;
     string whoAreYou();
     void setVerbose(bool);
     void setVerbose();
@@ -63,3 +63,5 @@ public:
 };
 
 #endif // ACCOUNT_H
+
+// EOF
