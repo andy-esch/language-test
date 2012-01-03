@@ -21,6 +21,7 @@
 #include <cmath>    // fma(), fdim(), exp()
 #include <ctime>    // time()
 #include <cstdlib>  // exit()
+// TODO: replace climits with limits and change corresponding code
 #include <climits>  // USHRT_MAX
 
 #include "Flashcard.h"

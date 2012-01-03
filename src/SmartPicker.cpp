@@ -315,7 +315,7 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 
 void Adaptive::setLevDistance(string str1, string str2)
 {
-    unsigned short temp1 = wordCompare::levenshtein(str1,str2);
+    usInt temp1 = wordCompare::levenshtein(str1,str2);
 
     levDistance = static_cast<double> (temp1);
 }

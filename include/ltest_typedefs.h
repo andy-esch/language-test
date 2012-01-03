@@ -9,3 +9,6 @@
  */
 
 typedef unsigned short usInt;
+typedef unsigned long ulInt;
+
+// EOF

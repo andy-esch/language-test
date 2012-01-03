@@ -118,7 +118,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
         else
             infile.open(inFile,ifstream::in);
         cin.clear();
-        cin.ignore(10,'\n');
+        cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
     
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;

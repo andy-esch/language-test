@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     ltest::welcomeMessage();
     acct.establishAccount();
 
-    while (1)
+    while (true)
     {
         int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
 
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
                 break;
             case 2:
                 cout << "you chose number quiz" << endl;
-                score = numbers();
+                score = numbers(acct);
                 break;
             case 3:
                 cout << "you chose conjugations!" << endl;

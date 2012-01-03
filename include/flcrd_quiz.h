@@ -13,7 +13,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <climits>
 
 #include <boost/chrono.hpp>
 #include <readline/readline.h>
