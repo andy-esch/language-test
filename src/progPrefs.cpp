@@ -30,7 +30,7 @@ void progPrefs::cmdLineInput(int argc, char **argv, char * inFile)
                     if ( ltest::exitProg(inFile,cin.eof()) ) // if 'exit', exit program
                         exit(0);
                     cin.clear();
-                    cin.ignore(10,'\n');
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                 }
                 break;
             case 'h': // Print usage info then exit
@@ -64,7 +64,7 @@ usInt progPrefs::changeProgOptions(Account & acct)
              << "3: return to main screen.\n" \
              << endl \
              << "Enter a number to change its value" << endl;
-
+        // TODO: Change this line to something like option = readint(">> ");
         option = atoi(readline(">> "));
 
         switch (option)
