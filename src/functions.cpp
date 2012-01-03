@@ -218,6 +218,7 @@ int ltest::whatDoYouWantToDo(const string name)
                         "set program options", "exit program"};
 
     usInt toDoOption;
+    char * temp;
 
     cout << '\n' \
          << "Hello " << name << ", " \
@@ -227,8 +228,10 @@ int ltest::whatDoYouWantToDo(const string name)
     for (int ii = 1; ii <= 9; ii++)
         cout << '\t' << ii << ": " << options[ii - 1] << endl;
 
-    toDoOption = atoi(readline(">> "));
-
+    // TODO: Change this line to something like option = readint(">> ");
+    temp = readline(">> ");
+    toDoOption = atoi(temp);
+    free(temp);
     return toDoOption;
 }
 

@@ -46,8 +46,31 @@ namespace ltest {
     string hintOptions(int);
     string ordinal(const int num);
 
+    // TODO: needs work
+    template <class X>
+    X readint();
+
+    template <class T>
+    string numToStr(T num)
+    {
+        stringstream ss;
+        ss << num;
+        return ss.str();
+    }
+
+
     template <class M>
     M min(M m1, M m2) { return (m1<m2?m1:m2); }
+
+    /* returns false if < 0, true if > 0 */
+    template <class W>
+    bool sgn(W num)
+    {
+        if (num < 0)
+            return false;
+        else
+            return true;
+    }
 
     string help(char *);
     int randIndex(const int);
