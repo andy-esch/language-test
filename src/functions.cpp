@@ -46,6 +46,12 @@ float ltest::howWrongIsIt(string test, string compare)
     return 0.0;
 }
 
+void ltest::addSpace(string & temp)
+{
+    if (!temp.empty())
+        temp += " ";
+}
+
 //unsigned short ltest::isAccented(string str)
 //{
 //    vector<string> set("á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß");

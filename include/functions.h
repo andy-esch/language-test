@@ -44,7 +44,8 @@ namespace ltest {
     bool containsContraction(string);
     bool isInvalidAnswer(string, vector<string>);
     string hintOptions(int);
-    string ordinal(const int num);
+    string ordinal(const int);
+    void addSpace(string &);
 
     // TODO: needs work
     template <class X>
@@ -58,6 +59,11 @@ namespace ltest {
         return ss.str();
     }
 
+    template <class X, class Y>
+    float frac(X numer, Y denom)
+    {
+        return static_cast<float> (numer) / static_cast<float> (denom);
+    }
 
     template <class M>
     M min(M m1, M m2) { return (m1<m2?m1:m2); }
@@ -95,6 +101,29 @@ namespace ltest {
     bool exitProg(const char*,bool=false);
     int whatDoYouWantToDo(const string);
     double inverse(const int);
+        
+    // Only handles positive numbers
+    template <class X>
+    vector<usInt> numDecomp(const X num)
+    {
+        X tempNum = (num < 0 ? -1.0 : 1.0) * num;
+        vector<usInt> numbers;
+        
+        while (tempNum != 0 || num == 0)
+        {
+            if (num == 0)
+            {
+                numbers.push_back(0);
+                break;
+            }
+            
+            numbers.push_back(tempNum % 1000);
+            tempNum /= 1000;
+        }
+        
+        return numbers;
+    }
+    
 
     /* attempt at a more robust input processor */
     template <class T>
@@ -119,6 +148,8 @@ namespace ltest {
 
         val = temp;
     }
+
+
 } // namespace ltest
 
 #endif  // FUNCTIONS_H
