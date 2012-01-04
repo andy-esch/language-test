@@ -36,29 +36,34 @@ using std::cerr;
 
 /* rethink the naming of this class */
 class Number {
-    usInt numOfItems;
-    long xmin, xmax;
-    long currentNum;
+    usInt numOfItems, numCorrect;
+    long xmin, xmax, currentNum;
+    string numWord;
+
     /* private member functions */
 //    int reduce(int, int);
+    void setCustomOptions();
+    bool inputsAreNotOkay();
+    string numConst(const long);
+    string auxConst(const usInt);
+    long randNum(long, long, boost::random::mt19937_64 &);
 public:
     Number();
     void setNumber(usInt, long, long);
     usInt getnumOfItems() const { return numOfItems; }
+    usInt getNumCorrect() const { return numCorrect; }
     long getxmin() const { return xmin; }
     long getxmax() const { return xmax; }
-    string getNewNumber(Number &);
+    long getCurrNum() const { return currentNum; }
+    string getNumWord() const { return numWord; }
+    void printNumber();
+    void getNewNumber(boost::random::mt19937_64 &);
+    void loadOptions();
+    void incrNumCorrect();
 };
 
-long randNum(long, long, boost::random::mt19937_64 &);
-vector<usInt> numDecomp(const long);
-string numConst(const long);
-string auxConst(const usInt);
-void addSpace(string &);
 string commaAdder(const string, const bool=true);
 usInt getPower(const long); // not in use
-bool inputsAreNotOkay(Number &);
-int findFirstError(string, string);
 
 template <class U, class V>
 U reduce(U num1, V num2)
@@ -66,8 +71,6 @@ U reduce(U num1, V num2)
     return (num1/num2) * num2;
 }
 
-void setCustomOptions(Number &);
-void loadOptions(Number &);
 int numbers(Account &);
 
 //string numConstructor(const long); // going out
