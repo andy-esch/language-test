@@ -20,6 +20,7 @@
 namespace wordCompare {
 
     string correctness(string, string);
+    usInt findFirstError(string, string);
     string levRater(unsigned int);
     unsigned short levenshtein(string, string);
     float wordCompare(string, string);
