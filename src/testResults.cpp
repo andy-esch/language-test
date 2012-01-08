@@ -47,7 +47,7 @@ void testResults(vector<Flashcard> cards, bool isVerbose)
         if ( isVerbose )
         {
             cout << setw(15) << cards[i].size('A') << " word" << ((cards[i].size('A')>1)?"s:":":");
-            for (int k = 0; k < cards[i].size('A'); k++)
+            for (usInt k = 0; k < cards[i].size('A'); k++)
                 cout << setw(15) << cards[i].getWord('A',k);
         }
         cout << endl;

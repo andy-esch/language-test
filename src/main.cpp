@@ -24,45 +24,51 @@
 
 #include <cstdlib>
 #include <iostream>
+/* TODO: make a map container to contain all the program options such as
+ * toDoOption, etc.
+ *
+#include <map>
+ */
 
 #include "functions.h"
 #include "progPrefs.h"
 #include "Account.h"
+#include "ltest_typedefs.h"
 
 /* Quizzes */
 #include "flcrd_quiz.h"
-#include "numbers.h"
+#include "Numbers.h"
 
 using std::cin;
 using std::cout;
 using std::endl;
 
+bool exitToMain = false;
 
 int main(int argc, char **argv)
 {
     /*****    Initialize Variables    *****/
 
-    char inFile[60] = "vocab/test.txt";
     Account acct;
-    int score;
+    int score; // Do away with this?
 
-    srand(time(NULL));
+    srand(time(NULL)); // What is this initialized for?
 
     /*****    Take optional input from command line   *****/
-    progPrefs::cmdLineInput(argc,argv,inFile);
+    progPrefs::cmdLineInput(argc,argv);
 
     ltest::welcomeMessage();
     acct.establishAccount();
 
     while (true)
     {
-        int toDoOption = ltest::whatDoYouWantToDo(acct.getName());
+        usInt toDoOption = ltest::whatDoYouWantToDo(acct.getName());
 
         switch (toDoOption)
         {
             case 1:
                 cout << "you chose flash cards" << endl;
-                score = flcrd_quiz(inFile,acct);
+                score = flcrd_quiz(acct);
                 break;
             case 2:
                 cout << "you chose number quiz" << endl;
@@ -97,9 +103,10 @@ int main(int argc, char **argv)
                 cout << ltest::goodbye(acct.getName()) << endl;
                 exit(0);
             default:
-                cout << "hmm, that's not an option" << endl;
+                cout << toDoOption << " is not a valid option." << endl;
                 break;
         }
+        exitToMain = false;
     }
 
     return 0;

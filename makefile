@@ -17,7 +17,7 @@ OBJECTS = Account.o \
 		  functions.o \
 		  Hint.o \
 		  listDicts.o \
-		  numbers.o \
+		  Numbers.o \
 		  SmartPicker.o \
 		  testResults.o \
 		  wordCompare.o \
@@ -29,7 +29,7 @@ HEADERS = functions.h \
           testResults.h \
           Hint.h \
           progPrefs.h wordCompare.h SmartPicker.h WordData.h Account.h \
-		  flcrd_quiz.h numbers.h
+		  flcrd_quiz.h Numbers.h
 
 TESTS = SmartPicker_test
 
@@ -37,10 +37,10 @@ TESTS = SmartPicker_test
 
 mkcln: ltest #clean
 
-ltest: LanguageTest.o $(OBJECTS)
+ltest: main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OPTIM) $^ -o ltest
 
-LanguageTest.o: LanguageTest.cpp
+main.o: main.cpp
 
 $(OBJECTS): %.o: %.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Building CPP object file" $@
@@ -57,4 +57,4 @@ SmartPicker_test: ./testing/SmartPicker_test.cpp
 
 .PHONY: clean
 clean:
-	rm -f $(OBJECTS) LanguageTest.o
+	rm -f $(OBJECTS) main.o
