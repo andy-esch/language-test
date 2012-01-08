@@ -26,6 +26,15 @@
 #include "ltest_typedefs.h"
 #include "Account.h"
 
-int flcrd_quiz(char*,Account&);
+using std::string;
+using std::cout;
+using std::vector;
+using std::endl;
+
+extern bool exitToMain;
+
+namespace chr = boost::chrono;
+
+int flcrd_quiz(Account&);
 
 #endif // FLCRD_QUIZ_H
