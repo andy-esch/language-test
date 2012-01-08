@@ -87,9 +87,9 @@ string listDicts(void)
                 numOfDicts++;
             }
 
-            cout << "\nChoose a dictionary by number or filter by type: "
-                     "nouns (n), adjectives (a), verbs (v), phrases (p), etc. "
-                     "(unimplemented -- this is here as a reminder)." << endl;
+            cout << "\nChoose a dictionary by number or filter by type:\n" \
+                 << "\tnouns (n), adjectives (a), verbs (v), phrases (p)\n" \
+                 << "\t(unimplemented -- this is here as a reminder)." << endl;
             do
             {
                 dictPick = readline("\n>> ");

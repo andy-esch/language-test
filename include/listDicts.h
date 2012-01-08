@@ -11,8 +11,8 @@
 
 #include <sys/types.h>
 #include <cstdlib>
-#include <dirent.h>
-#include <errno.h>
+#include <dirent.h> // what is this used for -- is there a C++ equiv?
+#include <cerrno>
 #include <vector>
 #include <string>
 #include <iostream>
