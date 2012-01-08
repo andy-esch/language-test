@@ -53,7 +53,7 @@ public:
     vector<string> getSideB();
     usInt size(char);             // size of card side
     usInt size(char,usInt);         // size of individual word
-    void input(vector<Flashcard> &, char *);
+    void input(vector<Flashcard> &, string);
 };
 #endif // FLASHCARD_H
 

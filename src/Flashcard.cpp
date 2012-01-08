@@ -89,7 +89,7 @@ void Flashcard::clearWS(void)
 
 /* TODO: Have a comment character -- ignore input after this character */
 
-void Flashcard::input(vector<Flashcard> & ws, char * inFile)
+void Flashcard::input(vector<Flashcard> & ws, string inFile)
 {
     // Do some error-checking to make sure there are the proper number of
     //   columns, proper encoding(? not binary), etc.
@@ -110,7 +110,7 @@ void Flashcard::input(vector<Flashcard> & ws, char * inFile)
         cout << "Enter another filename (or 'exit' to exit): ";
         cin >> inFile;
         
-        if (ltest::exitProg(inFile,cin.eof()))
+        if (ltest::exitProg(inFile.c_str(),cin.eof()))
         {
             cout << endl;
             exit(0);
