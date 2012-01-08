@@ -26,7 +26,7 @@ using std::cerr;
 using std::cout;
 
 namespace progPrefs {
-    void cmdLineInput(int, char **, char *);
+    void cmdLineInput(int, char **);
     usInt changeProgOptions(Account &);
 } // progPrefs
 
