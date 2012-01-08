@@ -29,13 +29,12 @@ usInt SmartPicker::getCurrentIndex() const
     return currentIndex;
 }
 
-usInt WalkThrough::getNextIndex(const vector<Flashcard> & cards)
+void WalkThrough::getNextIndex(const vector<Flashcard> & cards)
 {
 #ifdef DEBUG
     cout << "Index from WalkThrough class" << endl;
 #endif // DEBUG
     setCurrentIndex((++currentIndex) % cards.size());
-    return currentIndex;
 }
 
 /**    LeastCorrect members    **/
@@ -44,22 +43,20 @@ LeastCorrect::LeastCorrect()
 {
 }
 
-usInt LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
+void LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 {
 #ifdef DEBUG
     cout << "Index from LeastCorrect class" << endl;
 #endif // DEBUG
     // generate and set new index
     leastCorrectIndex(cards);
-
-    return currentIndex;
 }
 
 void LeastCorrect::leastCorrectIndex(const vector<Flashcard> & cards)
 {
-    static usInt lastIndex = USHRT_MAX;
+    static usInt lastIndex = numeric_limits<usInt>::max();
 
-    if (lastIndex != USHRT_MAX)
+    if (lastIndex != numeric_limits<usInt>::max())
         if (cards[lastIndex].data.getNumCorrect() > currLowest)
             leastCorrectIndices.remove(lastIndex);
 
@@ -118,22 +115,20 @@ LeastPicked::LeastPicked()
 {
 }
 
-usInt LeastPicked::getNextIndex(const vector<Flashcard> & cards)
+void LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
 #ifdef DEBUG
     cout << "Index from LeastPicked class" << endl;
 #endif // DEBUG
     // generate new index
     leastPickedIndex(cards);
-
-    return currentIndex;
 }
 
 void LeastPicked::leastPickedIndex(const vector<Flashcard> & cards)
 {
-    static usInt lastIndex = USHRT_MAX;
+    static usInt lastIndex = numeric_limits<usInt>::max();
 
-    if (lastIndex != USHRT_MAX)
+    if (lastIndex != numeric_limits<usInt>::max())
         if (cards[lastIndex].data.getNumAsked() > currLowest)
             leastPickedIndices.remove(lastIndex);
 
@@ -279,7 +274,7 @@ void Adaptive::updateProbsBasic(const double wgt)
     }
 }
 
-usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
+void Adaptive::getNextIndex(const vector<Flashcard> & cards)
 {
 #ifdef DEBUG
     cout << "Index from Adaptive class" << endl;
@@ -287,7 +282,7 @@ usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
 
     Adaptive::updateProbsAdvanced(weight(isWrong,currAnsTime), cards);
 
-    static usInt lastIndex = USHRT_MAX;
+    static usInt lastIndex = numeric_limits<usInt>::max();
     boost::random::discrete_distribution<> dist(probability);
 
     do
@@ -296,8 +291,6 @@ usInt Adaptive::getNextIndex(const vector<Flashcard> & cards)
     } while (currentIndex == lastIndex);
 
     lastIndex = currentIndex;
-
-    return currentIndex;
 }
 
 string Adaptive::probabilitySummary(vector<Flashcard> & cards)

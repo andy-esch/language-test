@@ -11,18 +11,18 @@
 #ifndef SMARTPICKER_H
 #define SMARTPICKER_H
 
-#include <boost/random/mersenne_twister.hpp>        // mt19937
-#include <boost/random/discrete_distribution.hpp>   //discrete_distribution()
+#include <cmath>    // fma(), fdim(), exp()
+#include <cstdlib>  // exit()
+#include <ctime>    // time()
 #include <iostream>
-#include <vector>
+#include <limits>   // numeric_limits
 #include <list>
 #include <sstream>  // stringstream type
 #include <string>   // string members, objects
-#include <cmath>    // fma(), fdim(), exp()
-#include <ctime>    // time()
-#include <cstdlib>  // exit()
-// TODO: replace climits with limits and change corresponding code
-#include <climits>  // USHRT_MAX
+#include <vector>
+
+#include <boost/random/mersenne_twister.hpp>        // mt19937_64
+#include <boost/random/discrete_distribution.hpp>   // discrete_distribution()
 
 #include "Flashcard.h"
 #include "functions.h"
@@ -33,7 +33,7 @@ using std::list;
 using std::vector;
 using std::string;
 using std::cout;
-
+using std::numeric_limits;
 
 /*  Should all classes start with a limited set of the vocab and only expand the
  *  list if a certain performance level is reached?  For instance, start out with
@@ -48,7 +48,7 @@ protected:
 public:
     SmartPicker();
     virtual ~SmartPicker() {};
-    virtual usInt getNextIndex(const vector<Flashcard> &) = 0;
+    virtual void getNextIndex(const vector<Flashcard> &) = 0;
     // Access methods
     usInt getCurrentIndex() const;
 };
@@ -56,7 +56,7 @@ public:
 
 class WalkThrough: public SmartPicker {
 public:    
-    usInt getNextIndex(const vector<Flashcard> &);
+    void getNextIndex(const vector<Flashcard> &);
 };
 
 
@@ -70,7 +70,7 @@ private:
 public:
     // Constructor
     LeastCorrect();
-    usInt getNextIndex(const vector<Flashcard> &);
+    void getNextIndex(const vector<Flashcard> &);
     usInt getNumOfIndices() const;
     void printIndices();
 };
@@ -87,7 +87,7 @@ private:
     usInt findSmallest(const vector<Flashcard> &);
 public:
     LeastPicked();
-    usInt getNextIndex(const vector<Flashcard> &);
+    void getNextIndex(const vector<Flashcard> &);
     void printIndices();
 };
 
@@ -104,7 +104,7 @@ private:
 public:
     Adaptive(int);
     ~Adaptive();
-    usInt getNextIndex(const vector<Flashcard> &);
+    void getNextIndex(const vector<Flashcard> &);
     void updateProbsAdvanced(const double, const vector<Flashcard> &);
     void updateProbsBasic(const double);
     string probabilitySummary(vector<Flashcard> &);
