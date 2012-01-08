@@ -1,0 +1,7 @@
+lunes	What day is the first work day?|What day is named after the moon?
+martes	What day is tisdag in Swedish?
+miércoles	What day is mid week?
+jueves	What day is torsday in Swedish?
+viernes	What is the last day of the work week?|What day is the sabbath?
+sábado	What day does one buy lördagsgodis?
+domingo	What day to Christains typically go to church?

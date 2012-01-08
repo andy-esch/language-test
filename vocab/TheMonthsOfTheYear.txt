@@ -1,0 +1,12 @@
+enero	What month is the first of the new year?
+febrero	What month is ground hog's day in?
+marzo	What month did Caesar die in?
+abril	In like a lion out like a lamb.
+mayo	This month is spelled like a white condiment made of eggs and oil.
+junio	The summer solstice is in this month.
+julio	This month is named after Julius Caesar.
+agosto	This month is named after Augustus Caesar.
+septiembre	This month contains the vernal equinox.
+octubre	Originally this was the 8th month of the year -- but no more.
+noviembre	This month was the 9th month of the year -- but no more.
+diciembre	This month contains the winter solstice.
