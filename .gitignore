@@ -4,4 +4,4 @@ lib/*
 *.o
 ltest
 .DS_S*
-./testing/*
+testing/*
