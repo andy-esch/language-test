@@ -32,6 +32,7 @@ public:
     Hint(string, bool);
     Hint();
     void setKey(string);
+    string getKey() const { return key; }
 private:
     string hint;
     void addLetter(usInt);
