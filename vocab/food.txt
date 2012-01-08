@@ -1,0 +1,134 @@
+el aceite	oil
+la aceituna	olive
+la agua	water
+el aguacate	avocado
+el ajo	garlic
+el albaricoque	apricot
+el alcachofa	artichoke
+la almeja	clam
+la almendra	almond
+la anchoa	anchovy
+el apio	celery
+el arroz	rice
+el atún	tuna
+el azúcar	sugar
+el bacalao	cod
+la berenjena	eggplant
+el biftec,el bistec	beefsteak
+el bocadillo	sandwich
+el café	coffee
+la calabaza	pumpkin,squash
+los calamares (pl.)	squid (pl.)
+el caldo	broth
+los camarones (pl.)	shrimp
+el cangrejo	crab
+la carne	meat
+la carne de vaca	beef
+el carnero	mutton
+la castaña	chestnut
+la cebolla	onion
+el cerdo	pork
+la cereza	cherry
+la cerveza	beer
+la ciruela	plum
+el coco	coconut
+la col	cabbage
+el coliflor	cauliflower
+el conejo	rabbit
+el cordero	lamb
+la crema	cream
+la champaña	champagne
+el champiñón	mushroom
+el chorizo	sausage
+la chuleta	cutlet,chop
+el churro	cruller,fritter
+la ensalada	salad
+el escalope	cutlet
+los espárragos (pl.)	asparagus (pl.)
+las espinacas (pl.)	spinach (pl.)
+los fideos (pl.)	noodles (pl.)
+el filete	tenderloin
+el flan	caramel custard
+la frambuesa	raspberry
+la fresa	strawberry
+los frijoles	beans
+la fruta	fruit
+la galleta	cookie,cracker
+el garbanzo	chickpea
+el gazpacho	cold vegetable soup
+el guisante	pea
+la habichuela	string bean
+la hamburguesa	hamburger
+el helado	ice cream
+el hígado	liver
+el higo	fig
+el hongo	mushroom
+el jamón	ham
+las judías verdes (España)	string beans (Spain)
+el jugo	juice (Spanish America)
+la langosta	lobster
+la leche	milk
+la lechuga	lettuce
+la legumbre	vegetable
+las lentejas	lentils
+la limonada	lemonade
+el lomo	loin
+el maíz	corn
+la mantequilla	butter
+la manzana	apple
+los mariscos	shellfish
+el melocotón	peach
+el melón	melon
+la marmelada	marmalade
+la miel	honey
+la mostaza	mustard
+el nabo	turnip
+la naranja	orange
+la nata	whipped cream
+la nuez	nut,walnut
+la ostra	oyster
+el pan	bread
+el panecillo	roll
+la papa	potato (Spanish American)
+la pasa	raisin
+la pasta	pasta,noodles
+el pastel	pie
+la patata (España)	potato (Spain)
+el pato	duck
+el pavo	turkey
+el pepino	cucumber
+la pera	pear
+el pescado	fish
+la pimienta	pepper
+la piña	pineapple
+el plátano	banana
+el pollo	chicken
+el postre	dessert
+el puerco	pork
+el queso	cheese
+el rábano	radish
+el refresco	cold drink
+la sal	salt
+la salchicha	sausage
+la salsa	sauce
+la sandía	watermelon
+la sangría	sangria
+la seta	mushroom
+la sopa	soup
+el sorbete	sherbet
+la tarta	pie
+el té	tea
+la ternera	veal
+el tocino	bacon
+el tomate	tomato
+la toronja	grapefruit
+la torta	cake
+la tortilla	tortilla,omelet
+la tostada	toast
+la trucha	trout
+la uva	grape
+las verduras	vegetables
+el vinagre	vinegar
+el vino	wine
+la zanahoria	carrot
+el zumo (España)	juice (Spain)
