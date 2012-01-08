@@ -1,6 +1,6 @@
 /*
  *  functions.h
- *  
+ *
  *  Description: Header file to go with functions.cpp
  *
  *
@@ -34,22 +34,30 @@ using std::string;
 using std::stringstream;
 using std::vector;
 
-
 namespace ltest {
 
     void welcomeMessage();
+    string readstring(string);
     bool pass(int, int, float, float);
     usInt isAccented(string);
+    string commaAdder(const string, const bool=true);
     bool compareAll(vector<string> &, string);
     bool containsContraction(string);
     bool isInvalidAnswer(string, vector<string>);
     string hintOptions(int);
     string ordinal(const int);
     void addSpace(string &);
+    string charToStr(char *);
 
     // TODO: needs work
     template <class X>
-    X readint();
+    X readint(const char * prompt)
+    {
+        char * temp = readline(prompt);
+        X num = atoi(temp);
+        free(temp);
+        return num;
+    }
 
     template <class T>
     string numToStr(T num)
@@ -65,10 +73,7 @@ namespace ltest {
         return static_cast<float> (numer) / static_cast<float> (denom);
     }
 
-    template <class M>
-    M min(M m1, M m2) { return (m1<m2?m1:m2); }
-
-    /* returns false if < 0, true if > 0 */
+    /* returns false if < 0, true if >= 0 */
     template <class W>
     bool sgn(W num)
     {
@@ -79,8 +84,13 @@ namespace ltest {
     }
 
     string help(char *);
-    int randIndex(const int);
     double reaction(const double, const int);
+
+    template <class U>
+    U randIndex(const U num)
+    {
+        return (rand() % num);
+    }
 
     template <class Z>
     string printWhitespace(Z length)
@@ -88,7 +98,7 @@ namespace ltest {
         if (length > 0)
         {
             string temp(length+1,' ');
-            return temp;   
+            return temp;
         }
         else
             return "";
@@ -101,14 +111,14 @@ namespace ltest {
     bool exitProg(const char*,bool=false);
     int whatDoYouWantToDo(const string);
     double inverse(const int);
-        
+
     // Only handles positive numbers
     template <class X>
     vector<usInt> numDecomp(const X num)
     {
         X tempNum = (num < 0 ? -1.0 : 1.0) * num;
         vector<usInt> numbers;
-        
+
         while (tempNum != 0 || num == 0)
         {
             if (num == 0)
@@ -116,14 +126,13 @@ namespace ltest {
                 numbers.push_back(0);
                 break;
             }
-            
+
             numbers.push_back(tempNum % 1000);
             tempNum /= 1000;
         }
-        
+
         return numbers;
     }
-    
 
     /* attempt at a more robust input processor */
     template <class T>

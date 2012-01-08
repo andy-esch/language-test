@@ -16,6 +16,15 @@ void ltest::welcomeMessage()
     cout << "\nWelcome to ltest!" << endl;
 }
 
+string ltest::readstring(string prompt)
+{
+    char * temp = NULL;
+    temp = readline(prompt.c_str());
+    string tempStr(temp);
+    free(temp);
+    return tempStr;
+}
+
 //  To be used to verify if a given test has been passed
 //  This is only a prototype
 bool ltest::pass(int numOfHints, int numEntries, float totalAvgTime, float totalAvgPercent)
@@ -46,28 +55,54 @@ float ltest::howWrongIsIt(string test, string compare)
     return 0.0;
 }
 
+string ltest::charToStr(char * chars)
+{
+    stringstream ss;
+    ss << chars;
+    return ss.str();
+}
+
 void ltest::addSpace(string & temp)
 {
     if (!temp.empty())
         temp += " ";
 }
 
-//unsigned short ltest::isAccented(string str)
-//{
-//    vector<string> set("á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß");
-//    unsigned short accents = 0;
-//
-//    for (int ii = 0; ii < set.size(); ii++)
-//    {
-//        cout << endl;
-//    }
-//
-//    return accents;
-//}
+usInt ltest::isAccented(string str)
+{
+    vector<string> set = {"á", "é", "í", "ó", "ñ", "ä", "ö", "ü", "å", "ß"};
+    usInt accents = 0;
+
+    for (usInt ii = 1; ii < str.length(); ii++)
+    {
+        for (usInt jj = 0; jj < set.size(); jj++)
+//            if (str[ii] == set[jj])
+                accents++;
+    }
+    
+
+    return accents;
+}
 
 string ltest::prompt(const char * prmpt)
 {
     return prmpt;
+}
+
+string ltest::commaAdder(const string str, const bool sign)
+{
+    string word(str);
+    
+    for (short jj = word.size() - 3;
+         jj > 0;
+         jj -= 3)
+    {
+        word.insert(jj,",");
+    }
+    
+    if (!sign) word.insert(0,"-");
+    
+    return word;
 }
 
 vector<string> ltest::stripParentheses(vector<string> & words)
@@ -103,6 +138,11 @@ bool ltest::containsContraction(string str)
 /* TODO: have a contraction converter: if "I'm" is present, convert to "I am", or
          at least score it correctly
  */
+
+/* TODO: Conditionally strip the parenthesis -- only do that operation if necessary
+ *
+ */
+
 bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 {
     vector<string> strippedws = stripParentheses(ws);
@@ -110,7 +150,10 @@ bool ltest::isInvalidAnswer(string answer, vector<string> ws)
 
     for (usInt ii = 0; ii < ws.size() && isWrong; ii++)
         if ( !answer.compare(ws[ii]) || !answer.compare(strippedws[ii]) )
+        {
             isWrong = false;
+            break;
+        }
 
     return isWrong;
 }
@@ -132,31 +175,10 @@ string ltest::hintOptions(int leftmargin)
     return hint.str();
 }
 
-// isnew() is obsolete
-//bool isnew(vector<Flashcard> & ws, string test, long unsigned int & index)
-//{   // Returns true if 'test' is not already in the vector ws (i.e., if its new)
-//    // Also sets the value where a non-new word occurs
-//    bool isNew = true;
-//
-//    if (ws.size() == 0)
-//        isNew = true;
-//    else
-//        for (int i = 0; i < ws.size(); i++)
-//            if ( !test.compare(ws[i].sideB[0]) )
-//            {
-//                isNew = false;
-//                index = i;
-//                break;
-//            }
-//
-//    return isNew;
-//}
-
-
 string ltest::ordinal(const int num)
 {
-    string ords[10] = { "th", "st", "nd", "rd", "th", \
-                        "th", "th", "th", "th", "th" };
+    string ords[] = { "th", "st", "nd", "rd", "th", \
+                      "th", "th", "th", "th", "th" };
     stringstream ord;
     ord << num << ords[num % 10];
     return ord.str();
@@ -172,17 +194,19 @@ string ltest::help(char * prog)
     help << "  " << prog << " [options]" << endl;
     help << endl;
     help << "options:" << endl;
-    help << "    -i <string>    input file name" << endl;
+/* TODO: no longer an option? */
+    help << "    -i <string>    input file name" << endl; 
     help << "    -l             list available dictionaries" << endl;
     help << "    -h             print out this help menu" << endl;
     help << endl;
     return help.str();
 }
 
-int ltest::randIndex(const int num)
-{
-    return (rand() % num);
-}
+//int ltest::randIndex(const int num)
+//{
+//    return (rand() % num);
+//}
+
 /* obsolete? */
 double ltest::reaction(const double time, const int numLttrs)
 {
