@@ -10,9 +10,9 @@
  *
  */
 
-#include "numbers.h"
+#include "Numbers.h"
 
-/* Load these from a file eventually */
+/* Load these from a file eventually? */
 string zeroTo29[] = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis",
                      "siete", "ocho", "nueve", "diez", "once", "doce", "trece",
                      "catorce", "quince", "dieciséis", "diecisiete",
@@ -24,16 +24,17 @@ string tens[] = {"cero", "diez", "veinte", "treinta", "cuarenta",
                  "cincuenta", "sesenta", "setenta", "ochenta",
                  "noventa"};
 
-string hundreds[] = {"cero", "ciento","doscientos", "trescientos",
+string hundreds[] = {"cero", "ciento", "doscientos", "trescientos",
                      "cuatrocientos", "quinientos", "seiscientos",
                      "setecientos", "ochocientos", "novecientos"};
 
-//string powersOfTen[] = {"uno", "diez", "ciento", "mil", "diez mil",
-//                        "cien mil", "millón", "mil millones",
-//                        "billón"};
+//string powersOfTen[] = {"uno", "diez", "cien", "mil", "diez mil",
+//                        "cien mil", "millón", "diez millón", "cien millón",
+//                        "mil millones", "diez mil millones", 
+//                        "cien mil millones", "billón", "diez billón"};
 
-string powersOfThousand[] = {"", "mil", "millón", "mil millones", "billón"};
-
+string powersOfThousand[] = {"", "mil", "millón", "mil millones", "billón",
+                             "mil billones", "trillón", "mil trillones"};
 
 Number::Number()
        :numOfItems(10), numCorrect(0), \
@@ -59,17 +60,17 @@ void Number::setNumber(usInt newnumOfItems, long newxmin, long newxmax)
 
 void Number::getNewNumber(boost::random::mt19937_64 & gen)
 {
-    currentNum = randNum(xmin,xmax,gen);
+    currentNum = randNum(gen);
     numWord = numConst(currentNum);
 }
 
-long Number::randNum(long lowLim, long upLim, boost::random::mt19937_64 &gn)
+long Number::randNum(boost::random::mt19937_64 &gn)
 {
 #ifdef DEBUG
     cout << "Entered randNum" << endl;
 #endif // DEBUG
 
-    boost::random::uniform_int_distribution<long> dist(lowLim, upLim);
+    boost::random::uniform_int_distribution<long> dist(xmin, xmax);
 
 #ifdef DEBUG
     long randomNum = dist(gn);
@@ -95,31 +96,42 @@ bool Number::inputsAreNotOkay()
 void Number::setCustomOptions()
 {
     bool changeOptions = true;
-    usInt numItems;
+    usInt numItems = 10;
     long xmn = 0, xmx = 10;
     char * temp = NULL;
 
     do
     {
-        char charOption = 'y';
-
         temp = readline("How many items do you want to be quizzed over?\n>> ");
         numItems = atoi(temp);
 
-        cout << "Enter a number range: xmin <= x <= xmax " << endl;
+        cout << "Enter a number range: xmin <= x <= xmax\n" \
+             << "(enter 'max' for the largest value possible,\n" \
+             << " and 'min' for the smallest value possible.)" << endl;
 
-        temp = readline("xmin = ");
-        xmn = atol(temp);
-        temp = readline("xmax = ");
-        xmx = atol(temp);
+        temp = readline("min = ");
+
+        if (!strcmp(temp,"min"))
+            xmn = numeric_limits<long>::min() ;
+        else
+            xmn = atol(temp);
+
+        temp = readline("max = ");
+
+        if (!strcmp(temp,"max"))
+            xmx = numeric_limits<long>::max();
+        else
+            xmx = atol(temp);
 
         cout << "You chose " << numItems << " numbers between " \
-             << commaAdder(ltest::numToStr(xmn),ltest::sgn(xmn)) << " and " \
-             << commaAdder(ltest::numToStr(xmx),ltest::sgn(xmx)) << "." << endl;
+             << ltest::commaAdder(ltest::numToStr(labs(xmn)),ltest::sgn(xmn)) \
+             << " and " \
+             << ltest::commaAdder(ltest::numToStr(labs(xmx)),ltest::sgn(xmx)) \
+             << "." << endl;
 
         temp = readline("Keep these options? (y for yes, r to reset)? ");
 
-        if (charOption == 'y')
+        if (temp[0] == 'y')
             changeOptions = false;
         else
             changeOptions = true;
@@ -133,16 +145,17 @@ void Number::loadOptions()
 {
     int option;
     char * opt = NULL;
-    cout << "Pick a specific quiz or make your own." << endl;
-    cout << "\t1: 0 to 10 (20 times)" << endl;
-    cout << "\t2: 0 to 100 (30 times)" << endl;
-    cout << "\t3: 0 to 1000 (30 times)" << endl;
-    cout << "\t4: -1000 to 1000 (20 times)" << endl;
-    cout << "\t5: -1E6 to 1E6 (10 times)" << endl;
-    cout << "\t6: -1E8 to 1E8 (10 times)" << endl;
-    cout << "\t7: -1E13 to 1E13 (5 times)" << endl;
-    cout << "\t8: custom" << endl;
-    cout << "\t9: exit to main screen" << endl;
+
+    cout << "Pick a specific quiz or make your own.\n" \
+         << "\t1: 0 to 10 (20 times)\n" \
+         << "\t2: 0 to 100 (30 times)\n" \
+         << "\t3: 0 to 1000 (30 times)\n" \
+         << "\t4: -1000 to 1000 (20 times)\n" \
+         << "\t5: -1E6 to 1E6 (10 times)\n" \
+         << "\t6: -1E8 to 1E8 (10 times)\n" \
+         << "\t7: -1E13 to 1E13 (5 times)\n" \
+         << "\t8: custom\n" \
+         << "\t9: exit to main screen" << endl;
 
     opt = readline(">> ");
     option = atoi(opt);
@@ -174,16 +187,19 @@ void Number::loadOptions()
             this->setCustomOptions();
             break;
         case 9:
-            cin.std::ios::setstate(std::ios::eofbit);
+            exitToMain = true;
             break;
         default:
             this->setNumber(20,0,10);
             break;
     }
+#ifdef DEBUG
+    this->printNumber();
+#endif // DEBUG
     free(opt);
 }
 
-
+/* Construct numbers of length -LONG_MAX to LONG_MAX in words */
 string Number::numConst(const long num)
 {
     vector<usInt> nums = ltest::numDecomp(num);
@@ -201,12 +217,12 @@ string Number::numConst(const long num)
             wordString += " ";
     }
 
-    if (wordString[wordString.length()-1] == ' ')
-        wordString.erase(wordString.length()-1);
+    boost::algorithm::trim_right(wordString);
 
     return wordString;
 }
 
+/* Construct a number between zero and 999 in words */
 string Number::auxConst(const usInt var)
 {
     string wrdStr;
@@ -217,11 +233,11 @@ string Number::auxConst(const usInt var)
         cerr << "Error: out of range." << endl;
         exit(0);
     }
-    else if ( tempVar <= 1000 && tempVar >= 100 )
+    else if ( tempVar < 1000 && tempVar >= 100 )
     {
         wrdStr += hundreds[tempVar / 100];
 
-        tempVar = tempVar % 100;
+        tempVar %= 100;
     }
 
     if ( tempVar < 100 && tempVar >= 30 )
@@ -240,22 +256,6 @@ string Number::auxConst(const usInt var)
         wrdStr += zeroTo29[tempVar];
     }
     return wrdStr;
-}
-
-string commaAdder(const string str, const bool sign)
-{
-    string word(str);
-
-    for (short jj = word.size() - 3;
-         jj > 0;
-         jj -= 3)
-    {
-        word.insert(jj,",");
-    }
-
-    if (!sign) word.insert(0,"-");
-
-    return word;
 }
 
 usInt getPower(const long rawInt)
@@ -285,19 +285,19 @@ int numbers(Account & acct)
 
     nm.loadOptions();
 
-    for (usInt ii = 0; ii < nm.getnumOfItems() && !cin.eof(); ii++)
+    for (usInt ii = 0; ii < nm.getnumOfItems() && !exitToMain; ii++)
     {
         nm.getNewNumber(gen);
 
-        cout << "What is " << commaAdder(ltest::numToStr(labs(nm.getCurrNum())), \
-                                         ltest::sgn(nm.getCurrNum())) \
+        cout << "What is " << ltest::commaAdder(ltest::numToStr(labs(nm.getCurrNum())), \
+                                                ltest::sgn(nm.getCurrNum())) \
              << " in Spanish?" << endl;
 
 /* TODO: change response to char * to address memory leak? */
         response = readline(">> ");
         isCorrect = (response == nm.getNumWord());
 
-        if (ltest::exitProg(response.c_str(),cin.eof())) break;
+        if (ltest::exitProg(response.c_str(),exitToMain)) break;
         else if ( isCorrect )
         {
             if (acct.getVerbose())
@@ -315,17 +315,19 @@ int numbers(Account & acct)
                  << "^\n" \
                  << nm.getNumWord() << endl;
 
+            cout.setf(std::ios::fixed);
+            cout.precision(0);
             /* Calculates word differences */
             cout << "You are off by: " \
                  << wordCompare::levenshtein(nm.getNumWord(), response)-1 \
-                 << " letters.\n" \
-                 << "And your response is " \
+                 << " letters.  And your response is " \
                  << wordCompare::lcsPercent(nm.getNumWord(),response) \
-                 << "% correct" << endl;
+                 << "% correct." << endl;
         }
 
         isCorrect = false;
     }
+
     cout << "You got " << nm.getNumCorrect() << " correct out of " \
          << nm.getnumOfItems() << " (" \
          << ltest::frac(nm.getNumCorrect(),nm.getnumOfItems()) * 100.0 \

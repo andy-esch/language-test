@@ -1,5 +1,5 @@
 /*
- *  numbers.h
+ *  Numbers.h
  *  
  *
  *  Created by Añdy Eschbacher on 11/15/11.
@@ -9,16 +9,18 @@
 #ifndef NUMBERS_H
 #define NUMBERS_H
 
-#include <iostream>
-#include <cmath>
-#include <iomanip>
-#include <ctime>
-#include <string>
+#include <cmath>    
 #include <cstdlib>
+#include <ctime>    // time(NULL)
+#include <iomanip>  // setw()
+#include <iostream>
+#include <limits>   // numeric_limits
+#include <string>
 #include <vector>
 
-#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/mersenne_twister.hpp>    // mt19937_64
 #include <boost/random/uniform_int_distribution.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #include <readline/readline.h>
 
@@ -27,12 +29,15 @@
 #include "ltest_typedefs.h"
 #include "Account.h"
 
+using std::cerr;
 using std::cin;
 using std::cout;
 using std::endl;
+using std::numeric_limits;
 using std::setw;
 using std::string;
-using std::cerr;
+
+extern bool exitToMain;
 
 /* rethink the naming of this class */
 class Number {
@@ -41,12 +46,11 @@ class Number {
     string numWord;
 
     /* private member functions */
-//    int reduce(int, int);
     void setCustomOptions();
     bool inputsAreNotOkay();
     string numConst(const long);
     string auxConst(const usInt);
-    long randNum(long, long, boost::random::mt19937_64 &);
+    long randNum(boost::random::mt19937_64 &);
 public:
     Number();
     void setNumber(usInt, long, long);
@@ -62,7 +66,6 @@ public:
     void incrNumCorrect();
 };
 
-string commaAdder(const string, const bool=true);
 usInt getPower(const long); // not in use
 
 template <class U, class V>
@@ -72,8 +75,6 @@ U reduce(U num1, V num2)
 }
 
 int numbers(Account &);
-
-//string numConstructor(const long); // going out
 
 #endif // NUMBERS_H
 
