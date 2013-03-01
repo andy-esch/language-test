@@ -4,9 +4,17 @@
 vpath %.cpp src
 vpath %.h include
 
-CXX = g++ -std=c++0x
-CXXFLAGS = -I include -L/opt/local/lib -I/opt/local/include -lboost_system -lboost_chrono -lreadline
-DEBUGFLAGS = -Weffc++ -Wall -Wc++0x-compat #-DDEBUG
+CXX = g++
+CXXFLAGS = -I include \
+           -L/opt/local/lib \
+		   -I/opt/local/include \
+		   -lboost_system \
+		   -lboost_chrono \
+		   -lreadline
+
+DEBUGFLAGS = -Weffc++ \
+             -Wall \
+			 #-DDEBUG
 OPTIM = -O3 -funroll-loops
 CMAKE_COMMAND = /opt/local/bin/cmake
 
@@ -28,8 +36,13 @@ HEADERS = functions.h \
           listDicts.h \
           testResults.h \
           Hint.h \
-          progPrefs.h wordCompare.h SmartPicker.h WordData.h Account.h \
-		  flcrd_quiz.h Numbers.h
+          progPrefs.h \
+		  wordCompare.h \
+		  SmartPicker.h \
+		  WordData.h \
+		  Account.h \
+		  flcrd_quiz.h \
+		  Numbers.h
 
 TESTS = SmartPicker_test
 
