@@ -62,7 +62,7 @@ void Account::establishAccount()
     char *youAre, *yesOrNo;
     bool yn = false;
 
-    rl_bind_key('\t',rl_abort); // disable auto-complete
+    rl_bind_key('\t',rl_insert); // disable auto-complete
 
     do
     {
