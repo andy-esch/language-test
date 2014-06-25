@@ -31,9 +31,6 @@ usInt SmartPicker::getCurrentIndex() const
 
 void WalkThrough::getNextIndex(const vector<Flashcard> & cards)
 {
-#ifdef DEBUG
-    cout << "Index from WalkThrough class" << endl;
-#endif // DEBUG
     setCurrentIndex((++currentIndex) % cards.size());
 }
 
@@ -45,10 +42,6 @@ LeastCorrect::LeastCorrect()
 
 void LeastCorrect::getNextIndex(const vector<Flashcard> & cards)
 {
-#ifdef DEBUG
-    cout << "Index from LeastCorrect class" << endl;
-#endif // DEBUG
-    // generate and set new index
     leastCorrectIndex(cards);
 }
 
@@ -117,9 +110,6 @@ LeastPicked::LeastPicked()
 
 void LeastPicked::getNextIndex(const vector<Flashcard> & cards)
 {
-#ifdef DEBUG
-    cout << "Index from LeastPicked class" << endl;
-#endif // DEBUG
     // generate new index
     leastPickedIndex(cards);
 }
@@ -276,10 +266,6 @@ void Adaptive::updateProbsBasic(const double wgt)
 
 void Adaptive::getNextIndex(const vector<Flashcard> & cards)
 {
-#ifdef DEBUG
-    cout << "Index from Adaptive class" << endl;
-#endif // DEBUG
-
     Adaptive::updateProbsAdvanced(weight(isWrong,currAnsTime), cards);
 
     static usInt lastIndex = numeric_limits<usInt>::max();
@@ -300,7 +286,8 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 
     for (usInt ii = 0; ii < cards.size(); ii++)
     {
-        ps << cards[ii].getWord('B',0) << '\t' << static_cast<int> (100 * probability[ii]) << endl;
+        ps << cards[ii].getWord('B',0) << '\t' 
+           << static_cast<int> (100 * probability[ii]) << endl;
     }
 
     return ps.str();
@@ -308,9 +295,7 @@ string Adaptive::probabilitySummary(vector<Flashcard> & cards)
 
 void Adaptive::setLevDistance(string str1, string str2)
 {
-    usInt temp1 = wordCompare::levenshtein(str1,str2);
-
-    levDistance = static_cast<double> (temp1);
+    levDistance = static_cast<double> (wordCompare::levenshtein(str1,str2));
 }
 
 // EOF
