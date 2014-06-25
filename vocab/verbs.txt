@@ -39,3 +39,4 @@ decir	to tell
 poder	can,may
 buscar	search for,seek
 llamar	to call
+ayudar	to help

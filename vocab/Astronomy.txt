@@ -1,0 +1,44 @@
+el asteroide	asteroid
+la Osa Mayor	Ursa Major,The Big Bear
+el hoyo negro,el agujero negro	black hole
+el cometa	comet
+la constelación	constellation
+el planeta enano	dwarf planet
+la galaxia	galaxy
+el meteoro	meteor
+el meteorito	meteorite
+el planeta	planet
+la gigante roja	red giant
+la Via Láctea	Milky Way
+la luna	moon
+la Estrella Polar	Polaris,North Star
+el satélite	satellite
+el sistema solar	solar system
+la estrella	star
+el universo	universe
+nuestro sistema solar	our solar system
+el cinturón de asteroides	asteroid belt
+el Mercurio	Mercury
+el Venus	Venus
+la Tierra	Earth
+el Marte	Mars
+el Júpiter	Jupiter
+el Saturno	Saturn
+el Urano	Uranus
+el Neptuno	Neptune
+el Plutón	Pluto
+el sol	sun
+luna menguante	waning moon
+la luna nueva	new moon
+la órbita	orbit
+luna creciente	crescent moon
+el plenilunio,la luna llena	full moon
+los anillos de Saturno	the rings of Saturn
+la astronomía	astronomy
+el astronauta,la astronauta	astronaut
+el cráter	crater
+el eclipse	eclipse
+el año luz	light year
+la gravedad	gravity
+cresciendo	waxing,increasing
+decresciendo	waning,decreasing

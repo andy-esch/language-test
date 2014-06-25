@@ -1,0 +1,8 @@
+luna nueva	new moon
+plenilunio,luna llena	full moon
+cuarto menguante	waning crescent
+luna menguante	last quarter
+cuarto creciente	waxing moon
+luna creciente	first quarter
+fases de la luna	phases of the moon
+cuarto creciente	crescent moon
