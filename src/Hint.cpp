@@ -128,24 +128,24 @@ string Hint::example(void)
 }
 
 
-string Hint::help()
+string Hint::help(size_t num)
 {
     stringstream hint;
-    string ws10 = ltest::printWhitespace(10);
-    hint << ws10 << '\a' << endl;
-    hint << ws10 << "Want a letter?  Type '-l'." << endl;
-    hint << ws10 << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-    hint << ws10 << "Want the answer?  Type '-a'." << endl;
-    hint << ws10 << "Want the number of letters?  Type '-n'." << endl;
-    hint << ws10 << "Want to skip this word?  Type '-s'." << endl;
-    hint << ws10 << "Want help?  Type '-h'." << endl;
-    hint << ws10 << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-    hint << ws10 << "Want to turn these messages off?  Type '-d' to disable." << endl;
+    string ws = ltest::printWhitespace(num);
+    hint << ws << '\a' << endl;
+    hint << ws << "Want a letter?  Type '-l'." << endl;
+    hint << ws << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
+    hint << ws << "Want the answer?  Type '-a'." << endl;
+    hint << ws << "Want the number of letters?  Type '-n'." << endl;
+    hint << ws << "Want to skip this word?  Type '-s'." << endl;
+    hint << ws << "Want help?  Type '-h'." << endl;
+    hint << ws << "Want out of here?  Type exit." << endl;
+    hint << ws << "Want to turn these messages off?  Type '-d' to disable." << endl;
     return hint.str();
 }
 
 
-string Hint::handle(string hintType, bool verbose)
+string Hint::handle(string hintType, bool & disableHintMsg)
 {
     stringstream out;
     switch (hintType[1])
@@ -157,21 +157,22 @@ string Hint::handle(string hintType, bool verbose)
                 addLetter(atoi(&hintType[2]));
             else
                 addLetter(1);
-            out << "-> " << hint;
+            out << "-> " << hint << endl;
             break;
         case 'a':
             answer();
-            out << "-> " << hint;
+            out << "-> " << hint << endl;
             break;
         case 'n':
             fillLetterPlaces();
-            out << "-> " << hint;
+            out << "-> " << hint << endl;
             break;
         case 'h':
             out << help();
             break;
+        case 'd':
+            disableHintMsg = !disableHintMsg;
     }
-  out << endl;
   return out.str();
 }
 
