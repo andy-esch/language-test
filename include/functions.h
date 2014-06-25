@@ -13,12 +13,13 @@
 
 #include <cstring>      // strcmp()
 #include <iostream>     // cin, cout, endl, etc.
-#include <limits>       // numeric_limits<...>::max()
+#include <limits>       // numeric_limits<...>::max(), etc.
 #include <sstream>      // string stream
 #include <stdexcept>    // out_of_range(), exception()
 #include <string>       // string class, member functions
 #include <typeinfo>     // name(), what()
 #include <vector>       // vector class, member functions
+#include <cstdlib>
 
 #include <readline/readline.h>
 
@@ -44,7 +45,7 @@ namespace ltest {
     bool compareAll(vector<string> &, string);
     bool containsContraction(string);
     bool isInvalidAnswer(string, vector<string>);
-    string hintOptions(int);
+    string hintOptions(usInt);
     string ordinal(const int);
     void addSpace(string &);
     string charToStr(char *);
@@ -54,7 +55,10 @@ namespace ltest {
     X readint(const char * prompt)
     {
         char * temp = readline(prompt);
-        X num = atoi(temp);
+        while (temp[0] == '\0')
+            temp = readline(prompt);
+    
+        X num = static_cast<X> (atoi(temp));
         free(temp);
         return num;
     }
@@ -83,13 +87,12 @@ namespace ltest {
             return true;
     }
 
-    string help(char *);
     double reaction(const double, const int);
 
     template <class U>
     U randIndex(const U num)
     {
-        return (rand() % num);
+        return static_cast<U> (rand() % num);
     }
 
     template <class Z>
@@ -110,7 +113,14 @@ namespace ltest {
     string goodbye(const string="");
     bool exitProg(const char*,bool=false);
     int whatDoYouWantToDo(const string);
-    double inverse(const int);
+    template <class U>
+    double inverse(const U num)
+    {
+        if (num != 0)
+            return (1.0 / static_cast<double> (num));
+        else
+            return 0; // return a nan() instead?
+    }
 
     // Only handles positive numbers
     template <class X>
