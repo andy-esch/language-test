@@ -4,7 +4,7 @@
 vpath %.cpp src
 vpath %.h include
 
-CXX = g++
+CXX = g++-mp-4.5
 CXXFLAGS = -I include \
            -L/opt/local/lib \
 		   -I/opt/local/include \
