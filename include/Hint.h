@@ -26,13 +26,14 @@ using std::vector;
 class Hint {
 public:
     string key; 
-    usInt hintNum;    // keeps track of where in the word the hint is at.
+    usInt hintNum;    // keeps track of where in the word the hint is at
     bool verbose;
-    string handle(string,bool);
+    string handle(string, bool&);
     Hint(string, bool);
     Hint();
     void setKey(string);
     string getKey() const { return key; }
+    string help(size_t = 0);
 private:
     string hint;
     void addLetter(usInt);
@@ -43,7 +44,6 @@ private:
     void disableHints(void);
     string example();
     string synonym();
-    string help();
     bool isAccented(string);
 };
 

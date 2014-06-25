@@ -10,12 +10,12 @@
 
 #include "Flashcard.h"
 
-Flashcard::Flashcard(void)
+Flashcard::Flashcard()
           :sideA(0), sideB(0), data(), weight(0.0)
 {
 }
 
-void Flashcard::toScreen(void)
+void Flashcard::toScreen()
 {
     cout << "sideA: " << endl;
 
@@ -32,7 +32,7 @@ void Flashcard::toScreen(void)
 }
 
 
-void Flashcard::recordPerformance(int numOfTries, bool isWrong, double responseTime)
+void Flashcard::recordPerformance(usInt numOfTries, bool isWrong, double responseTime)
 {
     data.incrNumAsked();
     if (numOfTries == 1 && !isWrong)
@@ -91,23 +91,17 @@ void Flashcard::clearWS(void)
 
 void Flashcard::input(vector<Flashcard> & ws, string inFile)
 {
-    // Do some error-checking to make sure there are the proper number of
-    //   columns, proper encoding(? not binary), etc.
     string temp1, temp2;
     size_t delimPos = string::npos;
-    ifstream infile(inFile,ifstream::in);   // open file if possible
+    ifstream inputFile(inFile.c_str(),ifstream::in);   // open file if possible
     Flashcard tempSet;
-    unsigned short lineNum = 1, delimWidth = 1;
+    usInt lineNum = 1, delimWidth = 1;
     string delimiters[] = {"\t","    ","   ","  "};
 
-#ifdef DEBUG
-    cout << "Inputting words from " << inFile << "." << endl;
-#endif // DEBUG
-
-    while ( !infile.is_open() )
+    while ( !inputFile.is_open() ) // Get rid of this since listDicts guarantees files?
     {
-        cout << "File '" << inFile << "' does not exist as specified." << endl;
-        cout << "Enter another filename (or 'exit' to exit): ";
+        cout << "File '" << inFile << "' does not exist as specified.\n"
+             << "Enter another filename (or 'exit' to exit): ";
         cin >> inFile;
         
         if (ltest::exitProg(inFile.c_str(),cin.eof()))
@@ -116,25 +110,26 @@ void Flashcard::input(vector<Flashcard> & ws, string inFile)
             exit(0);
         }
         else
-            infile.open(inFile,ifstream::in);
+            inputFile.open(inFile.c_str(),ifstream::in);
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
     
     cout << "Inputting vocabulary from '" << inFile << "'" << endl;
-    while ( !infile.eof() )
+    while ( !inputFile.eof() )
     {
-        getline(infile, temp1);             // Read in line from file 
-                                            /* Perhaps use
-                                             *  getline(infile,temp1,'\t'); \\ gets to tab
-                                             *  getline(infile,temp2,); \\ gets after tab
-                                             */  
-        
+        getline(inputFile, temp1);
+/* TODO: Perhaps use
+ *  getline(inputFile,temp1,'\t'); \\ gets to tab
+ *  getline(inputFile,temp2,); \\ gets after tab
+ *  and do some error checking (what if no delimiter? Skip line)
+ */  
+
         if (temp1.empty()) continue;          // Skip empty lines
         else if (temp1.find('#') != string::npos)
         {
-            cout << "Skipping the following line (comment): " << endl;
-            cout << '\t' << temp1;
+            cout << "Skipping the following line (comment): \n"
+                 << '\t' << temp1;
             continue;
         }
         
@@ -161,15 +156,15 @@ void Flashcard::input(vector<Flashcard> & ws, string inFile)
         }
         catch (std::out_of_range &e)
         {
-            std::cerr << "Caught: '" << e.what() << "' on line " << lineNum << endl;
-            std::cerr << "Type: " << typeid(e).name() << endl;
-            std::cerr << "Not inputting '" << temp1 << "'" << endl;
+            cerr << "Caught: '" << e.what() << "' on line " << lineNum << '\n'
+                 << "Type: " << typeid(e).name() << '\n'
+                 << "Not inputting '" << temp1 << "'" << endl;
             continue;
         }
         catch ( std::exception &e )
         {
-            std::cerr << "Caught: " << e.what() << endl;
-            std::cerr << "Type: " << typeid(e).name() << endl;
+            cerr << "Caught: " << e.what() << '\n'
+                 << "Type: " << typeid(e).name() << endl;
             continue;
         }
         
@@ -190,7 +185,7 @@ void Flashcard::input(vector<Flashcard> & ws, string inFile)
     }
     cout << endl;
     
-    infile.close();
+    inputFile.close();
 }
 
 void Flashcard::insertWords(string words, Flashcard & tempset, int step)

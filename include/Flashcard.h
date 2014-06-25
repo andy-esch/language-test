@@ -23,6 +23,7 @@
 #include "functions.h"
 #include "ltest_typedefs.h"
 
+using std::cerr;
 using std::cout;
 using std::cin;
 using std::endl;
@@ -41,12 +42,12 @@ public:
     WordData data;
     double weight;      // What is this used for?
     /* Flashcard constructors, etc. */
-    Flashcard(void);
+    Flashcard();
     /* public member functions */
     void toScreen();
     void clearWS();         // Clear wordset (used in input())
     WordData getWordData();
-    void recordPerformance(int,bool,double);
+    void recordPerformance(usInt,bool,double);
     void setWeight(usInt);
     string getWord(char,usInt) const;
     vector<string> getSideA();  
