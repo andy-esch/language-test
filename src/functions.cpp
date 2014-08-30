@@ -19,7 +19,11 @@ void ltest::welcomeMessage()
 string ltest::readstring(string prompt)
 {
     char * temp = NULL;
-    temp = readline(prompt.c_str());
+    do
+    {
+        temp = readline(prompt.c_str());
+    } while (temp[0] == '\0');
+
     string tempStr(temp);
     free(temp);
     return tempStr;
@@ -158,66 +162,13 @@ bool ltest::isInvalidAnswer(string answer, vector<string> ws)
     return isWrong;
 }
 
-/* should be moved to Hint.cpp? */
-string ltest::hintOptions(int leftmargin)
-{
-    stringstream hint;
-    string lMargSpace = printWhitespace(leftmargin);
-    hint << '\a' << endl; // Ring system bell
-    hint << lMargSpace << "Want a letter?  Type '-l'." << endl;
-    hint << lMargSpace << "Want more than one letter? Type '-l#', where # = a number 1 - 9." << endl;
-    hint << lMargSpace << "Want the answer?  Type '-a'." << endl;
-    hint << lMargSpace << "Want the number of letters?  Type '-n'." << endl;
-    hint << lMargSpace << "Want to skip this word?  Type '-s'." << endl;
-    hint << lMargSpace << "Want help?  Type '-h'." << endl;
-    hint << lMargSpace << "Want out of here?  Type CTRL-D (End of file -- EOF)." << endl;
-    hint << lMargSpace << "Want to turn these messages off?  Type '-d' to disable." << endl;
-    return hint.str();
-}
-
 string ltest::ordinal(const int num)
 {
-    string ords[] = { "th", "st", "nd", "rd", "th", \
+    string ords[] = { "th", "st", "nd", "rd", "th",
                       "th", "th", "th", "th", "th" };
     stringstream ord;
     ord << num << ords[num % 10];
     return ord.str();
-}
-
-string ltest::help(char * prog)
-{
-    stringstream help;
-    help << "Commandline language learner. Version 1.0 Beta" << endl;
-    help << "Kandy Software. Always wary." << endl;
-    help << endl;
-    help << "usage:" << endl;
-    help << "  " << prog << " [options]" << endl;
-    help << endl;
-    help << "options:" << endl;
-/* TODO: no longer an option? */
-    help << "    -i <string>    input file name" << endl; 
-    help << "    -l             list available dictionaries" << endl;
-    help << "    -h             print out this help menu" << endl;
-    help << endl;
-    return help.str();
-}
-
-//int ltest::randIndex(const int num)
-//{
-//    return (rand() % num);
-//}
-
-/* obsolete? */
-double ltest::reaction(const double time, const int numLttrs)
-{
-    // 0.28 = seconds per letter if wpm = 100 and avg word is 6 letters long
-    double reactionTime = time - 0.28 * static_cast<double>(numLttrs);
-    if (reactionTime < 0.0)
-        reactionTime = 0.0;
-#ifdef DEBUG
-    cout << "reactionTime = " << reactionTime << endl;
-#endif
-    return reactionTime;
 }
 
 string ltest::goodbye(const string name)
@@ -242,35 +193,22 @@ bool ltest::exitProg(const char * test, bool cinEOF)
 
 int ltest::whatDoYouWantToDo(const string name)
 {
-    string options[] = {"flash cards", "numbers", "conjugations", \
-                        "fill-in-the-blank", "multiple choice", \
-                        "change user", "account summary", \
+    string options[] = {"flash cards", "numbers", "conjugations",
+                        "fill-in-the-blank", "multiple choice",
+                        "change user", "account summary",
                         "set program options", "exit program"};
 
     usInt toDoOption;
-    char * temp;
 
-    cout << '\n' \
-         << "Hello " << name << ", " \
-         << "what do you want to do?\n" \
+    cout << '\n'
+         << "Hello " << name << ", what do you want to do?\n"
          << "Here are your options: " << endl;
 
-    for (int ii = 1; ii <= 9; ii++)
-        cout << '\t' << ii << ": " << options[ii - 1] << endl;
+    for (usInt ii = 1; ii <= 9; ii++)
+        cout << '\t' << ii << ". " << options[ii - 1] << endl;
 
-    // TODO: Change this line to something like option = readint(">> ");
-    temp = readline(">> ");
-    toDoOption = atoi(temp);
-    free(temp);
+    toDoOption = readint<usInt>(">> ");
     return toDoOption;
-}
-
-double ltest::inverse(const int num)
-{
-    if (num != 0)
-        return (1.0 / static_cast<double> (num));
-    else
-        return 0; // return a nan() value?
 }
 
 // EOF
