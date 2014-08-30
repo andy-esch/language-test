@@ -30,7 +30,9 @@ int flcrd_quiz(Account & acct)
         cout << "Pick how you're quizzed:\n"
              << "   1. LeastPicked\n"
              << "   2. Adaptive\n"
-             << "   3. LeastCorrect\n" << endl;
+             << "   3. LeastCorrect\n" 
+             << "   4. Walk Through\n"
+             << endl;
         index = ltest::readint<usInt>(">> ");
 
         switch (index)
