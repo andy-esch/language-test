@@ -15,6 +15,7 @@
 #include <cstdlib>
 
 #include <readline/readline.h>
+#include <getopt.h>
 
 #include "functions.h"
 #include "listDicts.h"
