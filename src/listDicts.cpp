@@ -87,9 +87,11 @@ string listDicts(void)
                 numOfDicts++;
             }
 
-            cout << "\nChoose a dictionary by number or filter by type:\n" \
-                 << "\tnouns (n), adjectives (a), verbs (v), phrases (p)\n" \
-                 << "\t(unimplemented -- this is here as a reminder)." << endl;
+            cout << "\nChoose a dictionary by number or filter by type:\n"
+                 << "\tnouns (n), adjectives (a), verbs (v), phrases (p)\n"
+                 << "\t(unimplemented -- this is here as a reminder).\n"
+                 << "Enter multiple numbers to combine dictionaries\n"
+                 << "  example: 12,3,4,9,1 (ehem, not active yet)" << endl;
             do
             {
                 dictPick = readline("\n>> ");

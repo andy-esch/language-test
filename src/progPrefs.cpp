@@ -11,6 +11,22 @@
 
 #include "progPrefs.h"
 
+string progPrefs::help(char * progName)
+{
+    stringstream help;
+
+    help << "Commandline language learner. Version 1.0 Beta\n"
+         << "Kandy Software. Always wary.\n\n"
+         << "usage:\n"
+         << "  " << progName << " [options]\n"
+         << "\n"
+         << "options:\n"
+         << "    -h             print out this help menu\n"
+         << endl;
+
+    return help.str();
+}
+
 void progPrefs::cmdLineInput(int argc, char **argv)
 {
     int c;
@@ -19,15 +35,15 @@ void progPrefs::cmdLineInput(int argc, char **argv)
         switch (c)
         {
             case 'h': // Print usage info then exit
-                cout << ltest::help(argv[0]);
+                cout << help(argv[0]);
                 exit(0);
             case '?':
-                cerr << "Option '-" << static_cast<char> (optopt) \
+                cerr << "Option '-" << static_cast<char> (optopt)
                      << "' is not valid." << endl;
                 break;
             default:
-                cerr << "Invalid commandline options." << endl;
-                ltest::help(argv[0]);
+                cerr << "Invalid commandline options." << endl; 
+                help(argv[0]);
                 exit(0);
                 break;
         }
