@@ -82,7 +82,7 @@ int flcrd_quiz(Account & acct)
             {
                 if ( response[1] == 's' ) break;
                 else
-                    cout << myhint.handle(response, false);
+                    cout << myhint.handle(response, disableHintMsg);
             }
             else if ( response == "exit" )
             {
@@ -106,9 +106,11 @@ int flcrd_quiz(Account & acct)
                     }
 
                     if ( (numOfTries % 5) == 0 && !disableHintMsg)
-                        cout << ltest::hintOptions(sideAword.size()) \
-                             << '\n' \
-                             << sideAword << ": ";
+                    {
+                        cout << myhint.help(sideAword.size())
+                             << '\n';
+                        prompt = sideAword;
+                    }
                     else
                         prompt = ltest::printWhitespace(sideAword.size()-1);
                 }
