@@ -82,8 +82,8 @@ int flcrd_quiz(Account & acct)
             /* options processing */
             if ( response[0] == '-' ) /* if hint */
             {
-                if ( response[1] == 's' ) break;
-                else
+                if ( response[1] == 's' ) break; /* skip word */
+                else                             /* deal with response */
                     cout << myhint.handle(response, disableHintMsg);
             }
             else if ( response == "exit" )
@@ -103,7 +103,7 @@ int flcrd_quiz(Account & acct)
                     {
                         cout << "You are " \
                              << wordCompare::lcsPercent(cards[picker->getCurrentIndex()].getWord('B',0),response) \
-                             << "% correct.\n" \
+                             << "%% correct.\n" \
                              << wordCompare::correctness(response,cards[picker->getCurrentIndex()].getWord('B',0)) << endl;
                     }
 

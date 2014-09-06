@@ -93,6 +93,9 @@ int main(int argc, char **argv)
             case 7:
                 cout << "you chose to see your account summary" << endl;
                 /* print account summary */
+                /* This will include which tests were taken, the dates taken, the scores, etc. */
+                cout << "***This feature is not yet implemented."
+                     << "***Returing to main menu.";
                 break;
             case 8:
                 cout << "you chose to change some program options" << endl;
